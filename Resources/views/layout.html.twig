@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    {% block head %}
+    <head>
+        <title>{% block title %}Majes Cms{% endblock %}</title>
+        
+        {% spaceless %}
+        <meta name="og:type" content="{% block meta_type %}Website{% endblock %}" />
+    	<meta name="og:image" content="{% block meta_image %}{% endblock %}"	/>
+    	<meta name="og:title" content="{% block meta_title %}Maje'Steel{% endblock %}" />
+    	<meta name="og:description" content="{% block meta_description %}{% endblock %}" />
+    	{% endspaceless %}
+    
+    	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+        <script src="{{ asset('bundles/majescms/javascripts/jquery.js') }}"></script>		
+        <script src="{{ asset('bundles/majescms/javascripts/bootstrap.js') }}"></script>
+
+        {% block teel_js %}
+        {% if wysiwyg is defined and wysiwyg == true %}<script src="{{ asset('bundles/majescore/plugins/tinymce/tinymce.min.js') }}" type="text/javascript"></script>{% endif %}
+        <script src="{{ asset('bundles/majescms/javascripts/majesteel.bootstrap.min.js') }}"></script>
+        <script src="{{ asset('bundles/majescms/javascripts/application.js') }}"></script>
+        {% endblock %}   
+          
+
+        <link href="{{ asset('bundles/majescms/stylesheets/bootstrap.css') }}" media="all" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('bundles/majescms/stylesheets/styles.css') }}" media="all" rel="stylesheet" type="text/css" />
+
+        {% block teel_css %}
+        <link href="{{ asset('bundles/majescms/stylesheets/majesteel.bootstrap.min.css') }}" media="all" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('bundles/majescms/stylesheets/teel.css') }}" media="all" rel="stylesheet" type="text/css" />
+        {% endblock %}   
+        
+        {% if draft is defined and draft == true %}<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">{% endif %}
+    </head>
+    {% endblock %}
+    
+    <body>
+
+        {% set host = getHost() %}
+        {% if lang is not defined %}{% set lang = default_lang %}{% endif %}
+        {% if page is not defined %}{% set menu = getMenu(host.id, lang, 'main', 2, null, 1) %}
+        {% else %}{% set menu = getMenu(host.id, lang, 'main', 2, page.id, 1) %}
+        {% endif %}
+
+    	{% block teel_header %}
+            {% block main_menu %}{% include ['MajesCmsBundle:Index:parts/menu.html.twig'] %}{% endblock %}
+    	{% endblock %}
+
+
+        {% block content %}
+            {% block breadcrumb %}
+                {% set host = getHost() %}
+                {% set breadcrumb = getBreadcrumb(menu) %}
+                <ul class="breadcrumb">
+                    <li><a href="/">Accueil</a></li>
+                    {% for page in breadcrumb %}
+                    <li{% if loop.last == true %} class="active"{% endif %}>
+                        {% if loop.last == false %}{% if page.is_folder == false %}<a href="#">{{page.label}}</a>{% else %}{{page.label}}{% endif %}
+                        {% else %}{{page.label}}
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% endblock %}
+        {% endblock %}
+
+        
+        {% if page is not defined %}{% set menu_footer = getMenu(host.id, lang, 'footer', 1, null, 1) %}
+        {% else %}{% set menu_footer = getMenu(host.id, lang, 'footer', 1, page.id, 1) %}
+        {% endif %}
+
+        {% block teel_footer %}
+        <div class="container">
+            <footer>
+                © Copyright 2013 - Maje'Steel 
+                <div class="pull-right">
+                {% for menu_page_id, menu_page in menu_footer %}<a href="{% if menu_page.link_url is null %}{{ path('majes_cms_' ~ menu_page.id ~ '_' ~ lang) }}{% else %}{% endif %}"{% if menu_page.target_url is not null %}target="{{ menu_page.target_url }}"{% endif %}>{{menu_page.label}}</a>{% if loop.last == false %} | {% endif %}{% endfor %}
+                </div>
+            </footer>
+        </div>
+        {% endblock %}
+    
+        {% if wysiwyg is defined and wysiwyg == true %}
+        <div class="modal fade majesTeel" id="editModal" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" id="ajaxEditBlock">
+                    
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </body>
+</html>

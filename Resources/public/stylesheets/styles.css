@@ -1,0 +1,53 @@
+body{}
+
+section{
+	display: block; 
+	float: left; 
+	width: 100%;
+	clear: both;
+}
+
+
+/*Defaulyt style*/
+header{position: relative; width: 100%; clear: both; float: left}
+	header .logo{float: left;}
+	header #mjcms_menu{display: block; float: left; display: block; list-style: none; margin-top: 0;}
+
+
+footer{position: relative; width: 100%; clear: both; float: left}
+
+
+
+
+/* Default attribute*/
+.mjcms_picture{display: block; margin: 0 10px 10px 0; float: left;}
+	.mjcms_picture img{max-width: 100%;}
+
+
+#header_carousel  {
+	height: 460px;
+}
+
+#site{
+
+	margin-top: 100px;
+
+}
+
+/*BOOSTRAP*/
+.navbar-wrapper {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 10;
+	margin-top: 20px;
+	margin-bottom: -90px;
+}
+
+
+
+.modal-dialog {
+  width: 800px!important;
+}
+

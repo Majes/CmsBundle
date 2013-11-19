@@ -1,0 +1,31 @@
+{% extends 'MajesCmsBundle::layout.html.twig' %}
+
+{% block title %}MajesCore - CMS{% endblock %}
+
+{% block meta_type %}{{parent()}}{% endblock %}
+{% block meta_title %}{{parent()}} - {{ pageLang.title }}{% endblock %}
+{% block meta_description %}{% endblock %}
+{% block meta_image %}{% endblock %}
+
+{% block teel_header %}{{ parent() }}{% endblock %}
+
+{% block content %}
+	{{parent()}}
+	
+	{% block breadcrumb %}{% endblock %}
+
+	{% if content is not empty %}
+	
+		{% for page_block_ref, block in content %}
+			<section id="{{ page_block_ref }}" class="block{% if block.is_tablet == 0 %} hidden-tablet{% endif %}{% if block.is_desktop == 0 %} hidden-desktop{% endif %}{% if block.is_mobile == 0 %} hidden-phone{% endif %}">
+				{% include [
+					'MajesCmsBundle:Index:block/' ~ block.block_ref ~ '.html.twig', 
+					'MajesCmsBundle:Index:block/none.html.twig'] %}
+			</section>
+		{% endfor %}
+
+	{% endif %}
+
+{% endblock %}
+
+{% block teel_footer %}{{ parent() }}{% endblock %}

@@ -1,0 +1,120 @@
+{% extends 'MajesCoreBundle::layout.html.twig' %}
+
+{% block title %}MajesCore - Media list{% endblock %}
+
+{% block content_header '' %}
+
+{% block content %}
+	
+<div class="container-fluid main-content">
+
+	{{ include(
+                'MajesCoreBundle:common:breadcrumbs.html.twig'
+            ) }}
+
+   <div class="page-title">
+   	<h1>{% trans %}%pageTitle%{% endtrans %}</h1>
+   </div>
+
+	<div class="row" id="cmsEditingDD">
+		
+		<div class="col-lg-3" id="cmsAttributes">
+        	<div class="widget-container fluid-height">
+        		<div class="widget-content">
+        			<div class="panel-group" id="accordion">
+
+        				{% for attribute in attributes %}
+        				<div class="panel">
+        				  	<div class="panel-heading draggable">
+        				    	<div class="panel-title">
+        				      	<a href="#attribute{{ attribute.id }}" data-id="{{ attribute.id }}">{{ attribute.title }}</a>
+        				    	</div>
+        				  	</div>
+        				</div>
+        				{% endfor %}
+        				
+        			</div>
+        		</div>
+        	</div>
+      </div>
+
+        <!-- Gallery with filtering and actions -->
+      <div class="col-lg-9">      	
+          	
+          	<div class="widget-container fluid-height clearfix">
+			
+					{% form_theme form 'MajesCoreBundle:Form:fields.html.twig' %}
+            	{{ form_start(form, { 'attr': {'class': 'form-horizontal', 'id': 'blockForm'} }) }}
+
+					<div class="heading">
+        	    		<i class="icon-save"></i> <em>{% trans %}%pageSubTitle%{% endtrans %}</em>
+        	    		<input type="submit" class="btn btn-success pull-right" value="Save"/>
+        	   	</div>
+					            
+            	<div class="widget-content padded">
+              		<div class="row">
+                		<div class="col-md-3"></div>
+                		<div class="col-md-6">
+                  		{{ form_errors(form) }}
+                  		{{ form_widget(form) }}
+                		</div>
+              		</div>
+              		
+              		{% if block is not null %}
+              		<div class="row">
+						   <div class="widget-container fluid-height">
+      					  	<div class="heading">
+      				 			<i class="icon-picture"></i> Drag attributes from left panel and drop them here
+      				 	  	</div>
+      				 		<div class="widget-content padded" id="cmsBlockAttributes">
+      				 		   <ul class="sortable no-style">
+      				 				{% for block_attribute in block.blockAttributes %}
+      				 				<li class="alert alert-warning"><input type="hidden" name="attributes[][{{ block_attribute.attribute.id }}][]" value="{{ block_attribute.id }}"/><button class="close" data-dismiss="alert" type="button">×</button>&nbsp;
+                        <span class="pull-left" style=""><input type="text" name="title[{{ block_attribute.id }}]" value="{% if block_attribute.title == '' %}{{ block_attribute.attribute.title }}{% else %}{{block_attribute.title}}{% endif %}" class="form-control" style="margin: -6px 0 0"/></span>
+
+                        <span class="pull-right" style="margin-right: 20px"><input type="text" name="ref[{{ block_attribute.id }}]" value="{{ block_attribute.ref }}" class="form-control" style="margin: -6px 0 0"/></span>
+                      </li>
+      				 				{% endfor %}
+        				 			</ul>
+      					  	</div>
+      					</div>
+              		</div>
+              		{% endif %}
+					</div>
+					{{ form_end(form) }}
+
+				</div>
+
+
+    	</div>
+	</div>
+        <!-- End Gallery with filtering and actions -->
+</div>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#cmsAttributes .draggable").draggable({
+        zIndex: 999,
+        revert: true,
+        revertDuration: 0
+      });
+
+      $( "#cmsBlockAttributes" ).droppable({
+      	drop: function( event, ui ) {
+      		var attribute = $(ui.draggable[0]).find('a');
+      		$(this).find('ul').prepend('<li class="alert alert-warning"><input type="hidden" name="attributes[]['+attribute.data('id')+'][]" value="0"/><button class="close" data-dismiss="alert" type="button">×</button>'+attribute.html()+'</li>');
+
+      	},
+      	accept: '#cmsAttributes .draggable'
+    	});
+
+    	$( "#cmsBlockAttributes .sortable" ).sortable({
+      	connectWith: ".sortable",
+      	containment: "parent",
+      	cursor: "move"
+    	});
+	});
+</script>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+<!-- Carousel
+    ================================================== -->
+<div id="header_carousel" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  
+  <div class="carousel-inner">
+    {% set count = 0 %}{% for key, item in block.items %}
+    <div class="item{% if count == 0 %} active{% endif %}">
+      
+      
+   
+      <img src="/{{ item.attributes.carousel_header_picture.value.path}}"  />
+      <div class="container">
+        <div class="carousel-caption">
+          {% set wysiwyg_begin = wysiwygTagBegin(block, item, lang) %}{{wysiwyg_begin|raw}}
+          <h1>{{ item.attributes.carousel_header_h1.value.value }}</h1>
+                <p class="lead">{{ item.attributes.carousel_header_text.value.value }}</p>
+                {% if item.attributes.carousel_header_link.value.value is not empty %}
+                {% if item.attributes.carousel_header_link.value.page_id is defined %}{% set url = path('majes_cms_' ~ item.attributes.carousel_header_link.value.page_id ~  '_' ~ lang) %}
+                {% else %}{% set url = item.attributes.carousel_header_link.value.value %}{% endif %}
+                <a href="{{ url }}" class="btn" target="{{item.attributes.carousel_header_link.value.target}}">{{ item.attributes.carousel_header_link.value.label }}</a>{% endif %}
+          {% set wysiwyg_end = wysiwygTagEnd() %}{{wysiwyg_end|raw}}
+        </div>
+      </div>
+
+      
+    
+    </div>
+    {% set count = count + 1 %}{% endfor %}
+
+    
+    
+  </div>
+  <a class="left carousel-control" href="#header_carousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+  <a class="right carousel-control" href="#header_carousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+</div><!-- /.carousel -->
+

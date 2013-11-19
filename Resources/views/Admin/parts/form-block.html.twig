@@ -1,0 +1,41 @@
+<div class="modal-header">
+	<button aria-hidden="true" class="close" data-dismiss="modal" type="button">×</button>
+	<h4 class="modal-title">Edit block : "<em><strong>{{ templateBlock.block.title }}</strong></em>"{% if block.has_draft %}<small> - Is a draft</small>{% endif %}</h4>
+</div>
+<form action="{{ path('_cms_pageblock_edit') }}" method="post" class="form-horizontal" enctype="multipart/form-data" id="editPageBlockForm">
+<input type="hidden" name="lang" value="{{ lang }}"/>
+<input type="hidden" name="id" value="{{ id }}"/>
+<input type="hidden" name="page_id" value="{{ page.id }}"/>
+<input type="hidden" name="template_block_id" value="{{ templateBlock.id }}"/>
+<input type="hidden" name="page_template_block_id" value="{% if pageTemplateBlock is not null %}{{ pageTemplateBlock.id }}{% endif %}"/>
+{% if wysiwyg == 1 %}<input type="hidden" name="wysiwyg" value="1"/>{% endif %}
+<div class="modal-body">
+    
+	{% if block.is_repeatable == 1 %}
+
+	<div class="form-group">
+	    <label class="control-label col-lg-3"><strong>Item title</strong></label>
+	    <div class="col-lg-7">
+	        <input class="form-control" placeholder="Text" type="text" name="title" value="{{ block.item.title }}"/>
+	    </div>
+	</div>
+
+	{% endif %}
+
+    {% for attribute in block.item.attributes %}
+    	<blockquote class="">
+    	<input type="hidden" name="attributes[{{attribute.block_attribute_ref}}][id]" value="{{attribute.block_attribute_id}}"/>
+    	<input type="hidden" name="attributes[{{attribute.block_attribute_ref}}][ref]" value="{{attribute.ref}}"/>
+		{{ include(
+    	    'MajesCmsBundle:Admin:datatype/form/' ~ attribute.ref  ~ '.html.twig'
+    		) }}
+    	</blockquote>
+	{% endfor %}
+	
+</div>
+
+<div class="modal-footer">
+	<input class="btn btn-primary" type="submit" value="Save"/>
+	<button class="btn btn-default-outline" data-dismiss="modal" type="button">Close</button>
+</div>
+</form>

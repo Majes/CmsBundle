@@ -1,0 +1,12 @@
+services:
+    majescms.twig.cms_extension:
+        class: Majes\CmsBundle\Twig\CmsExtension
+        arguments: ["@doctrine.orm.entity_manager", "@router", "@service_container"]
+        tags:
+            - { name: twig.extension }
+
+    majescms.routing.loader:
+        class: Majes\CmsBundle\Routing\RouteLoader
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: cmf_routing.dynamic_router }

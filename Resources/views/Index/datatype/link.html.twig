@@ -1,0 +1,7 @@
+{% if attribute.value %}
+{% if attribute.value.value is not empty %}
+{% if attribute.value.page_id is defined %}{% set url = path('majes_cms_' ~ attribute.value.page_id ~  '_' ~ lang) %}
+{% else %}{% set url = attribute.value.value %}{% endif %}
+                
+
+<span class="mjcms_link"><a href="{{ url }}" target="{{attribute.value.target}}">{{ attribute.value.label }}</a>{% endif %}</span>{% endif %}

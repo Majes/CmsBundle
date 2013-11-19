@@ -1,0 +1,146 @@
+<div class="col-lg-3" id="cmsTree">
+	<div class="widget-container fluid-height">
+		<div class="widget-content">
+			<div class="panel-group" id="accordion">
+
+                {% for host in hosts %}
+				<div class="panel">
+				  	<div class="panel-heading">
+				    	<div class="panel-title">
+				      		<a class="accordion-toggle" data-parent="#accordion" data-toggle="collapse" href="#collapseType"><div class="caret pull-right"></div>{{ host.title }}</a>
+				    	</div>
+				  	</div>
+				  	<div class="panel-collapse collapse in" id="collapseType">
+				    	<div class="panel-body">
+				      		{% for nav in menu[host.id] %}
+                            <h3>{{ nav.data.title }}</h3>
+                            <!-- Definition tree structure -->
+                            <div id="tree_{{host.id}}_{{nav.data.id}}"></div>
+        
+                            <a class="btn btn-default pull-right" style="margin: 10px 10px" href="{{ path('_cms_content') }}/0/0/{{nav.data.id}}/{{ default_lang }}"><i class="icon-file-text-alt"></i> Add a page</a>
+
+                            <div style="clear: both"></div>
+                            <script type="text/javascript">
+
+                            $(function(){
+                                var data = {{ nav.tree|raw }};
+                                var $tree = $('#tree_{{host.id}}_{{nav.data.id}}').tree({
+                                    data: data,
+                                    dragAndDrop: true,
+                                    openedIcon: '-',
+                                    closedIcon: '+',
+                                    useContextMenu: false,
+                                    onCreateLi: function(node, $li) {
+                                        $li.find('.jqtree-element').append(
+                                            '<a href="#node-'+ node.id +'" class="menu pull-right icon-cog" data-node-id="'+node.id +'"></a><div class="contextMenu"><a class="edit" href="{{ path('_cms_content') }}/'+node.id+'/'+node.parent_id+'/{{nav.data.id}}/{{ default_lang }}"><i class="icon-edit"></i> Edit</a><a class="delete" href="{{ path('_cms_content_delete') }}/' + node.id + '/{{ default_lang }}" onclick="return CoreAdmin.Common.confirmDelete(\'{% trans %}Are you sure you want to delete this page?{% endtrans %}\')"><i class="icon-trash"></i> Remove</a><a class="add" href="{{ path('_cms_content') }}/0/'+node.id+'/{{nav.data.id}}/{{ default_lang }}"><i class="icon-plus"></i> Add a page</a></div>'
+                                        );            
+                                    }
+                                });
+                            
+                                {% if page_id is not null and page.menu.id == nav.data.id %}var node = $tree.tree('getNodeById', {{page_id}}).parent;
+                                $tree.tree('openNode', node);{% endif %}
+                                $('#tree_{{host.id}}_{{nav.data.id}}').bind(
+                                    'tree.move',
+                                    function(event) {
+        
+                                        var moved_node = event.move_info.moved_node;
+                                        var target_node = event.move_info.target_node;
+                                        var type = event.move_info.position;
+                                        var moved_node_id = moved_node.id;
+        
+                                        if(type == 'inside'){
+                                            var parent_id = target_node.id;
+                                            var position = 0;
+        
+                                            var parent = target_node;
+                                        }else{
+                                            var parent_id = target_node.parent_id;
+                                            var position = target_node.id;
+        
+                                            var parent = target_node.parent;
+                                        }
+        
+                                        //Get ids of siblings
+                                        var ids = new Array();
+                                        var count = 0;
+                                        if(position == 0){
+                                            ids[count] = moved_node_id;
+                                            count++;
+                                        }
+        
+                                        for (var i=0; i < parent.children.length; i++) {
+                                            var child = parent.children[i];
+                                            if(parent.children[i].id != moved_node_id){
+                                                ids[count] = child.id;
+                                                count++;
+                                            }
+                                            if(position == child.id){
+                                                ids[count] = moved_node_id;
+                                                count++;
+                                            }
+                                           
+        
+                                        }
+                                        
+                                        $.ajax({
+                                            type: 'post',
+                                            dataType: 'json',
+                                            data: {ids: ids, page_id: moved_node_id, parent_id: parent_id, position: position},
+                                            url: '{{ path('_cms_menu_order', {host_id: host.id}) }}',
+                                            success: function(response){
+                                                $('.menu').unbind('click').bind(
+                                                    'click',
+                                                    function(e) {
+                                                        var self = $(e.target);
+                                                        $(".contextMenu.show").removeClass('show');
+                                                
+                                                        if(self.hasClass('on')){
+                                                            self.removeClass('on');    
+                                                        }else{
+                                                            $("a.menu.on").removeClass('on');
+                                                            self.addClass('on');
+                                                            $(e.target).next().addClass('show');
+                                                        }
+                                                    }
+                                                );
+                                            }
+                                        });
+                                    }
+                                );
+                            
+                            });
+                            </script>
+
+                            {% endfor %}
+				    	</div>
+				  	</div>
+				</div>
+
+                
+
+                {% endfor %}
+				
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+    $(function(){
+     $('.menu').bind(
+         'click',
+         function(e) {
+             var self = $(e.target);
+             $(".contextMenu.show").removeClass('show');
+     
+             if(self.hasClass('on')){
+                 self.removeClass('on');    
+             }else{
+                 $("a.menu.on").removeClass('on');
+                 self.addClass('on');
+                 $(e.target).next().addClass('show');
+             }
+         }
+     );
+     
+    });
+</script>

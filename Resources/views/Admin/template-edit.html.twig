@@ -1,0 +1,149 @@
+{% extends 'MajesCoreBundle::layout.html.twig' %}
+
+{% block title %}MajesCore - Media list{% endblock %}
+
+{% block content_header '' %}
+
+{% block content %}
+	
+<div class="container-fluid main-content">
+
+	{{ include(
+                'MajesCoreBundle:common:breadcrumbs.html.twig'
+            ) }}
+
+   <div class="page-title">
+   	<h1>{% trans %}%pageTitle%{% endtrans %}</h1>
+   </div>
+
+	<div class="row" id="cmsEditingDD">
+		
+		<div class="col-lg-3" id="cmsBlocks">
+        	<div class="widget-container fluid-height">
+        		<div class="widget-content">
+        			<div class="panel-group" id="accordion">
+                {% for block in blocks %}
+                <div class="panel">
+                    <div class="panel-heading draggable">
+                      <div class="panel-title">
+                        <a href="#block{{ block.id }}" data-id="{{ block.id }}">{{ block.title }}</a>
+                      </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+        			</div>
+        		</div>
+        	</div>
+      </div>
+
+        <!-- Gallery with filtering and actions -->
+      <div class="col-lg-9">      	
+          	
+				<div class="widget-container fluid-height clearfix">
+					{% form_theme form 'MajesCoreBundle:Form:fields.html.twig' %}
+            	{{ form_start(form, { 'attr': {'class': 'form-horizontal', 'id': 'templateForm'} }) }}
+
+					<div class="heading">
+        	    		<i class="icon-save"></i> <em>{% trans %}%pageSubTitle%{% endtrans %}</em>
+        	    		<input type="submit" class="btn btn-success pull-right" value="Save"/>
+        	   	</div>
+					            
+            	<div class="widget-content padded">
+              		<div class="row">
+                		<div class="col-md-3"></div>
+                		<div class="col-md-6">
+                  		{{ form_errors(form) }}
+                  		{{ form_widget(form) }}
+                		</div>
+              		</div>
+              		
+              		{% if template is not null %}
+              		<div class="row">
+						   <div class="widget-container fluid-height">
+      					  	<div class="heading">
+      				 			<i class="icon-picture"></i> Drag attributes from left panel and drop them here
+      				 	  	</div>
+      				 		<div class="widget-content padded" id="cmsTemplateBlocks">
+      				 		   <ul class="sortable no-style">
+      				 				{% for template_block in template.templateBlocks %}
+										<li class="alert alert-warning">
+
+											<button class="close" data-dismiss="alert" type="button">×</button>
+      										<input type="hidden" name="blocks[][{{ template_block.block.id }}][]" value="{{ template_block.id }}" />{{ template_block.block.title }} 
+                          <a href="{{ path('_cms_template_block_edit',{'id':template_block.id}) }}" class="icon-repeat pull-right clickable{% if template_block.isRepeatable %} on{% endif %}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Is repeatable"></a>
+      										<a href="{{ path('_cms_template_block_edit',{'id':template_block.id}) }}" class="icon-desktop pull-right clickable{% if template_block.isDesktop %} on{% endif %}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Is viewable on a desktop"></a>
+											    <a href="{{ path('_cms_template_block_edit',{'id':template_block.id}) }}" class="icon-mobile-phone pull-right clickable{% if template_block.isMobile %} on{% endif %}" data-toggle="tooltip" title="" data-original-title="Is viewable on a mobile"></a>
+											    <a href="{{ path('_cms_template_block_edit',{'id':template_block.id}) }}" class="icon-tablet pull-right clickable{% if template_block.isTablet %} on{% endif %}" data-toggle="tooltip"  title="" data-original-title="Is viewable on a tablet"></a>
+      										<span class="pull-right" style="margin-right: 20px"><input type="text" name="ref[{{ template_block.id }}]" value="{{ template_block.ref }}" class="form-control" style="margin: -6px 0 0"/></span>
+										</li>
+      				 				{% endfor %}
+        				 			</ul>
+      					  	</div>
+      					</div>
+              		</div>
+              		{% endif %}
+					</div>
+					{{ form_end(form) }}
+				</div>
+
+    	</div>
+	</div>
+        <!-- End Gallery with filtering and actions -->
+</div>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#cmsBlocks .draggable").draggable({
+        	zIndex: 999,
+        	revert: true,
+        	revertDuration: 0
+    	});
+
+    	$( "#cmsTemplateBlocks" ).droppable({
+      		drop: function( event, ui ) {
+      			var block = $(ui.draggable[0]).find('a');
+
+      			$(this).find('ul').prepend('<li class="alert alert-warning"><input type="hidden" name="blocks[]['+block.data('id')+'][]" value="0"/><button class="close" data-dismiss="alert" type="button">×</button>'+block.html()+'<a class="icon-repeat pull-right on" data-toggle="tooltip" data-placement="top" title="" data-original-title="Is repeatable"></a><a class="icon-desktop pull-right on" data-toggle="tooltip" id="tooltip-top" title="" data-original-title="Is viewable on a desktop"></a><a class="icon-mobile-phone pull-right on" data-toggle="tooltip" id="tooltip-top" title="" data-original-title="Is viewable on a mobile"></a><a class="icon-tablet pull-right on" data-toggle="tooltip" id="tooltip-top" title="" data-original-title="Is viewable on a tablet"></a></li>');
+
+      			$("#cmsTemplateBlocks a[class^='icon-']").tooltip()
+
+      		},
+      		accept: '#cmsBlocks .draggable'
+   		});
+
+    	$( "#cmsTemplateBlocks .sortable" ).sortable({
+      		connectWith: ".sortable",
+      		containment: "parent",
+      		cursor: "move"
+    	});
+    	$("#cmsTemplateBlocks a[class^='icon-']").tooltip();
+
+    	$("#cmsTemplateBlocks a.clickable").click(function(e){
+    		e.preventDefault();
+    		var self = $(this);
+    		var field = self.hasClass('icon-mobile-phone') ? 'isMobile' : (self.hasClass('icon-tablet') ? 'isTablet' : (self.hasClass('icon-repeat') ? 'isRepeatable' : 'isDesktop'));
+
+
+    		
+    		$.ajax({
+    			url: self.attr('href'),
+    			dataType: 'json',
+    			data: {'column': field},
+    			success: function(response){
+    				if(response.error) CoreAdmin.Alert.showError(response.message);
+					else{
+						if(self.hasClass('on')) self.removeClass('on');
+						else self.addClass('on')
+						CoreAdmin.Alert.show(response.message);
+					}
+
+    			}
+    		})
+
+    	});
+	});
+</script>
+
+{% endblock %}

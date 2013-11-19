@@ -1,0 +1,5 @@
+{% if attribute.value['media_id'] %}
+<span class="mjcms_picture">
+	<img src="{{ path('_media_load', {'id': attribute.value['media_id'], 'width': attribute.value['width']}) }}" title="{{attribute.value['title']}}" />
+	<legend>{{attribute.value['author']}}</legend>
+</span>{% endif %}

@@ -1,0 +1,6 @@
+{% for item in block.items %}
+	{% set wysiwyg_begin = wysiwygTagBegin(block, item, lang) %}{{wysiwyg_begin|raw}}
+	<h1>{{ item.attributes.h1.value.value }}</h1>
+	<h2>{{ item.attributes.h2.value.value }}</h2>
+	{% set wysiwyg_end = wysiwygTagEnd() %}{{wysiwyg_end|raw}}
+{% endfor %}

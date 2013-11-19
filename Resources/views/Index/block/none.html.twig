@@ -1,0 +1,11 @@
+{% for item in block.items %}
+	{% set wysiwyg_begin = wysiwygTagBegin(block, item, lang) %}{{wysiwyg_begin|raw}}
+	{% for attribute in item['attributes'] %}
+	    {% if attribute.value is not empty %}
+			{{ include(
+     			    'MajesCmsBundle:Index:datatype/' ~ attribute.ref  ~ '.html.twig'
+     			) }}
+        {% endif %}
+	{% endfor %}
+	{% set wysiwyg_end = wysiwygTagEnd() %}{{wysiwyg_end|raw}}
+{% endfor %}

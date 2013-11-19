@@ -1,0 +1,77 @@
+<div class="row" id="cmsActions">
+  	<div class="col-lg-12">
+    	<div class="widget-container fluid-height clearfix">
+    		<div class="heading">
+          <a class="btn btn-default" href="{{path('majes_cms_' ~ page.id ~ '_' ~ lang)}}" target="_blank"><i class="icon-picture"></i> Wysiwyg mode</a>
+    			<div class="btn-group">
+
+           			<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            			<i class="icon-zoom-in"></i> Preview<span class="caret"></span>
+            		</button>
+            		<ul class="dropdown-menu">
+      			    	<li>
+      			    	  <a href="{{path('majes_cms_' ~ page.id ~ '_' ~ lang)}}?draft=1" target="_blank"><i class="icon-edit"></i> Draft</a>
+      			    	</li>
+      			    	<li>
+      			    	  <a href="{{path('majes_cms_' ~ page.id ~ '_' ~ lang)}}" target="_blank"><i class="icon-save"></i> Published</a>
+      			    	</li>
+      			  	</ul>
+            	</div>
+    			<div class="btn-group">
+      			  <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+      			  	<i class="icon-thumbs-up"></i> Share<span class="caret"></span></button>
+      			  	<ul class="dropdown-menu">
+      			    	<li>
+      			    	  <a href="#"><i class="icon-facebook"></i> Facebook</a>
+      			    	</li>
+      			    	<li>
+      			    	  <a href="#"><i class="icon-twitter"></i> Twitter</a>
+      			    	</li>
+      			    	<li>
+      			    	  <a href="#"><i class="icon-envelope"></i> Email</a>
+      			    	</li>
+      			  	</ul>
+      			</div>
+				
+				<div class="btn-group pull-right">
+      			  <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+      			  	<img src="{{ asset('bundles/majescore/images/flag-' ~ lang ~ '.png') }}" style="margin: 0 5px 3px"/> Languages<span class="caret"></span></button>
+      			  	<ul class="dropdown-menu" style="min-width: 50px">
+                  {% if page.parent is null %}{% set page_parent_id = 0 %}{% else %}{% set page_parent_id = page.parent.id %}{% endif %}
+                  {% for lang in app.session.get('langs') %}
+                  {% set has_translation = hasTranslation(page.id, lang.locale) %}
+      			    	<li>
+      			    	  <a href="{{ path('_cms_content', {id: page.id, page_parent_id: page_parent_id, lang: lang.locale, menu_id: page.menu.id}) }}" {% if has_translation is empty %}class="duplicateTranslation"{% endif %}><img src="{{ asset('bundles/majescore/images/flag-' ~ lang.locale ~ '.png') }}"/></a>
+      			    	</li>
+                  {% endfor %}
+      			  	</ul>
+      			</div>
+				
+        {% if page_has_draft %}<a class="btn btn-success pull-right" href="{{ path('_cms_publish', {'id' : page_id, 'lang' : lang}) }}" onclick="return CoreAdmin.Common.confirmDelete('{% trans %}Are you sure you want to publish this page?{% endtrans %}')"><i class="icon-zoom-in"></i> Publish</a>{% endif %}
+    			
+			</div>
+    	</div>
+  	</div>
+</div>
+
+<div class="modal fade" id="duplicateTranslationModal" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+            <button aria-hidden="true" class="close" data-dismiss="modal" type="button">×</button>
+            <h4 class="modal-title">Translation does not yet exist</h4>
+          </div>
+
+          <div class="modal-body">
+            <p>Do you want to copy the default language "{{default_lang}}" or create a translation from scratch?</p>
+          </div>
+
+          <div class="modal-footer">
+            <a href="#" class="btn btn-default-outline copy">Copy</a>
+            <a href="#" class="btn btn-default-outline scratch">From scratch</a>
+          </div>
+
+      </div>
+    </div>
+</div>
+

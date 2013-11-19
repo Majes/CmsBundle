@@ -1,0 +1,88 @@
+<div class="form-group">
+    <label class="control-label col-lg-3">Picture title / alt</label>
+    <div class="col-lg-9">
+        <input class="form-control" placeholder="" type="text" name="attributes[{{attribute.block_attribute_ref}}][title]" value="{% if attribute.value %}{{attribute.value.title}}{% endif %}"/>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-lg-3">Picture dimension</label>
+    <div class="col-lg-9">
+
+        <div class="col-lg-4" style="padding-left: 0; padding-right: 20px; margin-bottom: 0"><input class="form-control" placeholder="Width in pixel" type="text" name="attributes[{{attribute.block_attribute_ref}}][width]" value="{% if attribute.value.width is defined %}{{attribute.value.width}}{% endif %}"/></div>
+        <div class="col-lg-4" style="margin-bottom: 0"><input class="form-control" placeholder="Height in pixel" type="text" name="attributes[{{attribute.block_attribute_ref}}][height]" value="{% if attribute.value.height is defined %}{{attribute.value.height}}{% endif %}"/></div>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-lg-3">Picture credit / author</label>
+    <div class="col-lg-9">
+        <input class="form-control" placeholder="" type="text" name="attributes[{{attribute.block_attribute_ref}}][author]" value="{% if attribute.value %}{{attribute.value.author}}{% endif %}"/>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="myaccount_is_active" class="control-label col-lg-3">Preview</label>
+    <div class="col-lg-9">
+
+        {% if attribute.value %}
+        <img src="{{ path('_media_load', {'id': attribute.value.media_id, 'width': '200'}) }}" width="200" title="{{attribute.value['title']}}" id="preview{{attribute.block_attribute_ref}}"/>
+        {% else %}
+        <img src="" title="" id="preview{{attribute.block_attribute_ref}}" width="200"/>
+        {% endif %}
+    </div>
+</div>
+
+<div class="form-group">
+	<label for="myaccount_media" class="control-label col-lg-3">{{attribute.title}} </label>
+	<div class="col-lg-9">
+        <input type="hidden" name="attributes[{{attribute.block_attribute_ref}}][media_id]" value="{% if attribute.value %}{{attribute.value.media_id}}{% endif %}" id="{{attribute.block_attribute_ref}}_id">
+        <div class="widget-container fluid-height">
+            <div class="heading tabs">
+                <ul class="nav nav-tabs pull-right" data-tabs="tabs" id="tabs{{attribute.block_attribute_ref}}">
+                    <li class="active">
+                        <a data-toggle="tab" href="#tab1{{attribute.block_attribute_ref}}"><i class="icon-comments"></i><span>Upload new file</span></a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#tab2{{attribute.block_attribute_ref}}" class="triggerMediaPicker"><i class="icon-user"></i><span>Existing media</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content" id="my-tab-content{{attribute.block_attribute_ref}}">
+                <div class="tab-pane active" id="tab1{{attribute.block_attribute_ref}}" style="padding: 10px;">
+                    <input type="file" name="attributes[{{attribute.block_attribute_ref}}][value]">
+                </div>
+                <div class="tab-pane" id="tab2{{attribute.block_attribute_ref}}">
+                    <iframe src="{{path('_media_picker', {'context': 'cms'})}}?ref={{attribute.block_attribute_ref}}" style="width: 100%; border: 0; height: 500px;"></iframe>
+                </div>
+                  
+            </div>
+        </div>
+		
+		
+	</div>
+</div>
+
+
+<div class="form-group">
+	<label for="myaccount_is_active" class="control-label col-lg-3">Remove picture</label>
+	<div class="col-lg-9">
+		<label class="checkbox">
+			<input type="checkbox" name="attributes[{{attribute.block_attribute_ref}}][remove]" value="1">
+		</label>
+	</div>
+</div>
+
+
+
+
+
+<script>
+    $(document).ready(function(){
+
+        $("a.triggerMediaPicker").click(function(e){
+            e.preventDefault();
+        });
+
+    });
+</script>

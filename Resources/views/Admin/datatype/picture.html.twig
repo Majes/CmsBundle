@@ -1,0 +1,1 @@
+{% if attribute.value['media_id'] is defined %}<span class="picture" style="display: block; margin: 0 10px 10px 0; float: left"><img src="{{ path('_media_load', {'id': attribute.value['media_id'], 'width': '200'}) }}" title="{{attribute.value['title']}}" /><legend>{{attribute.value['author']}}</legend></span>{% endif %}
