@@ -1,2 +1,12 @@
 imports:
     - { resource: @MajesCmsBundle/Resources/config/services.yml }
+
+
+cmf_routing:
+    dynamic:
+        enabled: true
+        route_provider_service_id: majescms.routing.loader
+    chain:
+        routers_by_id:
+            cmf_routing.dynamic_router: 100
+            router.default: 200
