@@ -1,0 +1,2 @@
+imports:
+    - { resource: @MajesCmsBundle/Resources/config/services.yml }
