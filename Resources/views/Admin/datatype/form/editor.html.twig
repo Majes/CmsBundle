@@ -2,7 +2,7 @@
     <label class="control-label col-lg-3">{{attribute.title}}</label>
     <div class="row">
     <div class="col-lg-12" style="clear: both">
-        <textarea class="form-control" rows="3" name="attributes[{{attribute.block_attribute_ref}}][value]" id="{{attribute.block_attribute_ref}}">{% if attribute.value %}{{attribute.value.value}}{% endif %}</textarea>
+        <textarea class="form-control" rows="3" name="attributes[{{attribute.block_attribute_ref}}][value]" id="{{attribute.block_attribute_ref}}" style="height: 300px;">{% if attribute.value %}{{attribute.value.value}}{% endif %}</textarea>
     </div>
     </div>
 </div>
@@ -18,10 +18,10 @@ tinymce.init({
     relative_urls: false,
     toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
 
-   	image_advtab: true ,
-   	
-   	external_filemanager_path:"{{ path('_media_picker', {'context':'tinymce'}) }}",
-   	filemanager_title:"Media picker" ,
-   	external_plugins: { "mediapicker" : "{{ asset('bundles/majesmedia/plugins/mediapicker/plugin.js') }}"}
+    image_advtab: true ,
+    
+    external_filemanager_path:"{{ path('_media_picker', {'context':'tinymce'}) }}",
+    filemanager_title:"Media picker" ,
+    external_plugins: { "mediapicker" : "{{ asset('bundles/majesmedia/plugins/mediapicker/plugin.js') }}"}
  }); 
 </script>
