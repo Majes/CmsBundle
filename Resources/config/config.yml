@@ -1,7 +1,3 @@
-imports:
-    - { resource: @MajesCmsBundle/Resources/config/services.yml }
-
-
 cmf_routing:
     dynamic:
         enabled: true
