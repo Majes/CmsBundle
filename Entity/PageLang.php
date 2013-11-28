@@ -87,6 +87,11 @@ class PageLang{
     private $tags;
 
     /**
+     * @ORM\Column(name="search_description", type="string")
+     */
+    private $searchDescription;
+
+    /**
      * search index purpose
      */
     private $content;
@@ -232,6 +237,15 @@ class PageLang{
     /**
      * @inheritDoc
      */
+    public function setSearchDescription($searchDescription)
+    {
+        $this->searchDescription = $searchDescription;
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getId()
     {
         return $this->id;
@@ -347,6 +361,14 @@ class PageLang{
         return $this->tags;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getSearchDescription()
+    {
+        return $this->searchDescription;
+    }
+
     public function isIndexable(){
 
         if($this->page->getStatus() == 'deleted')
@@ -357,9 +379,9 @@ class PageLang{
     
     public function entityRender(){
 
-        return array('title' => $this->title, 'description' => $this->metaDescription, 'url' => array('route' => '_cms_content', 'params' => array('id' => $this->page->getId(), 'page_parent_id' => is_null($this->page->getParent())? 0 : $this->page->getParent()->getId(), 'menu_id' => $this->page->getMenu()->getId(), 'lang' => $this->locale)));
+        return array('title' => '['.$this->locale.'] '.$this->title, 'description' => $this->metaDescription, 'url' => array('route' => '_cms_content', 'params' => array('id' => $this->page->getId(), 'page_parent_id' => is_null($this->page->getParent())? 0 : $this->page->getParent()->getId(), 'menu_id' => $this->page->getMenu()->getId(), 'lang' => $this->locale)));
 
     }
 
-    public function entityRenderFront(){ return array('title' => $this->title, 'description' => $this->metaDescription, 'url' => array('route' => 'majes_page_'.$this->page->getId().'_'.$this->locale, 'params' => array()));}
+    public function entityRenderFront(){ return $this->entityRender();}
 }

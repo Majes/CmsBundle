@@ -12,42 +12,48 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class PageLangType extends AbstractType
 {
-	public function __construct(){}
+    public function __construct(){}
 
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-    	$resolver->setDefaults(array(
-    	    'data_class' => 'Majes\CmsBundle\Entity\PageLang',
-    	    'csrf_protection' => false,
-    	));
-	}
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'Majes\CmsBundle\Entity\PageLang',
+            'csrf_protection' => false,
+        ));
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
 
         $builder->add('title', 'text', array(
-        	'required' => true,
-        	'constraints' => array(
-       		    new NotBlank()
-       		)));
+            'required' => true,
+            'constraints' => array(
+                new NotBlank()
+            )));
 
         $builder->add('url', 'text', array(
-        	'required' => true,
-        	'label' => 'Url of your page',
-        	'constraints' => array(
-       		    new NotBlank()
-       		)));
+            'required' => true,
+            'label' => 'Url of your page',
+            'constraints' => array(
+                new NotBlank()
+            )));
         
+
+        $builder->add('tags', 'text', array(
+            'required' => false));
+
+        $builder->add('search_description', 'textarea', array(
+            'required' => false));
 
         $builder->add('meta_title', 'text', array(
             'required' => false));
 
         $builder->add('meta_description', 'textarea', array(
-        	'required' => false));
+            'required' => false));
 
         $builder->add('meta_keywords', 'text', array(
-        	'required' => false));
+            'required' => false));
        
     }
 
