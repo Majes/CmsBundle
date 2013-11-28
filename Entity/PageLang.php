@@ -76,6 +76,16 @@ class PageLang{
      */
     private $updateDate;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $tags;
+
+    /**
+     * search index purpose
+     */
+    private $content
+
 
     /**
      * @inheritDoc
@@ -83,6 +93,7 @@ class PageLang{
     public function __construct(){
         $this->createDate = new \DateTime();
         $this->url_root = '';
+        $this->tags = 'Page';
     }
 
     /**
@@ -189,6 +200,25 @@ class PageLang{
     /**
      * @inheritDoc
      */
+    public function setContent($content)
+    {
+        $this->content = $content;
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
+        return $this;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
     public function getUser()
     {
         return $this->user;
@@ -272,6 +302,22 @@ class PageLang{
     public function getUpdateDate()
     {
         return $this->updateDate;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
     
 
