@@ -43,7 +43,7 @@ class RouteLoader implements RouteProviderInterface{
                 $collection->add('majes_cms_'.$route->getPage()->getId().'_'.$route->getLocale(), 
                     new SymfonyRoute(
                             $route->getUrl(), 
-                            array('_controller' => 'MajesCmsBundle:Index:load'), 
+                            array('_controller' => 'MajesCmsBundle:Index:load', '_locale' => $route->getLocale()), 
                             array('domain' => $route->getHost()), 
                             array('page_id' => $route->getPage()->getId(), 'lang' => $route->getLocale())
                         )

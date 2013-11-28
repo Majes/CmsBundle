@@ -357,9 +357,9 @@ class PageLang{
     
     public function entityRender(){
 
-        return array('title' => '['.$this->locale.'] '.$this->title, 'description' => $this->metaDescription, 'url' => array('route' => '_cms_content', 'params' => array('id' => $this->page->getId(), 'page_parent_id' => is_null($this->page->getParent())? 0 : $this->page->getParent()->getId(), 'menu_id' => $this->page->getMenu()->getId(), 'lang' => $this->locale)));
+        return array('title' => $this->title, 'description' => $this->metaDescription, 'url' => array('route' => '_cms_content', 'params' => array('id' => $this->page->getId(), 'page_parent_id' => is_null($this->page->getParent())? 0 : $this->page->getParent()->getId(), 'menu_id' => $this->page->getMenu()->getId(), 'lang' => $this->locale)));
 
     }
 
-    public function entityRenderFront(){ return $this->entityRender();}
+    public function entityRenderFront(){ return array('title' => $this->title, 'description' => $this->metaDescription, 'url' => array('route' => 'majes_page_'.$this->page->getId().'_'.$this->locale, 'params' => array()));}
 }
