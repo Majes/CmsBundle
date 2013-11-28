@@ -84,7 +84,7 @@ class PageLang{
     /**
      * search index purpose
      */
-    private $content
+    private $content;
 
 
     /**
