@@ -34,10 +34,10 @@ use Majes\CoreBundle\Utils\Logger;
 
 class AdminController extends Controller implements SystemController
 {
-	/**
-	 * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
-	 *
-	 */
+    /**
+     * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
+     *
+     */
     public function contentAction($id, $lang, $menu_id, $page_parent_id)
     {   
 
@@ -926,10 +926,10 @@ class AdminController extends Controller implements SystemController
             $pageTemplateBlock = $em->getRepository('MajesCmsBundle:PageTemplateBlock')
                 ->findOneById($page_template_block_id);
 
-
-
             $page = $em->getRepository('MajesCmsBundle:Page')
                 ->findOneById($page_id);
+
+
 
             //Check permissions
             if(!Helper::hasAdminRole($page, $this->container->get('security.context')))
@@ -940,6 +940,10 @@ class AdminController extends Controller implements SystemController
 
             $block = $em->getRepository('MajesCmsBundle:Page')
                 ->getBlock($page, $templateBlock, $lang, $id);
+
+            $pageLang = $em->getRepository('MajesCmsBundle:PageLang')
+                ->findOneBy(array('page' => $page, 'locale' => $lang));
+
 
             //If content does not exists we push it to published directly
             if(is_null($pageTemplateBlock)){
@@ -997,7 +1001,12 @@ class AdminController extends Controller implements SystemController
 
                 $em->persist($draft);
                 $em->flush();
-            }           
+            }  
+
+            //Hack to index content
+            $pageLang->setUpdateDate(new \DateTime());
+            $em->persist($pageLang);
+            $em->flush();        
 
             if($wysiwyg)
                 return $this->redirect($this->get('router')->generate('majes_cms_'.$page_id.'_'.$lang));

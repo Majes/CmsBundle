@@ -10,21 +10,26 @@ use Majes\CoreBundle\Annotation\DataTable;
  * Majes\CmsBundle\Entity\PageLang
  *
  * @ORM\Table(name="cms_page_lang")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Majes\CmsBundle\Entity\PageLangRepository")
  */
 class PageLang{
 
 
     /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Page", inversedBy="langs", cascade={"persist"})
      * @ORM\JoinColumn(name="page_id", referencedColumnName="id")
-     * @ORM\Id
      */
     private $page;
 
     /**
      * @ORM\Column( type="string", length=5)
-     * @ORM\Id
      */
     private $locale;
 
@@ -94,6 +99,15 @@ class PageLang{
         $this->createDate = new \DateTime();
         $this->url_root = '';
         $this->tags = 'Page';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
     }
 
     /**
@@ -215,6 +229,13 @@ class PageLang{
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * @inheritDoc
@@ -309,7 +330,13 @@ class PageLang{
      */
     public function getContent()
     {
-        return $this->content;
+
+        $blocks = $this->page->getPageTemplateBlocks();
+        $content = array();
+        foreach($blocks as $block){
+            $content[] = json_decode($block->getContent(), true);
+        }
+        return json_encode($content);
     }
 
     /**
@@ -319,6 +346,20 @@ class PageLang{
     {
         return $this->tags;
     }
-    
 
+    public function isIndexable(){
+
+        if($this->page->getStatus() == 'deleted')
+            return false;
+        
+        return true;
+    }
+    
+    public function entityRender(){
+
+        return array('title' => '['.$this->locale.'] '.$this->title, 'description' => $this->metaDescription, 'url' => array('route' => '_cms_content', 'params' => array('id' => $this->page->getId(), 'page_parent_id' => is_null($this->page->getParent())? 0 : $this->page->getParent()->getId(), 'menu_id' => $this->page->getMenu()->getId(), 'lang' => $this->locale)));
+
+    }
+
+    public function entityRenderFront(){ return $this->entityRender();}
 }
