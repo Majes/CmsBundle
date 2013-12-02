@@ -10,3 +10,9 @@ services:
         arguments: ["@doctrine.orm.entity_manager"]
         tags:
             - { name: cmf_routing.dynamic_router }
+
+    majescms.action_listener:
+        class: Majes\CmsBundle\EventListener\ControllerListener
+        arguments: ["@doctrine.orm.entity_manager", "@majes.notification"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
