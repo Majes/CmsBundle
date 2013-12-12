@@ -2,24 +2,24 @@
   	<div class="col-lg-12">
     	<div class="widget-container fluid-height clearfix">
     		<div class="heading">
-          <a class="btn btn-default" href="{{path('majes_cms_' ~ page.id ~ '_' ~ lang)}}" target="_blank"><i class="icon-picture"></i> Wysiwyg mode</a>
+          <a class="btn btn-default" href="{{path('majes_cms_' ~ page.id ~ '_' ~ lang)}}" target="_blank"><i class="icon-picture"></i> {% trans %}Wysiwyg mode{% endtrans %}</a>
     			<div class="btn-group">
 
            			<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            			<i class="icon-zoom-in"></i> Preview<span class="caret"></span>
+            			<i class="icon-zoom-in"></i> {% trans %}Preview{% endtrans %}<span class="caret"></span>
             		</button>
             		<ul class="dropdown-menu">
       			    	<li>
-      			    	  <a href="{{path('majes_cms_' ~ page.id ~ '_' ~ lang)}}?draft=1" target="_blank"><i class="icon-edit"></i> Draft</a>
+      			    	  <a href="{{path('majes_cms_' ~ page.id ~ '_' ~ lang)}}?draft=1" target="_blank"><i class="icon-edit"></i> {% trans %}Draft{% endtrans %}</a>
       			    	</li>
       			    	<li>
-      			    	  <a href="{{path('majes_cms_' ~ page.id ~ '_' ~ lang)}}" target="_blank"><i class="icon-save"></i> Published</a>
+      			    	  <a href="{{path('majes_cms_' ~ page.id ~ '_' ~ lang)}}" target="_blank"><i class="icon-save"></i> {% trans %}Published{% endtrans %}</a>
       			    	</li>
       			  	</ul>
             	</div>
     			<div class="btn-group">
       			  <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-      			  	<i class="icon-thumbs-up"></i> Share<span class="caret"></span></button>
+      			  	<i class="icon-thumbs-up"></i> {% trans %}Share{% endtrans %}<span class="caret"></span></button>
       			  	<ul class="dropdown-menu">
       			    	<li>
       			    	  <a href="#"><i class="icon-facebook"></i> Facebook</a>
@@ -35,7 +35,7 @@
 				
 				<div class="btn-group pull-right">
       			  <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-      			  	<img src="{{ asset('bundles/majescore/images/flag-' ~ lang ~ '.png') }}" style="margin: 0 5px 3px"/> Languages<span class="caret"></span></button>
+      			  	<img src="{{ asset('bundles/majescore/images/flag-' ~ lang ~ '.png') }}" style="margin: 0 5px 3px"/> {% trans %}Languages{% endtrans %}<span class="caret"></span></button>
       			  	<ul class="dropdown-menu" style="min-width: 50px">
                   {% if page.parent is null %}{% set page_parent_id = 0 %}{% else %}{% set page_parent_id = page.parent.id %}{% endif %}
                   {% for lang in app.session.get('langs') %}
@@ -47,7 +47,7 @@
       			  	</ul>
       			</div>
 				
-        {% if page_has_draft %}<a class="btn btn-success pull-right" href="{{ path('_cms_publish', {'id' : page_id, 'lang' : lang}) }}" onclick="return CoreAdmin.Common.confirmDelete('{% trans %}Are you sure you want to publish this page?{% endtrans %}')"><i class="icon-zoom-in"></i> Publish</a>{% endif %}
+        {% if page_has_draft %}<a class="btn btn-success pull-right" href="{{ path('_cms_publish', {'id' : page_id, 'lang' : lang}) }}" onclick="return CoreAdmin.Common.confirmDelete('{% trans %}Are you sure you want to publish this page?{% endtrans %}')"><i class="icon-zoom-in"></i> {% trans %}Publish{% endtrans %}</a>{% endif %}
     			
 			</div>
     	</div>
@@ -59,16 +59,16 @@
       <div class="modal-content">
           <div class="modal-header">
             <button aria-hidden="true" class="close" data-dismiss="modal" type="button">×</button>
-            <h4 class="modal-title">Translation does not yet exist</h4>
+            <h4 class="modal-title">{% trans %}Translation does not yet exist{% endtrans %}</h4>
           </div>
 
           <div class="modal-body">
-            <p>Do you want to copy the default language "{{default_lang}}" or create a translation from scratch?</p>
+            <p>{% trans %}Do you want to copy the default language or create a translation from scratch?{% endtrans %}</p>
           </div>
 
           <div class="modal-footer">
-            <a href="#" class="btn btn-default-outline copy">Copy</a>
-            <a href="#" class="btn btn-default-outline scratch">From scratch</a>
+            <a href="#" class="btn btn-default-outline copy">{% trans %}Copy{% endtrans %}</a>
+            <a href="#" class="btn btn-default-outline scratch">{% trans %}From scratch{% endtrans %}</a>
           </div>
 
       </div>

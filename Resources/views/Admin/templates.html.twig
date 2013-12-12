@@ -22,13 +22,13 @@
         	<div class="widget-container fluid-height clearfix">
             	<div class="heading">
               		<i class="icon-archive"></i>{{ pageSubTitle }}
-              		<a href="{{ path('_cms_template_edit') }}" class="btn btn-success-outline pull-right"><i class="icon-plus"></i>Add new</a>
+              		<a href="{{ path('_cms_template_edit') }}" class="btn btn-success-outline pull-right"><i class="icon-plus"></i>{% trans %}Add new{% endtrans %}</a>
             	</div>
             	<div class="widget-content padded clearfix">
               		<table class="table table-bordered table-striped">
                 		<thead>
                   			<th class="check-header hidden-xs"></th>
-                        	<th class="">Title</th>
+                        	<th class="">{% trans %}Title{% endtrans %}</th>
                   			<th></th>
                 		</thead>
                 		<tbody>
@@ -36,7 +36,7 @@
                     			<td class="check hidden-xs">
                       				<input name="optionsRadios1" type="checkbox" value="option1">
                     			</td>
-                    			<td>News</td>
+                    			<td>{% trans %}News{% endtrans %}</td>
                     			<td class="actions">
                     			  	<div class="action-buttons">
                     			  	 	<a href="#" class="table-actions"><i class="icon-pencil"></i></a>

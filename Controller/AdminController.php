@@ -170,10 +170,10 @@ class AdminController extends Controller implements SystemController
 
         $edit = !is_null($id) ? 1 : 0;
 
-        $pageSubTitle = is_null($page) ? 'Add a new page' : 'Edit page ' . (!is_null($page->getLang()) ? $page->getLang()->getTitle() : 'Language not yet available');
+        $pageSubTitle = is_null($page) ? $this->_translator->trans('Add a new page') : $this->_translator->trans('Edit page'). ' ' . (!is_null($page->getLang()) ? $page->getLang()->getTitle() : 'Language not yet available');
 
         return $this->render('MajesCmsBundle:Admin:content.html.twig', array(
-            'pageTitle' => 'Content management',
+            'pageTitle' => $this->_translator->trans('Content management'),
             'pageSubTitle' => $pageSubTitle,
             'form' => $form->createView(),
             'page' => $page,
@@ -432,8 +432,8 @@ class AdminController extends Controller implements SystemController
         return $this->render('MajesCoreBundle:common:datatable.html.twig', array(
             'datas' => $blocks,
             'object' => new Block(),
-            'pageTitle' => 'Content management',
-            'pageSubTitle' => 'List of all available blocks?',
+            'pageTitle' => $this->_translator->trans('Content management'),
+            'pageSubTitle' => $this->_translator->trans('List of all available blocks?'),
             'urls' => array(
                 'add' => '_cms_block_edit',
                 'edit' => '_cms_block_edit',
@@ -556,12 +556,12 @@ class AdminController extends Controller implements SystemController
         $attributes = $em->getRepository('MajesCmsBundle:Attribute')
             ->findAll();
 
-        $pageSubTitle = empty($block) ? 'Add a new block' : 'Edit block ' . $block->getTitle();
+        $pageSubTitle = empty($block) ? $this->_translator->trans('Add a new block') : $this->_translator->trans('Edit block'). ' ' . $block->getTitle();
         
         //var_dump($block->getAttributes()); exit;
 
         return $this->render('MajesCmsBundle:Admin:block-edit.html.twig', array(
-            'pageTitle' => 'Content management',
+            'pageTitle' => $this->_translator->trans('Content management'),
             'pageSubTitle' => $pageSubTitle,
             'block' => $block,
             'form' => $form->createView(),
@@ -582,8 +582,8 @@ class AdminController extends Controller implements SystemController
         return $this->render('MajesCoreBundle:common:datatable.html.twig', array(
             'datas' => $templates,
             'object' => new Template(),
-            'pageTitle' => 'Content management',
-            'pageSubTitle' => 'List of all available templates?',
+            'pageTitle' => $this->_translator->trans('Content management'),
+            'pageSubTitle' => $this->_translator->trans('List of all available templates?'),
             'urls' => array(
                 'add' => '_cms_template_edit',
                 'edit' => '_cms_template_edit',
@@ -701,12 +701,12 @@ class AdminController extends Controller implements SystemController
         $blocks = $em->getRepository('MajesCmsBundle:Block')
             ->findAll();
 
-        $pageSubTitle = empty($block) ? 'Add a new template' : 'Edit template ' . $block->getTitle();
+        $pageSubTitle = empty($block) ? $this->_translator->trans('Add a new template') : $this->_translator->trans('Edit template'). ' ' . $block->getTitle();
         
         //var_dump($block->getAttributes()); exit;
 
         return $this->render('MajesCmsBundle:Admin:template-edit.html.twig', array(
-            'pageTitle' => 'Content management',
+            'pageTitle' => $this->_translator->trans('Content management'),
             'pageSubTitle' => $pageSubTitle,
             'template' => $template,
             'form' => $form->createView(),
@@ -755,9 +755,9 @@ class AdminController extends Controller implements SystemController
                 $em->persist($template_block);
                 $em->flush();
 
-                echo json_encode(array('error' => false, 'message' => 'The block has been updated successfully'));
+                echo json_encode(array('error' => false, 'message' => $this->_translator->trans('The block has been updated successfully')));
             }else{
-                echo json_encode(array('error' => true, 'message' => 'An error has occured during saving'));
+                echo json_encode(array('error' => true, 'message' => $this->_translator->trans('An error has occured during saving')));
             }
         }
 
@@ -1031,8 +1031,8 @@ class AdminController extends Controller implements SystemController
         return $this->render('MajesCoreBundle:common:datatable.html.twig', array(
             'datas' => $roles,
             'object' => new Role(),
-            'pageTitle' => 'Roles',
-            'pageSubTitle' => 'List off all roles currently available',
+            'pageTitle' => $this->_translator->trans('Roles'),
+            'pageSubTitle' => $this->_translator->trans('List off all roles currently available'),
             'urls' => array(
                 'add' => '_cms_role_edit',
                 'edit' => '_cms_role_edit',
@@ -1077,10 +1077,10 @@ class AdminController extends Controller implements SystemController
             }
         }
 
-        $pageSubTitle = empty($role) ? 'Add a new role' : 'Edit role ' . $role->getRole();
+        $pageSubTitle = empty($role) ? $this->_translator->trans('Add a new role') : $this->_translator->trans('Edit role'). ' ' . $role->getRole();
         
         return $this->render('MajesCoreBundle:Index:role-edit.html.twig', array(
-            'pageTitle' => 'Roles',
+            'pageTitle' => $this->_translator->trans('Roles'),
             'pageSubTitle' => $pageSubTitle,
             'form' => $form->createView()));
     }

@@ -1,12 +1,12 @@
 <div class="form-group">
-    <label class="control-label col-lg-3">Picture title / alt</label>
+    <label class="control-label col-lg-3">{% trans %}Picture title / alt{% endtrans %}</label>
     <div class="col-lg-9">
         <input class="form-control" placeholder="" type="text" name="attributes[{{attribute.block_attribute_ref}}][title]" value="{% if attribute.value %}{{attribute.value.title}}{% endif %}"/>
     </div>
 </div>
 
 <div class="form-group">
-    <label class="control-label col-lg-3">Picture dimension</label>
+    <label class="control-label col-lg-3">{% trans %}Picture dimension{% endtrans %}</label>
     <div class="col-lg-9">
 
         <div class="col-lg-4" style="padding-left: 0; padding-right: 20px; margin-bottom: 0"><input class="form-control" placeholder="Width in pixel" type="text" name="attributes[{{attribute.block_attribute_ref}}][width]" value="{% if attribute.value.width is defined %}{{attribute.value.width}}{% endif %}"/></div>
@@ -15,14 +15,14 @@
 </div>
 
 <div class="form-group">
-    <label class="control-label col-lg-3">Picture credit / author</label>
+    <label class="control-label col-lg-3">{% trans %}Picture credit / author{% endtrans %}</label>
     <div class="col-lg-9">
         <input class="form-control" placeholder="" type="text" name="attributes[{{attribute.block_attribute_ref}}][author]" value="{% if attribute.value %}{{attribute.value.author}}{% endif %}"/>
     </div>
 </div>
 
 <div class="form-group">
-    <label for="myaccount_is_active" class="control-label col-lg-3">Preview</label>
+    <label for="myaccount_is_active" class="control-label col-lg-3">{% trans %}Preview{% endtrans %}</label>
     <div class="col-lg-9">
 
         {% if attribute.value %}
@@ -41,10 +41,10 @@
             <div class="heading tabs">
                 <ul class="nav nav-tabs pull-right" data-tabs="tabs" id="tabs{{attribute.block_attribute_ref}}">
                     <li class="active">
-                        <a data-toggle="tab" href="#tab1{{attribute.block_attribute_ref}}"><i class="icon-comments"></i><span>Upload new file</span></a>
+                        <a data-toggle="tab" href="#tab1{{attribute.block_attribute_ref}}"><i class="icon-comments"></i><span>{% trans %}Upload new file{% endtrans %}</span></a>
                     </li>
                     <li>
-                        <a data-toggle="tab" href="#tab2{{attribute.block_attribute_ref}}" class="triggerMediaPicker"><i class="icon-user"></i><span>Existing media</span></a>
+                        <a data-toggle="tab" href="#tab2{{attribute.block_attribute_ref}}" class="triggerMediaPicker"><i class="icon-user"></i><span>{% trans %}Existing media{% endtrans %}</span></a>
                     </li>
                 </ul>
             </div>
@@ -65,7 +65,7 @@
 
 
 <div class="form-group">
-	<label for="myaccount_is_active" class="control-label col-lg-3">Remove picture</label>
+	<label for="myaccount_is_active" class="control-label col-lg-3">{% trans %}Remove picture{% endtrans %}</label>
 	<div class="col-lg-9">
 		<label class="checkbox">
 			<input type="checkbox" name="attributes[{{attribute.block_attribute_ref}}][remove]" value="1">

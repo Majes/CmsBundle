@@ -14,21 +14,21 @@
 </div>
 
 <div class="form-group">
-  <label for="myaccount_media" class="control-label col-lg-3">Label</label>
+  <label for="myaccount_media" class="control-label col-lg-3">{% trans %}Label{% endtrans %}</label>
   <div class="col-lg-9">
     <input class="form-control" placeholder="Label" type="text" name="attributes[{{attribute.block_attribute_ref}}][label]" value="{% if attribute.value.label is defined %}{{attribute.value.label}}{% endif %}"/>
   </div>
 </div>
 
 <div class="form-group">
-  <label for="myaccount_media" class="control-label col-lg-3">Title tag</label>
+  <label for="myaccount_media" class="control-label col-lg-3">{% trans %}Title tag{% endtrans %}</label>
   <div class="col-lg-9">
     <input class="form-control" placeholder="Title" type="text" name="attributes[{{attribute.block_attribute_ref}}][title]" value="{% if attribute.value.title is defined %}{{attribute.value.title}}{% endif %}"/>
   </div>
 </div>
 
 <div class="form-group">
-	<label class="control-label col-lg-3">Target</label>
+	<label class="control-label col-lg-3">{% trans %}Target{% endtrans %}</label>
   	<div class="col-lg-9">
     	<select class="form-control" name="attributes[{{attribute.block_attribute_ref}}][target]">
     		<option value="_self"{% if attribute.value and attribute.value.target == '_self' %} selected="selected"{% endif %}>Current window</option>

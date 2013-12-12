@@ -13,7 +13,7 @@
             ) }}
 
    <div class="page-title">
-   	<h1>{% trans %}%pageTitle%{% endtrans %}</h1>
+   	<h1>{{pageTitle}}</h1>
    </div>
 
 	<div class="row" id="cmsEditingDD">
@@ -45,7 +45,7 @@
             	{{ form_start(form, { 'attr': {'class': 'form-horizontal', 'id': 'templateForm'} }) }}
 
 					<div class="heading">
-        	    		<i class="icon-save"></i> <em>{% trans %}%pageSubTitle%{% endtrans %}</em>
+        	    		<i class="icon-save"></i> <em>{{pageSubTitle}}</em>
         	    		<input type="submit" class="btn btn-success pull-right" value="Save"/>
         	   	</div>
 					            
@@ -62,7 +62,7 @@
               		<div class="row">
 						   <div class="widget-container fluid-height">
       					  	<div class="heading">
-      				 			<i class="icon-picture"></i> Drag attributes from left panel and drop them here
+      				 			<i class="icon-picture"></i> {% trans %}Drag attributes from left panel and drop them here{% endtrans %}
       				 	  	</div>
       				 		<div class="widget-content padded" id="cmsTemplateBlocks">
       				 		   <ul class="sortable no-style">

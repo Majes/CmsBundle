@@ -13,7 +13,7 @@
             ) }}
 
     <div class="page-title">
-      <h1>{% trans %}%pageTitle%{% endtrans %}</h1>
+      <h1>{{pageTitle}}</h1>
     </div>
 
 	<div class="row">
@@ -34,7 +34,7 @@
 				
 				{% if edit == 1 %}
 				<div class="heading tabs">
-        	    	<i class="icon-save"></i> <em>{% trans %}%pageSubTitle%{% endtrans %}</em> 
+        	    	<i class="icon-save"></i> <em>{{pageSubTitle}}</em> 
         	      	<ul class="nav nav-tabs pull-right" data-tabs="tabs" id="tabs">
         	        	{% if page is not null %}<li class="active">
 							<a data-toggle="tab" href="#cmsEditing">
@@ -130,7 +130,7 @@
 					  	  	  	{% endif %}
 					  	  	  		<div style="clear: both"></div>
 					  	  	  	</div>
-                                 <span class="updated pull-right"><small>Updated on {{ block.update_date|date("d/m/Y") }} at {{ block.update_date|date("H:i:s") }}</small></span>
+                                 <span class="updated pull-right"><small>{% trans %}Updated on{% endtrans %} {{ block.update_date|date("d/m/Y") }} at {{ block.update_date|date("H:i:s") }}</small></span>
 					  	  	</div>
 
 							{% endfor %}
