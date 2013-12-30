@@ -6,13 +6,13 @@
         
         {% spaceless %}
         <meta name="og:type" content="{% block meta_type %}Website{% endblock %}" />
-    	<meta name="og:image" content="{% block meta_image %}{% endblock %}"	/>
-    	<meta name="og:title" content="{% block meta_title %}Maje'Steel{% endblock %}" />
-    	<meta name="og:description" content="{% block meta_description %}{% endblock %}" />
-    	{% endspaceless %}
+        <meta name="og:image" content="{% block meta_image %}{% endblock %}"    />
+        <meta name="og:title" content="{% block meta_title %}Maje'Steel{% endblock %}" />
+        <meta name="og:description" content="{% block meta_description %}{% endblock %}" />
+        {% endspaceless %}
     
-    	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
-        <script src="{{ asset('bundles/majescms/javascripts/jquery.js') }}"></script>		
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+        <script src="{{ asset('bundles/majescms/javascripts/jquery.js') }}"></script>       
         <script src="{{ asset('bundles/majescms/javascripts/bootstrap.js') }}"></script>
 
         {% block teel_js %}
@@ -23,7 +23,7 @@
           
 
         <link href="{{ asset('bundles/majescms/stylesheets/bootstrap.css') }}" media="all" rel="stylesheet" type="text/css" />
-		<link href="{{ asset('bundles/majescms/stylesheets/styles.css') }}" media="all" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('bundles/majescms/stylesheets/styles.css') }}" media="all" rel="stylesheet" type="text/css" />
 
         {% block teel_css %}
         <link href="{{ asset('bundles/majescms/stylesheets/majesteel.bootstrap.min.css') }}" media="all" rel="stylesheet" type="text/css" />
@@ -42,9 +42,22 @@
         {% else %}{% set menu = getMenu(host.id, lang, 'main', 2, page.id, 1) %}
         {% endif %}
 
-    	{% block teel_header %}
+        {% block teel_header %}
+            {% set ga_tracking = app.session.get('google.analytics') %}
+            {% if ga_tracking is not empty %}
+            <script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            
+              ga('create', '{{ ga_tracking }}', '{{ app.request.host }}');
+              ga('send', 'pageview');
+            
+            </script>
+            {% endif %}
             {% block main_menu %}{% include ['MajesCmsBundle:Index:parts/menu.html.twig'] %}{% endblock %}
-    	{% endblock %}
+        {% endblock %}
 
 
         {% block content %}
