@@ -7,16 +7,16 @@ use Majes\CmsBundle\Entity\Route;
 class PageRepository extends EntityRepository
 {
 
-	private $_menu;
+    private $_menu;
     private $_pages;
 
-	/**
-	 * GET all pages for a specific host and then generate menu
-	 */
-	public function getMenu($host_id, $lang, $menu = 'main', $level = null, $current_page_id = null, $is_inmenu = null, $status = '', $page_parent_id = null) {
+    /**
+     * GET all pages for a specific host and then generate menu
+     */
+    public function getMenu($host_id, $lang, $menu = 'main', $level = null, $current_page_id = null, $is_inmenu = null, $status = '', $page_parent_id = null) {
 
         $query = $this->createQueryBuilder('p')
-        	->innerJoin('p.langs', 'pl')
+            ->innerJoin('p.langs', 'pl')
             ->innerJoin('p.menu', 'm')
             ->where('p.status = :status AND p.host = :host_id AND pl.locale = :lang AND m.ref = :menu');
 
@@ -52,21 +52,21 @@ class PageRepository extends EntityRepository
             
             if(!is_null($page_parent_id)) $result->setParent(null);
 
-			$array[] = $result;
+            $array[] = $result;
             $i++;
         }
 
         return $this->cleanNavArray($this->generateNav($array, $lang, null, $level, $current_page_id));
     }
 
-	private function generateNav($pages, $lang, $idparent = null, $maxlevel = null, $current_page_id = null) {
+    private function generateNav($pages, $lang, $idparent = null, $maxlevel = null, $current_page_id = null) {
 
         foreach ($pages as $key => $page) {
-        	$pageLangs = $page->setLang($lang);
-        	$pageLang = $page->getLang();
-        	$parent_id = !is_null($page->getParent()) ? $page->getParent()->getId() : null;
+            $pageLangs = $page->setLang($lang);
+            $pageLang = $page->getLang();
+            $parent_id = !is_null($page->getParent()) ? $page->getParent()->getId() : null;
 
-        	$page_id = (int) ($page->getId());
+            $page_id = (int) ($page->getId());
             if ($parent_id == $idparent) {
 
                 //$this->_menu[$page_id]['row'] = $page;
@@ -160,25 +160,25 @@ class PageRepository extends EntityRepository
      */
     public function getBlocks($page, $lang){
 
-    	$pageTemplateBlockRepo = $this->getEntityManager()->getRepository('MajesCmsBundle:PageTemplateBlock');
+        $pageTemplateBlockRepo = $this->getEntityManager()->getRepository('MajesCmsBundle:PageTemplateBlock');
 
-    	$template = $page->getTemplate();
-    	$template_blocks = $template->getTemplateBlocks();
+        $template = $page->getTemplate();
+        $template_blocks = $template->getTemplateBlocks();
 
-    	$response = array();
+        $response = array();
 
         //Foreach block of a template
-    	foreach ($template_blocks as $template_block) {
-    		
+        foreach ($template_blocks as $template_block) {
+            
             //Check if there is content for this page on this specific block
-    		$pageTemplateBlock = $pageTemplateBlockRepo->findBy(
-    			array('templateBlock' => $template_block, 'page' => $page, 'locale' => $lang));
+            $pageTemplateBlock = $pageTemplateBlockRepo->findBy(
+                array('templateBlock' => $template_block, 'page' => $page, 'locale' => $lang));
 
 
 
-    		$content = false; $page_template_block_id = null; $has_draft = false;
+            $content = false; $page_template_block_id = null; $has_draft = false;
             $updateDate = new \DateTime();
-    		if(isset($pageTemplateBlock[0])){
+            if(isset($pageTemplateBlock[0])){
 
                 $draft = $pageTemplateBlock[0]->getDraft();
                 $has_draft = is_null($draft) ? false : true;
@@ -187,39 +187,39 @@ class PageRepository extends EntityRepository
                     $content = $draft->getContent();
                     $updateDate = $draft->getUpdateDate();
                 }
-    			else{
+                else{
                     $content = $pageTemplateBlock[0]->getContent();
                     $updateDate = $pageTemplateBlock[0]->getUpdateDate();
                 }
 
-    			$content = json_decode($content, true);
+                $content = json_decode($content, true);
                 $page_template_block_id = $pageTemplateBlock[0]->getId();
-    		}
+            }
 
             //Get params of this block
-    		$block = $template_block->getBlock();
-    		
-    		$response[$template_block->getId()] = array(
-    			'block' => $block->getTitle(),
+            $block = $template_block->getBlock();
+            
+            $response[$template_block->getId()] = array(
+                'block' => $block->getTitle(),
                 'page' => $page->getId(),
                 'template_block' => $template_block->getId(),
                 'page_template_block' => $page_template_block_id,
-    			'is_repeatable' => $template_block->getIsRepeatable(),
-    			'is_mobile' => $template_block->getIsMobile(),
+                'is_repeatable' => $template_block->getIsRepeatable(),
+                'is_mobile' => $template_block->getIsMobile(),
                 'is_tablet' => $template_block->getIsTablet(),
                 'is_desktop' => $template_block->getIsDesktop(),
-    			'sort' => $template_block->getIsMobile(),
+                'sort' => $template_block->getIsMobile(),
                 'has_draft' => $has_draft,
                 'update_date' => $updateDate,
-    			'items' => array()
-    			);
+                'items' => array()
+                );
 
-    		$block_attributes = $block->getBlockAttributes();
+            $block_attributes = $block->getBlockAttributes();
             $is_repeatable = $template_block->getIsRepeatable();
-    	
+        
             //If there is a content, then populate the attribute array
-    		if($content){ 
-    			foreach($content['attributes'] as $key => $attributes){
+            if($content){ 
+                foreach($content['attributes'] as $key => $attributes){
 
                     //If block is repeatable, then get the real index, otherwise we only need index 0 (back front end purpose)
                     if($is_repeatable) $index = $key;
@@ -230,21 +230,21 @@ class PageRepository extends EntityRepository
                     $response[$template_block->getId()]['items'][$index]['id'] = $attributes['id'];
 
                     //Parse all attributes of a set
-    				foreach($block_attributes as $block_attribute){
-    					$attribute = $block_attribute->getAttribute();
-		                $title = $block_attribute->getTitle();
+                    foreach($block_attributes as $block_attribute){
+                        $attribute = $block_attribute->getAttribute();
+                        $title = $block_attribute->getTitle();
                         $title = empty($title) ? $attribute->getTitle() : $title;
-    					
-    					$response[$template_block->getId()]['items'][$index]['attributes'][] = array(
-    						'title' => $title,
-    						'ref' => $attribute->getRef(),
+                        
+                        $response[$template_block->getId()]['items'][$index]['attributes'][] = array(
+                            'title' => $title,
+                            'ref' => $attribute->getRef(),
                             'block_attribute_ref' => $block_attribute->getRef(),
                             'block_attribute_id' => $block_attribute->getId(),
-    						'value' => isset($content['attributes'][$attributes['id']]['content'][$block_attribute->getRef()]) ? $content['attributes'][$attributes['id']]['content'][$block_attribute->getRef()] : false
-    					);
-    				}
-    					
-    			}
+                            'value' => isset($content['attributes'][$attributes['id']]['content'][$block_attribute->getRef()]) ? $content['attributes'][$attributes['id']]['content'][$block_attribute->getRef()] : false
+                        );
+                    }
+                        
+                }
 
                 //If is repeatable, then we set an empty item
                 if($is_repeatable){
@@ -267,31 +267,31 @@ class PageRepository extends EntityRepository
                     }
                 }
 
-    		}else{
+            }else{
 
                 //If there is no content yet, then we set an empty one
                 $response[$template_block->getId()]['items'][0]['title'] = $is_repeatable ? 'New item' : '';
                 $response[$template_block->getId()]['items'][0]['id'] = '';
-    			if($is_repeatable) $response[$template_block->getId()]['items'][0]['new'] = true;
+                if($is_repeatable) $response[$template_block->getId()]['items'][0]['new'] = true;
                 foreach($block_attributes as $block_attribute){
-    				$attribute = $block_attribute->getAttribute();
-		    		$title = $block_attribute->getTitle();
+                    $attribute = $block_attribute->getAttribute();
+                    $title = $block_attribute->getTitle();
                     $title = empty($title) ? $attribute->getTitle() : $title;
-    				
+                    
                     $response[$template_block->getId()]['items'][0]['attributes'][] = array(
-    					'title' => $title,
-    					'ref' => $attribute->getRef(),
+                        'title' => $title,
+                        'ref' => $attribute->getRef(),
                         'block_attribute_ref' => $block_attribute->getRef(),
                         'block_attribute_id' => $block_attribute->getId(),
-    					'value' => false
-    				);
-    			}
-    			
-    		}
+                        'value' => false
+                    );
+                }
+                
+            }
 
 
-    	}
-    	return $response;
+        }
+        return $response;
     }
 
     /**
@@ -484,7 +484,7 @@ class PageRepository extends EntityRepository
     /**
      * Generate ROUTE
      */
-    public function generateRoutes($menu_ref = 'main'){
+    public function generateRoutes($menu_ref = 'main', $is_multilingual = true){
 
         $em = $this->getEntityManager();
         //Get langs
@@ -543,7 +543,11 @@ class PageRepository extends EntityRepository
             $route['url'] = $route['url'] == '/' ? '' : $route['url'];
 
             $routeObject->setLocale($route['lang']);
-            $routeObject->setUrl('/'.$route['lang'].$route['url']);
+            if($is_multilingual)
+                $routeObject->setUrl('/'.$route['lang'].$route['url']);
+            else
+                $routeObject->setUrl($route['url']);
+
             $routeObject->setPage($page);
             $routeObject->setHost($route['domain']);
             $routeObject->setTitle($route['title']);

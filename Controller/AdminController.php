@@ -105,7 +105,7 @@ class AdminController extends Controller implements SystemController
                 $em->flush();
 
                 //Set routes to table
-                $em->getRepository('MajesCmsBundle:Page')->generateRoutes($menu->getRef());
+                $em->getRepository('MajesCmsBundle:Page')->generateRoutes($menu->getRef(), $this->_is_multilingual);
 
                 return $this->redirect($this->get('router')->generate('_cms_content', array('id' => $page->getId(), 'menu_id' => $menu_id, 'lang' => $lang, 'page_parent_id' => is_null($page_parent_id) ? "0" : $page_parent_id)));
 
@@ -147,7 +147,7 @@ class AdminController extends Controller implements SystemController
 
 
                 //Set routes to table
-                $em->getRepository('MajesCmsBundle:Page')->generateRoutes($menu->getRef());
+                $em->getRepository('MajesCmsBundle:Page')->generateRoutes($menu->getRef(), $this->_is_multilingual);
 
                 return $this->redirect($this->get('router')->generate('_cms_content', array('id' => $page->getId(), 'menu_id' => $menu_id, 'lang' => $lang, 'page_parent_id' => is_null($page_parent_id) ? "0" : $page_parent_id)));
 
@@ -809,7 +809,7 @@ class AdminController extends Controller implements SystemController
             $em->flush();
 
             //Set routes to table
-            $em->getRepository('MajesCmsBundle:Page')->generateRoutes($page->getMenu()->getRef());
+            $em->getRepository('MajesCmsBundle:Page')->generateRoutes($page->getMenu()->getRef(), $this->_is_multilingual);
             
         }
 
