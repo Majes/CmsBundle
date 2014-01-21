@@ -569,6 +569,26 @@ class AdminController extends Controller implements SystemController
             ));
     }
 
+        /**
+     * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
+     *
+     */
+    public function blockDeleteAction($id) {
+
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+
+        $block = $em->getRepository('MajesCmsBundle:Block')
+                ->findOneById($id);
+
+        if (!is_null($block)) {
+            $em->remove($block);
+            $em->flush();
+        }
+        
+        return $this->redirect($this->get('router')->generate('_cms_blocks_list', array()));
+    }
+    
     /**
      * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
      *

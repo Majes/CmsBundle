@@ -54,7 +54,7 @@ class Block{
     private $createDate;
 
     /**
-     * @ORM\OneToMany(targetEntity="BlockAttribute", mappedBy="block")
+     * @ORM\OneToMany(targetEntity="BlockAttribute", mappedBy="block", cascade={"persist", "remove"})
      * @ORM\OrderBy({"sort" = "ASC"})
      */
     private $blockAttributes;
