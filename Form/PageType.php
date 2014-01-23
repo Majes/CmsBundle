@@ -13,19 +13,21 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class PageType extends AbstractType
 {
 
-	protected $em;
+    protected $em;
+    protected $lang;
 
-	public function __construct($em = null){
+    public function __construct($em = null, $lang = 'en'){
         $this->em = $em;
+        $this->lang = $lang;
     }
 
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-    	$resolver->setDefaults(array(
-    	    'data_class' => 'Majes\CmsBundle\Entity\Page',
-    	    'csrf_protection' => false,
-    	));
-	}
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'Majes\CmsBundle\Entity\Page',
+            'csrf_protection' => false,
+        ));
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -42,7 +44,7 @@ class PageType extends AbstractType
 
 
         $routes = $this->em->getRepository('MajesCmsBundle:Route')
-                    ->findAll();
+                    ->findBy(array('locale' => $this->lang));
 
         $values = array();
         foreach ($routes as $route) {
@@ -59,11 +61,11 @@ class PageType extends AbstractType
             'choices' => $values));
         
         $builder->add('target_url', 'choice', array(
-        	'required' => false,
-        	'choices' => array(
+            'required' => false,
+            'choices' => array(
                 '_self' => 'Current window',
-       		    '_blank' => 'New window'
-       		)));
+                '_blank' => 'New window'
+            )));
 
         $builder->add('is_folder', 'checkbox', array(
             'required' => false));
@@ -75,7 +77,7 @@ class PageType extends AbstractType
             'required' => false));
 
         $builder->add('is_active', 'checkbox', array(
-        	'required' => false));
+            'required' => false));
 
         $builder->add('lang', new PageLangType());
 

@@ -114,7 +114,7 @@ class AdminController extends Controller implements SystemController
 
 
         //Perform post submit
-        $form = $this->createForm(new PageType($em), $page);
+        $form = $this->createForm(new PageType($em, $this->_lang), $page);
         if($request->getMethod() == 'POST'){
 
             $form->handleRequest($request);
