@@ -25,6 +25,8 @@
   	outline: none;
   	width: 800px!important;
   	margin: -300px 0 0 -400px;
+    top: 50%;
+    left: 50%;
 }
 
 .majesTeel blockquote{
