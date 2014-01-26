@@ -7,7 +7,7 @@ use Majes\CoreBundle\Annotation\DataTable;
 
 
 /**
- * Majes\CmsBundle\Entity\Host
+ * Majes\CoreBundle\Entity\Host
  *
  * @ORM\Table(name="cms_host")
  * @ORM\Entity

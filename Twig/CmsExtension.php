@@ -92,7 +92,7 @@ class CmsExtension extends \Twig_Extension
     public function getHost(){
 
         $domain = $_SERVER['HTTP_HOST'];
-        $host = $this->_em->getRepository('MajesCmsBundle:Host')
+        $host = $this->_em->getRepository('MajesCoreBundle:Host')
                     ->findOneBy(array('url' => $domain));
         return $host;
     }

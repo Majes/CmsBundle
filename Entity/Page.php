@@ -91,7 +91,7 @@ class Page{
     private $parent;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Host")
+     * @ORM\ManyToOne(targetEntity="Majes\CoreBundle\Entity\Host")
      * @ORM\JoinColumn(name="host_id", referencedColumnName="id")
      */
     private $host;
@@ -269,7 +269,7 @@ class Page{
     /**
      * @inheritDoc
      */
-    public function setHost(\Majes\CmsBundle\Entity\Host $host)
+    public function setHost(\Majes\CoreBundle\Entity\Host $host)
     {
         $this->host = $host;
         return $this;

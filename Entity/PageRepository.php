@@ -492,7 +492,7 @@ class PageRepository extends EntityRepository
             ->findBy(array('isActive' => 1));
 
         //Get hosts
-        $hosts = $em->getRepository('MajesCmsBundle:Host')
+        $hosts = $em->getRepository('MajesCoreBundle:Host')
             ->findAll();
 
         $menu = array();

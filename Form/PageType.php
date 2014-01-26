@@ -34,7 +34,7 @@ class PageType extends AbstractType
 
         $builder->add('host', 'entity', array(
             'required' => true,
-            'class' => 'MajesCmsBundle:Host',
+            'class' => 'MajesCoreBundle:Host',
             'property' => 'url'));
 
         $builder->add('template', 'entity', array(

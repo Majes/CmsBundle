@@ -388,7 +388,7 @@ class AdminController extends Controller implements SystemController
             ->findOneById($id);
 
         //Get hosts
-        $hosts = $em->getRepository('MajesCmsBundle:Host')
+        $hosts = $em->getRepository('MajesCoreBundle:Host')
             ->findAll();
 
         //Get menus
