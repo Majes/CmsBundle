@@ -7,10 +7,10 @@
                 <div class="panel">
                     <div class="panel-heading">
                         <div class="panel-title">
-                            <a class="accordion-toggle" data-parent="#accordion" data-toggle="collapse" href="#collapseType"><div class="caret pull-right"></div>{{ host.title }}</a>
+                            <a class="accordion-toggle" data-parent="#accordion" data-toggle="collapse" href="#collapseType{{host.id}}"><div class="caret pull-right"></div>{{ host.title }}</a>
                         </div>
                     </div>
-                    <div class="panel-collapse collapse in" id="collapseType">
+                    <div class="panel-collapse collapse in" id="collapseType{{host.id}}">
                         <div class="panel-body">
                             {% for nav in menu[host.id] %}
                             <h3>{{ nav.data.title }}</h3>
