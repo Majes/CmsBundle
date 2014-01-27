@@ -15,10 +15,12 @@ class PageType extends AbstractType
 
     protected $em;
     protected $lang;
+    protected $host_id;
 
-    public function __construct($em = null, $lang = 'en'){
+    public function __construct($em = null, $lang = 'en', $host_id = 1){
         $this->em = $em;
         $this->lang = $lang;
+        $this->host_id = $host_id;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -32,10 +34,14 @@ class PageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
+        $host = $this->em->getRepository('MajesCoreBundle:Host')
+            ->findOneById($this->host_id);
+
         $builder->add('host', 'entity', array(
             'required' => true,
             'class' => 'MajesCoreBundle:Host',
-            'property' => 'url'));
+            'property' => 'url',
+            'data' => $host));
 
         $builder->add('template', 'entity', array(
             'required' => true,

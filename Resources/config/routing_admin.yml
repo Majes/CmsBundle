@@ -1,6 +1,6 @@
 _cms_content:
-    pattern:  /cms/content/{id}/{page_parent_id}/{menu_id}/{lang}
-    defaults: { _controller: MajesCmsBundle:Admin:content, id: null, menu_id: null, lang: null, page_parent_id: null }
+    pattern:  /cms/content/{id}/{page_parent_id}/{menu_id}/{lang}/{host_id}
+    defaults: { _controller: MajesCmsBundle:Admin:content, id: null, menu_id: null, lang: null, page_parent_id: null, host_id: null }
 
 _cms_content_delete:
     pattern:  /cms/page/delete/{id}/{lang}

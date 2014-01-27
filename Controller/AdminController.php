@@ -38,7 +38,7 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
      *
      */
-    public function contentAction($id, $lang, $menu_id, $page_parent_id)
+    public function contentAction($id, $lang, $menu_id, $page_parent_id, $host_id)
     {   
 
         $em = $this->getDoctrine()->getManager();
@@ -51,6 +51,8 @@ class AdminController extends Controller implements SystemController
         
         $page = $em->getRepository('MajesCmsBundle:Page')
             ->findOneById($id);
+
+        if(is_null($host_id) && !is_null($page)) $host_id = !is_null($page->getHost()) ? $page->getHost()->getId() : null;
 
         //Check permissions
         if(!Helper::hasAdminRole($page, $this->container->get('security.context')))
@@ -114,14 +116,14 @@ class AdminController extends Controller implements SystemController
 
 
         //Perform post submit
-        $form = $this->createForm(new PageType($em, $this->_lang), $page);
+        $form = $this->createForm(new PageType($em, $this->_lang, $host_id), $page);
         if($request->getMethod() == 'POST'){
 
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $page = $form->getData();
                 if(is_null($page->getId())){
-                    $page->setUser($this->_user);
+                    $page->setUser($this->_user);                    
                 }
 
                 if(!is_null($page_parent)) $page->setParent($page_parent);

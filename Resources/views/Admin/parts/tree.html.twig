@@ -1,30 +1,30 @@
 <div class="col-lg-3" id="cmsTree">
-	<div class="widget-container fluid-height">
-		<div class="widget-content">
-			<div class="panel-group" id="accordion">
+    <div class="widget-container fluid-height">
+        <div class="widget-content">
+            <div class="panel-group" id="accordion">
 
                 {% for host in hosts %}
-				<div class="panel">
-				  	<div class="panel-heading">
-				    	<div class="panel-title">
-				      		<a class="accordion-toggle" data-parent="#accordion" data-toggle="collapse" href="#collapseType"><div class="caret pull-right"></div>{{ host.title }}</a>
-				    	</div>
-				  	</div>
-				  	<div class="panel-collapse collapse in" id="collapseType">
-				    	<div class="panel-body">
-				      		{% for nav in menu[host.id] %}
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <a class="accordion-toggle" data-parent="#accordion" data-toggle="collapse" href="#collapseType"><div class="caret pull-right"></div>{{ host.title }}</a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse collapse in" id="collapseType">
+                        <div class="panel-body">
+                            {% for nav in menu[host.id] %}
                             <h3>{{ nav.data.title }}</h3>
                             <!-- Definition tree structure -->
                             <div id="tree_{{host.id}}_{{nav.data.id}}"></div>
         
-                            <a class="btn btn-default pull-right" style="margin: 10px 10px" href="{{ path('_cms_content') }}/0/0/{{nav.data.id}}/{{ default_lang }}"><i class="icon-file-text-alt"></i> Add a page</a>
+                            <a class="btn btn-default pull-right" style="margin: 10px 10px" href="{{ path('_cms_content') }}/0/0/{{nav.data.id}}/{{ default_lang }}/{{ host.id }}"><i class="icon-file-text-alt"></i> Add a page</a>
 
                             <div style="clear: both"></div>
                             <script type="text/javascript">
 
                             $(function(){
                                 var data = {{ nav.tree|raw }};
-                                var $tree = $('#tree_{{host.id}}_{{nav.data.id}}').tree({
+                                var $tree_{{host.id}}_{{nav.data.id}} = $('#tree_{{host.id}}_{{nav.data.id}}').tree({
                                     data: data,
                                     dragAndDrop: true,
                                     openedIcon: '-',
@@ -32,13 +32,13 @@
                                     useContextMenu: false,
                                     onCreateLi: function(node, $li) {
                                         $li.find('.jqtree-element').append(
-                                            '<a href="#node-'+ node.id +'" class="menu pull-right icon-cog" data-node-id="'+node.id +'"></a><div class="contextMenu"><a class="edit" href="{{ path('_cms_content') }}/'+node.id+'/'+node.parent_id+'/{{nav.data.id}}/{{ default_lang }}"><i class="icon-edit"></i> Edit</a><a class="delete" href="{{ path('_cms_content_delete') }}/' + node.id + '/{{ default_lang }}" onclick="return CoreAdmin.Common.confirmDelete(\'{% trans %}Are you sure you want to delete this page?{% endtrans %}\')"><i class="icon-trash"></i> Remove</a><a class="add" href="{{ path('_cms_content') }}/0/'+node.id+'/{{nav.data.id}}/{{ default_lang }}"><i class="icon-plus"></i> Add a page</a></div>'
+                                            '<a href="#node-'+ node.id +'" class="menu pull-right icon-cog" data-node-id="'+node.id +'"></a><div class="contextMenu"><a class="edit" href="{{ path('_cms_content') }}/'+node.id+'/'+node.parent_id+'/{{nav.data.id}}/{{ default_lang }}"><i class="icon-edit"></i> Edit</a><a class="delete" href="{{ path('_cms_content_delete') }}/' + node.id + '/{{ default_lang }}" onclick="return CoreAdmin.Common.confirmDelete(\'{% trans %}Are you sure you want to delete this page?{% endtrans %}\')"><i class="icon-trash"></i> Remove</a><a class="add" href="{{ path('_cms_content') }}/0/'+node.id+'/{{nav.data.id}}/{{ default_lang }}/{{ host.id }}"><i class="icon-plus"></i> Add a page</a></div>'
                                         );            
                                     }
                                 });
                             
-                                {% if page_id is not null and page.menu.id == nav.data.id %}var node = $tree.tree('getNodeById', {{page_id}}).parent;
-                                $tree.tree('openNode', node);{% endif %}
+                                {% if page_id is not null and page.menu.id == nav.data.id and page.host.id == host.id %}var node = $tree_{{host.id}}_{{nav.data.id}}.tree('getNodeById', {{page_id}}).parent;
+                                $tree_{{host.id}}_{{nav.data.id}}.tree('openNode', node);{% endif %}
                                 $('#tree_{{host.id}}_{{nav.data.id}}').bind(
                                     'tree.move',
                                     function(event) {
@@ -112,17 +112,17 @@
                             </script>
 
                             {% endfor %}
-				    	</div>
-				  	</div>
-				</div>
+                        </div>
+                    </div>
+                </div>
 
                 
 
                 {% endfor %}
-				
-			</div>
-		</div>
-	</div>
+                
+            </div>
+        </div>
+    </div>
 </div>
 <script>
     $(function(){
