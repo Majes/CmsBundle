@@ -49,7 +49,7 @@ class Template{
     private $createDate;
 
     /**
-     * @ORM\OneToMany(targetEntity="TemplateBlock", mappedBy="template")
+     * @ORM\OneToMany(targetEntity="TemplateBlock", mappedBy="template", cascade={"persist", "remove"})
      * @ORM\OrderBy({"sort" = "ASC"})
      */
     private $templateBlocks;
