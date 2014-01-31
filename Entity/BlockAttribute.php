@@ -20,8 +20,8 @@ class BlockAttribute{
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Block", inversedBy="blockAttributes", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="block_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Block", inversedBy="blockAttributes", cascade={"persist"})
+     * @ORM\JoinColumn(name="block_id", referencedColumnName="id")
      */
     private $block;
 
