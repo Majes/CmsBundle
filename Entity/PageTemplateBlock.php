@@ -64,7 +64,7 @@ class PageTemplateBlock{
     private $createDate;
 
     /**
-     * @ORM\OneToMany(targetEntity="Majes\CmsBundle\Entity\PageTemplateBlockVersion", mappedBy="pageTemplateBlock", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Majes\CmsBundle\Entity\PageTemplateBlockVersion", mappedBy="pageTemplateBlock", cascade={"persist", "remove"})
      */
     private $versions;
 

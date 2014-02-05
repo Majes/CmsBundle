@@ -53,6 +53,12 @@ class Template{
      * @ORM\OrderBy({"sort" = "ASC"})
      */
     private $templateBlocks;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Page", mappedBy="template", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"sort" = "ASC"})
+     */
+    private $templatePages;
 
     /**
      * @DataTable(isTranslatable=0, hasAdd=1, hasPreview=0, isDatatablejs=0)

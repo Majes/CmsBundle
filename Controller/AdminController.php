@@ -785,6 +785,27 @@ class AdminController extends Controller implements SystemController
 
         return new Response();
     }
+    
+    /**
+     * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
+     *
+     */
+    public function templateDeleteAction($id){
+     
+        
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+
+        $template = $em->getRepository('MajesCmsBundle:Template')
+                ->findOneById($id);
+
+        if (!is_null($template)) {
+            $em->remove($template);
+            $em->flush();
+        }
+
+        return $this->redirect($this->get('router')->generate('_cms_templates_list', array()));
+    }
 
     /**
      * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")

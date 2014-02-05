@@ -103,7 +103,7 @@ class Page{
     private $template;
 
     /**
-     * @ORM\OneToMany(targetEntity="Majes\CmsBundle\Entity\PageLang", mappedBy="page", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Majes\CmsBundle\Entity\PageLang", mappedBy="page", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="page_id")
      */
     private $langs;
@@ -114,12 +114,12 @@ class Page{
     private $lang = null;
 
     /**
-     * @ORM\OneToMany(targetEntity="PageTemplateBlock", mappedBy="page", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="PageTemplateBlock", mappedBy="page", cascade={"persist", "remove"})
      */
     private $pageTemplateBlocks;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Majes\CoreBundle\Entity\User\Role")
+     * @ORM\ManyToMany(targetEntity="Majes\CoreBundle\Entity\User\Role", cascade={"remove"})
      * @ORM\JoinTable(name="cms_page_role",
      *      joinColumns={@ORM\JoinColumn(name="page_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
