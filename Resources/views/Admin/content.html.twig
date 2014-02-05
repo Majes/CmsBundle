@@ -235,10 +235,10 @@ $(function() {
     $("a.editBlock").click(function(e){
     	e.preventDefault();
 
-    	var page_template_block_id = $(event.target).data('pagetemplateblock');
-    	var page_id = $(event.target).data('page');
-    	var template_block_id = $(event.target).data('templateblock');
-    	var id = $(event.target).data('id');
+    	var page_template_block_id = $(e.target).data('pagetemplateblock');
+    	var page_id = $(e.target).data('page');
+    	var template_block_id = $(e.target).data('templateblock');
+    	var id = $(e.target).data('id');
 
     	$.ajax({
     		url: '{{ path('_cms_pageblock_form', {lang: lang}) }}',
