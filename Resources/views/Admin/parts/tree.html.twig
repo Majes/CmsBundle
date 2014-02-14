@@ -3,14 +3,14 @@
         <div class="widget-content">
             <div class="panel-group" id="accordion">
 
-                {% for host in hosts %}
+                {% for key, host in hosts %}
                 <div class="panel">
                     <div class="panel-heading">
                         <div class="panel-title">
-                            <a class="accordion-toggle" data-parent="#accordion" data-toggle="collapse" href="#collapseType{{host.id}}"><div class="caret pull-right"></div>{{ host.title }}</a>
+                            <a class="accordion-toggle{% if (page.host is defined and page.host.id == host.id) or (page.host is not defined and key == 0) %}{% else %} collapsed{% endif %}" data-parent="#accordion" data-toggle="collapse" href="#collapseType{{host.id}}"><div class="caret pull-right"></div>{{ host.title }}</a>
                         </div>
                     </div>
-                    <div class="panel-collapse collapse in" id="collapseType{{host.id}}">
+                    <div class="panel-collapse{% if (page.host is defined and page.host.id == host.id) or (page.host is not defined and key == 0) %}{% else %} collapse{% endif %}" id="collapseType{{host.id}}">
                         <div class="panel-body">
                             {% for nav in menu[host.id] %}
                             <h3>{{ nav.data.title }}</h3>
