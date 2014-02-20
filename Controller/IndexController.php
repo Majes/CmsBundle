@@ -80,7 +80,8 @@ class IndexController extends Controller implements SystemController
             'lang' => $lang,
             'content' => $content,
             'draft' => $draft,
-            'wysiwyg' => $wysiwyg
+            'wysiwyg' => $wysiwyg,
+            'template' => ($template->getRef()) ? $template->getRef() : ''
             ));
 
     }
