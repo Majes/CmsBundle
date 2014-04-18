@@ -1,6 +1,6 @@
 <div class="modal-header">
 	<button aria-hidden="true" class="close" data-dismiss="modal" type="button">×</button>
-	<h4 class="modal-title">Edit block : "<em><strong>{{ templateBlock.block.title }}</strong></em>"{% if block.has_draft %}<small> - Is a draft</small>{% endif %}</h4>
+	<h4 class="modal-title">Edit block : "<em><strong>{{ templateBlock.title }}</strong></em>"{% if block.has_draft %}<small> - Is a draft</small>{% endif %}</h4>
 </div>
 <form action="{{ path('_cms_pageblock_edit') }}" method="post" class="form-horizontal" enctype="multipart/form-data" id="editPageBlockForm">
 <input type="hidden" name="lang" value="{{ lang }}"/>

@@ -5,10 +5,10 @@
 {% block content_header '' %}
 
 {% block content %}
-	
+    
 <div class="container-fluid main-content">
 
-	{{ include(
+    {{ include(
                 'MajesCoreBundle:common:breadcrumbs.html.twig'
             ) }}
 
@@ -16,154 +16,154 @@
       <h1>{{pageTitle}}</h1>
     </div>
 
-	<div class="row">
-		
+    <div class="row">
+        
         <!-- Site tree -->
         {% if page is null %}{% set page_id = null %}{% else %}{% set page_id = page.id %}{% endif %}
         {{ render_esi(controller('MajesCmsBundle:Admin:menu', { 'id' : page_id })) }}
-		
+        
         <!-- Gallery with filtering and actions -->
         <div class="col-lg-9">
-        	{% if page is not null %}
-        	{{ include(
-         	   'MajesCmsBundle:Admin:parts/actions.html.twig'
-       		) }}
-      		{% endif %}
-          	
-          	<div class="widget-container fluid-height clearfix">
-				
-				{% if edit == 1 %}
-				<div class="heading tabs">
-        	    	<i class="icon-save"></i> <em>{{pageSubTitle}}</em> 
-        	      	<ul class="nav nav-tabs pull-right" data-tabs="tabs" id="tabs">
-        	        	{% if page is not null %}<li class="active">
-							<a data-toggle="tab" href="#cmsEditing">
-								<i class="icon-edit"></i>
-								<span>{% trans %}Content{% endtrans %}  </span>
-							</a>
-        	        	</li>{% endif %}
-        	        	<li{% if page is null %} class="active"{% endif %}>
-        	          		<a data-toggle="tab" href="#tab2">
-        	          			<i class="icon-cog"></i>
-        	          			<span>{% trans %}Setup & Meta data{% endtrans %}  </span>
-        	          		</a>
-        	        	</li>
+            {% if page is not null %}
+            {{ include(
+               'MajesCmsBundle:Admin:parts/actions.html.twig'
+            ) }}
+            {% endif %}
+            
+            <div class="widget-container fluid-height clearfix">
+                
+                {% if edit == 1 %}
+                <div class="heading tabs">
+                    <i class="icon-save"></i> <em>{{pageSubTitle}}</em> 
+                    <ul class="nav nav-tabs pull-right" data-tabs="tabs" id="tabs">
+                        {% if page is not null %}<li class="active">
+                            <a data-toggle="tab" href="#cmsEditing">
+                                <i class="icon-edit"></i>
+                                <span>{% trans %}Content{% endtrans %}  </span>
+                            </a>
+                        </li>{% endif %}
+                        <li{% if page is null %} class="active"{% endif %}>
+                            <a data-toggle="tab" href="#tab2">
+                                <i class="icon-cog"></i>
+                                <span>{% trans %}Setup & Meta data{% endtrans %}  </span>
+                            </a>
+                        </li>
                         {% if page is not null %}<li>
                             <a data-toggle="tab" href="#tab3">
                                 <i class="icon-cog"></i>
                                 <span>{% trans %}Roles / permissions{% endtrans %}  </span>
                             </a>
                         </li>{% endif %}
-        	   
-        	      	</ul>
-        	    </div>
-					
-				<div class="tab-content padded" id="my-tab-content">
-					{% if page is not null %}<div class="tab-pane active" id="cmsEditing">
-					
+               
+                    </ul>
+                </div>
+                    
+                <div class="tab-content padded" id="my-tab-content">
+                    {% if page is not null %}<div class="tab-pane active" id="cmsEditing">
+                    
 
-					<div class="row">
-					  	<div class="col-md-12">
-					
-					  		{% for block in blocks %}			
-					  	  	<div class="widget-container fluid-height{% if block.has_draft %} draft{% endif %}">
-					  	  	  	<div class="heading">
-					  	  	    	<i class="icon-align-left"></i> {{block.block}}
-					  	  	    	{% if block.is_repeatable %}
-									
-					  	  	    	{% else %}
-					  	  	    	<a class="editBlock icon-edit pull-right" data-pagetemplateblock="{{block.page_template_block}}" data-page="{{block.page}}" data-templateblock="{{block.template_block}}" data-id="{{ block.items[0].id }}"></a>
+                    <div class="row">
+                        <div class="col-md-12">
+                    
+                            {% for block in blocks %}           
+                            <div class="widget-container fluid-height{% if block.has_draft %} draft{% endif %}">
+                                <div class="heading">
+                                    <i class="icon-align-left"></i> {{block.title}}
+                                    {% if block.is_repeatable %}
+                                    
+                                    {% else %}
+                                    <a class="editBlock icon-edit pull-right" data-pagetemplateblock="{{block.page_template_block}}" data-page="{{block.page}}" data-templateblock="{{block.template_block}}" data-id="{{ block.items[0].id }}"></a>
 
                                     
-					  	  	    	{% endif %}
+                                    {% endif %}
                                     
 
                                     
                                     {% if block.has_draft %}<a class="cancelDraft icon-warning-sign pull-right" title="Cancel draft" href="{{ path('_cms_discard_draft', {id: block.page_template_block}) }}" onclick="return CoreAdmin.Common.confirmDelete('{% trans %}Are you sure you want to cancel this draft?{% endtrans %}')"></a>{% endif %}
-					  	  	  	</div>
-					  	  	  	<div class="widget-content{% if block.is_repeatable == 0 %} padded{% endif %}">
-					  	  	  	
-								{% if block.is_repeatable %}
-								
-									<div class="panel-group sortable" id="accordion" data-pagetemplateblock="{{block.page_template_block}}">
-									{% for key, attribute_block in block.items %}
-                    					<div class="panel" data-id="{{key}}">
-                     						<div class="panel-heading">
-                        						<div class="panel-title">
-                          							
-                            						{% if attribute_block.new is not defined %}
+                                </div>
+                                <div class="widget-content{% if block.is_repeatable == 0 %} padded{% endif %}">
+                                
+                                {% if block.is_repeatable %}
+                                
+                                    <div class="panel-group sortable" id="accordion" data-pagetemplateblock="{{block.page_template_block}}">
+                                    {% for key, attribute_block in block.items %}
+                                        <div class="panel" data-id="{{key}}">
+                                            <div class="panel-heading">
+                                                <div class="panel-title">
+                                                    
+                                                    {% if attribute_block.new is not defined %}
                                                     <a class="accordion-toggle collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapse{{key}}"><div class="caret pull-right"></div>
-                            							#{{attribute_block.title}}
+                                                        #{{attribute_block.title}}
                                                     </a>
                                                     {% else %}<div class="btn-group pull-right" style="margin: 5px 10px 5px 0"><a href="#" data-pagetemplateblock="{{block.page_template_block}}" data-page="{{block.page}}" data-templateblock="{{block.template_block}}" data-id="{{attribute_block.id}}" class="editBlock btn btn-info">Add new item</a></div>
                                                     {% endif %}
 
-                        						</div>
-                      						</div>
-                      						{% if attribute_block.new is not defined %}<div class="panel-collapse collapse" id="collapse{{key}}" style="height: 0px;">
-                        						<div class="panel-body">
-                        							<a class="icon-trash pull-right" href="#" onclick="return CoreAdmin.Common.confirmDelete('{% trans %}Are you sure you want to delete this element?{% endtrans %}')"></a>
-                        							<a class="editBlock icon-edit pull-right" href="#" data-pagetemplateblock="{{block.page_template_block}}" data-page="{{block.page}}" data-templateblock="{{block.template_block}}" data-id="{{attribute_block.id}}"></a>
+                                                </div>
+                                            </div>
+                                            {% if attribute_block.new is not defined %}<div class="panel-collapse collapse" id="collapse{{key}}" style="height: 0px;">
+                                                <div class="panel-body">
+                                                    <a class="icon-trash pull-right" href="#" onclick="return CoreAdmin.Common.confirmDelete('{% trans %}Are you sure you want to delete this element?{% endtrans %}')"></a>
+                                                    <a class="editBlock icon-edit pull-right" href="#" data-pagetemplateblock="{{block.page_template_block}}" data-page="{{block.page}}" data-templateblock="{{block.template_block}}" data-id="{{attribute_block.id}}"></a>
 
-                          							{% for attribute in attribute_block.attributes %}
-					  	  	  							{{ include(
-            											    'MajesCmsBundle:Admin:datatype/' ~ attribute.ref  ~ '.html.twig'
-            												) }}
+                                                    {% for attribute in attribute_block.attributes %}
+                                                        {{ include(
+                                                            'MajesCmsBundle:Admin:datatype/' ~ attribute.ref  ~ '.html.twig'
+                                                            ) }}
                                                
-					  	  	  						{% endfor %}
-					  	  	  					</div>
-					  	  	  				</div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
                                             {% endif %}
-					  	  	  			</div>
-					  	  	  		{% endfor %}
-									</div>
+                                        </div>
+                                    {% endfor %}
+                                    </div>
 
-								{% else %}
-					
-					  	  	  		{% for attribute in block.items[0]['attributes'] %}
-					                        {% if attribute.value is not empty %}
-					  	  	  				{{ include(
-            									    'MajesCmsBundle:Admin:datatype/' ~ attribute.ref  ~ '.html.twig'
-            									) }}
+                                {% else %}
+                    
+                                    {% for attribute in block.items[0]['attributes'] %}
+                                            {% if attribute.value is not empty %}
+                                            {{ include(
+                                                    'MajesCmsBundle:Admin:datatype/' ~ attribute.ref  ~ '.html.twig'
+                                                ) }}
                                             {% endif %}
-					  	  	  		{% endfor %}
-					  	  	  	{% endif %}
-					  	  	  		<div style="clear: both"></div>
-					  	  	  	</div>
+                                    {% endfor %}
+                                {% endif %}
+                                    <div style="clear: both"></div>
+                                </div>
                                  <span class="updated pull-right"><small>{% trans %}Updated on{% endtrans %} {{ block.update_date|date("d/m/Y") }} at {{ block.update_date|date("H:i:s") }}</small></span>
-					  	  	</div>
+                            </div>
 
-							{% endfor %}
-									
-					  	</div>
+                            {% endfor %}
+                                    
+                        </div>
 
-					</div>
-						      					
-	    	 		</div>{% endif %}
-	    	  		<div class="tab-pane{% if page is null %} active{% endif %}" id="tab2">
-						{% form_theme form 'MajesCoreBundle:Form:fields.html.twig' %}
-	    	    		{{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
-	    	    		<div class="col-md-3">
-							
-	    	  			</div>
-	    				<div class="col-md-6">
-	    	    			
-	    	    			<div class="widget-content padded">
-	    	    		  		
+                    </div>
+                                                
+                    </div>{% endif %}
+                    <div class="tab-pane{% if page is null %} active{% endif %}" id="tab2">
+                        {% form_theme form 'MajesCoreBundle:Form:fields.html.twig' %}
+                        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+                        <div class="col-md-3">
+                            
+                        </div>
+                        <div class="col-md-6">
+                            
+                            <div class="widget-content padded">
+                                
 
-	    	    		  		{{ form_errors(form) }}
-	    	    				{{ form_widget(form.lang) }}
-	    	    				{{ form_widget(form) }}
-								
-	    	    		  		<div class="form-actions col-lg-offset-3 col-lg-9">
-	    	    		    		<input type="submit" class="btn btn-primary" value="{% trans %}Submit{% endtrans %}" />
-	    	    		    		<a href="{{ path('_admin_users') }}" class="btn btn-default-outline">{% trans %}Cancel{% endtrans %}</a>
-	    	    		  		</div>
-								
-	    	    			</div>
-	    	  			</div>
-	    	  			{{ form_end(form) }}
-	    	  		</div>
+                                {{ form_errors(form) }}
+                                {{ form_widget(form.lang) }}
+                                {{ form_widget(form) }}
+                                
+                                <div class="form-actions col-lg-offset-3 col-lg-9">
+                                    <input type="submit" class="btn btn-primary" value="{% trans %}Submit{% endtrans %}" />
+                                    <a href="{{ path('_admin_users') }}" class="btn btn-default-outline">{% trans %}Cancel{% endtrans %}</a>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
 
                     {% if page is not null %}<div class="tab-pane" id="tab3">
                         {% form_theme form_role 'MajesCoreBundle:Form:fields.html.twig' %}
@@ -188,11 +188,11 @@
                         </div>
                         {{ form_end(form) }}
                     </div>{% endif %}
-	    	  	</div>
-	    	  	{% endif %}
-	    	  	
-	    	</div>
-		</div>
+                </div>
+                {% endif %}
+                
+            </div>
+        </div>
 
 
     </div>
@@ -200,55 +200,55 @@
 </div>
 
 <div class="modal fade" id="editModal" style="display: none;" aria-hidden="true">
-  	<div class="modal-dialog">
-    	<div class="modal-content" id="ajaxEditBlock">
-      		
-    	</div>
-  	</div>
+    <div class="modal-dialog">
+        <div class="modal-content" id="ajaxEditBlock">
+            
+        </div>
+    </div>
 </div>
 
 <script>
 $(function() {
     $( ".sortable" ).sortable({ 
-    	axis: "y", 
-    	containment: "parent",
-    	update: function( event, ui ) {
-    		var page_template_block = $(event.target).data('pagetemplateblock');
-    		
-    		var ids = new Array();
-    		$(event.target).find('.panel').each(function(i){
-    			ids.push($(this).data('id'));
-    		});
+        axis: "y", 
+        containment: "parent",
+        update: function( event, ui ) {
+            var page_template_block = $(event.target).data('pagetemplateblock');
+            
+            var ids = new Array();
+            $(event.target).find('.panel').each(function(i){
+                ids.push($(this).data('id'));
+            });
 
-    		$.ajax({
-    			url: '{{ path('_cms_pageblock_order') }}',
-    			type: 'post',
-    			dataType: 'json',
-    			data: {page_template_block_id: page_template_block, ids: ids},
-    			success: function(response){
+            $.ajax({
+                url: '{{ path('_cms_pageblock_order') }}',
+                type: 'post',
+                dataType: 'json',
+                data: {page_template_block_id: page_template_block, ids: ids},
+                success: function(response){
 
-    			}
-    		});
-    	}
+                }
+            });
+        }
     });
 
     $("a.editBlock").click(function(e){
-    	e.preventDefault();
+        e.preventDefault();
 
-    	var page_template_block_id = $(e.target).data('pagetemplateblock');
-    	var page_id = $(e.target).data('page');
-    	var template_block_id = $(e.target).data('templateblock');
-    	var id = $(e.target).data('id');
+        var page_template_block_id = $(e.target).data('pagetemplateblock');
+        var page_id = $(e.target).data('page');
+        var template_block_id = $(e.target).data('templateblock');
+        var id = $(e.target).data('id');
 
-    	$.ajax({
-    		url: '{{ path('_cms_pageblock_form', {lang: lang}) }}',
-    		data: {id: id, page_template_block_id: page_template_block_id, page_id: page_id, template_block_id: template_block_id},
-    		success: function(response){
-    			$("#ajaxEditBlock").html(response);
-    			$('#editModal').modal('show');
-    		}
-    	});
-    	
+        $.ajax({
+            url: '{{ path('_cms_pageblock_form', {lang: lang}) }}',
+            data: {id: id, page_template_block_id: page_template_block_id, page_id: page_id, template_block_id: template_block_id},
+            success: function(response){
+                $("#ajaxEditBlock").html(response);
+                $('#editModal').modal('show');
+            }
+        });
+        
     });
 
 });

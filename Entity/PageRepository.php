@@ -198,9 +198,12 @@ class PageRepository extends EntityRepository
 
             //Get params of this block
             $block = $template_block->getBlock();
-            
+            $title = $template_block->getTitle();
+            $title = !empty($title) ? $template_block->getTitle() : $block->getTitle();
+
             $response[$template_block->getId()] = array(
                 'block' => $block->getTitle(),
+                'title' => $title,
                 'page' => $page->getId(),
                 'template_block' => $template_block->getId(),
                 'page_template_block' => $page_template_block_id,
@@ -324,8 +327,12 @@ class PageRepository extends EntityRepository
 
         //Get params of this block
         $block = $template_block->getBlock();
+        $title = $template_block->getTitle();
+        $title = !empty($title) ? $template_block->getTitle() : $block->getTitle();
+
         $response = array(
             'block' => $block->getTitle(),
+            'title' => $title,
             'page' => $page->getId(),
             'template_block' => $template_block->getId(),
             'page_template_block' => $page_template_block_id,
