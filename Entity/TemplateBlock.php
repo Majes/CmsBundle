@@ -57,6 +57,11 @@ class TemplateBlock{
     private $isRepeatable;
         
     /**
+     * @ORM\Column(type="string", length=150)
+     */
+    private $title;
+
+    /**
      * @ORM\Column(type="string", length=100)
      */
     private $ref;
@@ -84,6 +89,7 @@ class TemplateBlock{
         $this->isMobile = 1;
         $this->isTablet = 1;
         $this->isDesktop = 1;
+        $this->title = '';
 
     }
 
@@ -158,6 +164,15 @@ class TemplateBlock{
     {
         $this->isRepeatable = $isRepeatable;
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+      
     }
 
     /**
@@ -249,6 +264,14 @@ class TemplateBlock{
     public function getIsRepeatable()
     {
         return $this->isRepeatable;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 
     /**

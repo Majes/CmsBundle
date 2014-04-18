@@ -643,6 +643,7 @@ class AdminController extends Controller implements SystemController
                 //Get attributes from form data
                 $blocks_tmp = $request->request->get('blocks');
                 $ref = $request->request->get('ref');
+                $title = $request->request->get('title');
                 $blocks_tmp = is_null($blocks_tmp) ? array() : $blocks_tmp;
                 //Get all already existant template_blocks_ids that are in the form, in order to keep them
                 if(!is_null($blocks_tmp)){
@@ -684,7 +685,9 @@ class AdminController extends Controller implements SystemController
         
                                     $templateBlock->setSort($sort);
                                     if(!empty($ref[$template_block_id])) $templateBlock->setRef($ref[$template_block_id]);
+                                    if(!empty($title[$template_block_id])) $templateBlock->setTitle($title[$template_block_id]);
         
+
                                     $em->persist($templateBlock);
                                     $em->flush();
                                 }else{
