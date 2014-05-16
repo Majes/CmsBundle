@@ -502,9 +502,11 @@ class PageRepository extends EntityRepository
         $hosts = $em->getRepository('MajesCoreBundle:Host')
             ->findAll();
 
-        $menu = array();
+        $menu = array(); $domain_langs = array();
         foreach($langs as $lang){
             
+            $domain_langs[$lang->getLocale()] = $lang->getHost();
+
             foreach($hosts as $host){
     
                 $response = $em->getRepository('MajesCmsBundle:Page')
@@ -550,13 +552,18 @@ class PageRepository extends EntityRepository
             $route['url'] = $route['url'] == '/' ? '' : $route['url'];
 
             $routeObject->setLocale($route['lang']);
-            if($is_multilingual)
+
+            $domain_lang = $domain_langs[$route['lang']];
+
+            if(!empty($domain_lang))
+                $routeObject->setUrl($route['url']);
+            elseif($is_multilingual)
                 $routeObject->setUrl('/'.$route['lang'].$route['url']);
             else
                 $routeObject->setUrl($route['url']);
 
             $routeObject->setPage($page);
-            $routeObject->setHost($route['domain']);
+            $routeObject->setHost(!empty($domain_lang) ? $domain_lang : $route['domain']);
             $routeObject->setTitle($route['title']);
             $routeObject->setRedirectUrl($route['link_url']);
 
