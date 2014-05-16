@@ -542,18 +542,19 @@ class PageRepository extends EntityRepository
 
         }
         foreach($this->_pages as $route){
+
+            $domain_lang = $domain_langs[$route['lang']];
+
             $page = $em->getRepository('MajesCmsBundle:Page')->findOneById($route['id']);
 
             $routeObject = $em->getRepository('MajesCmsBundle:Route')
-                        ->findOneBy(array('page' => $page, 'locale' => $route['lang'], 'host' => $route['domain']));
+                        ->findOneBy(array('page' => $page, 'locale' => $route['lang'], 'host' => !empty($domain_lang) ? $domain_lang : $route['domain']));
 
             if(is_null($routeObject)) $routeObject = new Route();
 
             $route['url'] = $route['url'] == '/' ? '' : $route['url'];
 
             $routeObject->setLocale($route['lang']);
-
-            $domain_lang = $domain_langs[$route['lang']];
 
             if(!empty($domain_lang))
                 $routeObject->setUrl($route['url']);
