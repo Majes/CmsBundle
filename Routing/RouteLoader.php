@@ -40,12 +40,14 @@ class RouteLoader implements RouteProviderInterface{
                         )
                 );
             }else{
+                
                 $collection->add('majes_cms_'.$route->getPage()->getId().'_'.$route->getLocale(), 
                     new SymfonyRoute(
                             $route->getUrl(), 
                             array('_controller' => 'MajesCmsBundle:Index:load', '_locale' => $route->getLocale()), 
-                            array('domain' => $route->getHost()), 
-                            array('page_id' => $route->getPage()->getId(), 'lang' => $route->getLocale())
+                            array(), 
+                            array('page_id' => $route->getPage()->getId(), 'lang' => $route->getLocale()),
+                            $route->getHost()
                         )
                 );
             }
@@ -59,7 +61,7 @@ class RouteLoader implements RouteProviderInterface{
      */
     public function getRouteByName($name, $parameters = array())
     {
- 
+
         $explode = explode('_', $name);
         if(!isset($explode[2])) return false;
 
@@ -87,8 +89,9 @@ class RouteLoader implements RouteProviderInterface{
             return new SymfonyRoute(
                         $route->getUrl(), 
                         array('_controller' => 'MajesCmsBundle:Index:load'), 
-                        array('domain' => $route->getHost()), 
-                        array('page_id' => $page->getId(), 'lang' => $route->getLocale())
+                        array(), 
+                        array('page_id' => $page->getId(), 'lang' => $route->getLocale()),
+                        $route->getHost()
                     );
         }
     }
