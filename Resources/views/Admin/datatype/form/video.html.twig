@@ -1,0 +1,77 @@
+<div class="form-group">
+    <label class="control-label col-lg-3">{% trans %}Video title{% endtrans %}</label>
+    <div class="col-lg-9">
+        <input class="form-control" placeholder="" type="text" name="attributes[{{attribute.block_attribute_ref}}][title]" value="{% if attribute.value %}{{attribute.value.title}}{% endif %}"/>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-lg-3">{% trans %}Video author{% endtrans %}</label>
+    <div class="col-lg-9">
+        <input class="form-control" placeholder="" type="text" name="attributes[{{attribute.block_attribute_ref}}][author]" value="{% if attribute.value %}{{attribute.value.author}}{% endif %}"/>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="myaccount_is_active" class="control-label col-lg-3">{% trans %}Download{% endtrans %}</label>
+    <div class="col-lg-9">
+		<label style="padding-top: 7px"><span>{% if attribute.value %}
+        <i class="icon-download-alt"></i> <a href="/{{ attribute.value.path }}" title="{{attribute.value['title']}}" id="preview{{attribute.block_attribute_ref}}" target="_blank">{{ attribute.value['title'] }}</a>
+        {% endif %}</span></label>
+        
+    </div>
+</div>
+
+<div class="form-group">
+	<label for="myaccount_media" class="control-label col-lg-3">{{attribute.title}} </label>
+	<div class="col-lg-9">
+        <input type="hidden" name="attributes[{{attribute.block_attribute_ref}}][media_id]" value="{% if attribute.value %}{{attribute.value.media_id}}{% endif %}" id="{{attribute.block_attribute_ref}}_id">
+        <div class="widget-container fluid-height">
+            <div class="heading tabs">
+                <ul class="nav nav-tabs pull-right" data-tabs="tabs" id="tabs{{attribute.block_attribute_ref}}">
+                    <li class="active">
+                        <a data-toggle="tab" href="#tab1{{attribute.block_attribute_ref}}"><i class="icon-comments"></i><span>{% trans %}Upload new file{% endtrans %}</span></a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#tab2{{attribute.block_attribute_ref}}" class="triggerMediaPicker"><i class="icon-user"></i><span>{% trans %}Existing media{% endtrans %}</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content" id="my-tab-content{{attribute.block_attribute_ref}}">
+                <div class="tab-pane active" id="tab1{{attribute.block_attribute_ref}}" style="padding: 10px;">
+                    <input type="file" name="attributes[{{attribute.block_attribute_ref}}][value]">
+                </div>
+                <div class="tab-pane" id="tab2{{attribute.block_attribute_ref}}">
+                    <iframe src="{{path('_media_picker', {'context': 'cms'})}}?ref={{attribute.block_attribute_ref}}" style="width: 100%; border: 0; height: 500px;"></iframe>
+                </div>
+                  
+            </div>
+        </div>
+		
+		
+	</div>
+</div>
+
+
+<div class="form-group">
+	<label for="myaccount_is_active" class="control-label col-lg-3">{% trans %}Remove file{% endtrans %}</label>
+	<div class="col-lg-9">
+		<label class="checkbox">
+			<input type="checkbox" name="attributes[{{attribute.block_attribute_ref}}][remove]" value="1">
+		</label>
+	</div>
+</div>
+
+
+
+
+
+<script>
+    $(document).ready(function(){
+
+        $("a.triggerMediaPicker").click(function(e){
+            e.preventDefault();
+        });
+
+    });
+</script>

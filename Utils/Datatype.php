@@ -160,4 +160,48 @@ class Datatype
         $attribute['media_id'] = $media->getId();
         return $attribute;
     }
+
+    public function video($attribute, $ref){
+
+        if(isset($attribute['remove']) && $attribute['remove']) return null;
+
+        $file = $this->_request->files->get('attributes');
+        $file = $file[$ref]['value'];
+
+        unset($attribute['value']);
+
+        $media = $this->_em->getRepository('MajesMediaBundle:Media')
+            ->findOneById($attribute['media_id']); 
+
+        if(is_null($media)){
+            $media = new Media();
+            $media->setCreateDate(new \DateTime(date('Y-m-d H:i:s')));
+            $media->setUser($this->_user);
+            $media->setFolder('Cms');
+            $media->setType('video');
+        }
+
+        if(!is_null($file)
+            || is_null($media)){
+            $media = new Media();
+            $media->setCreateDate(new \DateTime(date('Y-m-d H:i:s')));
+            $media->setUser($this->_user);
+            $media->setFolder('Cms');
+            $media->setType('video');
+            $media->setFile($file);
+        }
+
+        $title = $media->getTitle();
+        $author = $media->getAuthor();
+        if(empty($title)) $media->setTitle($attribute['title']);
+        if(empty($author)) $media->setAuthor($attribute['author']);
+        
+        $this->_em->persist($media);
+        $this->_em->flush();
+
+        $is_protected = $media->getIsProtected();
+        $attribute['path'] = $is_protected ? '' : $media->getWebPath();
+        $attribute['media_id'] = $media->getId();
+        return $attribute;
+    }
 }
