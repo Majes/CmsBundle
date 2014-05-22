@@ -102,6 +102,10 @@ class Datatype
         return $attribute;
     }
 
+    public function checkbox($attribute, $ref){
+        return $attribute;
+    }
+
     public function link($attribute, $ref){
 
         $url = $attribute['value'];
