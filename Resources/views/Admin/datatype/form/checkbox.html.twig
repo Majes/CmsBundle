@@ -1,6 +1,6 @@
 <div class="form-group">
-    <label class="control-label col-lg-3">{{attribute.title}}</label>
+    <label class="control-label col-lg-3"></label>
     <div class="col-lg-9">
-        <label class="checkbox"><input class="form-control" type="checkbox" name="attributes[{{attribute.block_attribute_ref}}][value]" value="1" {% if attribute.value %}checked="checked"{% endif %}/></label>
+        <label class="checkbox"><input class="form-control" type="checkbox" name="attributes[{{attribute.block_attribute_ref}}][value]" value="1" {% if attribute.value %}checked="checked"{% endif %}/><span>{{attribute.title}}</span></label>
     </div>
 </div>
