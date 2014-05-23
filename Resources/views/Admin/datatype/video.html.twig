@@ -1,5 +1,5 @@
 {% if attribute.value['media_id'] is defined %}<div class="video" style="display: block; margin: 0 10px 10px 0; float: left"><i class="icon-download-alt"></i> <a href="/{{  attribute.value['path'] }}" title="{{attribute.value['title']}}" target="_blank">{{attribute.value['title']}}</a>
-<div id="player{{attribute.value['media_id']}}" style="width: 320px; height: auto; float: left; clear: both"></div>
+<div id="player{{attribute.value['media_id']}}" style="width: 320px; height: auto; float: left; clear: both; background-color: #777;"></div>
 <legend>{{attribute.value['author']}}</legend></div>
 
 
@@ -7,13 +7,14 @@
 	$(document).ready(function(){
 		$("#player{{attribute.value['media_id']}}").flowplayer({
             splash: true,
+            autoplay: false,
             playlist: [
               	[
                 	{ flash: '/{{attribute.value['path']}}' }
               	]
             ],
         });
-        flowplayer("#player{{attribute.value['media_id']}}").play(0);
+        //flowplayer("#player{{attribute.value['media_id']}}").play(0).pause();
 	});
 </script>
 {% endif %}
