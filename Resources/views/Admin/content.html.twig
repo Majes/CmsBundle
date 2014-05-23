@@ -2,6 +2,22 @@
 
 {% block title %}MajesCore - Media list{% endblock %}
 
+{% block coreStyles %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/majesmedia/css/skin/minimalist.css') }}" media="all" rel="stylesheet" title="majescore" type="text/css" />
+{% endblock %}
+
+{% block coreScripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/majesmedia/js/flowplayer.min.js') }}" type="text/javascript"></script>
+    <script>
+    flowplayer.conf = {
+       swf: "/bundles/majesmedia/swf/flowplayer.swf"
+
+    };
+    </script>
+{% endblock %}
+
 {% block content_header '' %}
 
 {% block content %}

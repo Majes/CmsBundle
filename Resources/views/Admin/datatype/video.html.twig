@@ -1,1 +1,20 @@
-{% if attribute.value['media_id'] is defined %}<span class="picture" style="display: block; margin: 0 10px 10px 0; float: left"><i class="icon-download-alt"></i> <a href="/{{  attribute.value['path'] }}" title="{{attribute.value['title']}}" target="_blank">{{attribute.value['title']}}</a><legend>{{attribute.value['author']}}</legend></span>{% endif %}
+{% if attribute.value['media_id'] is defined %}<div class="video" style="display: block; margin: 0 10px 10px 0; float: left"><i class="icon-download-alt"></i> <a href="/{{  attribute.value['path'] }}" title="{{attribute.value['title']}}" target="_blank">{{attribute.value['title']}}</a>
+<div id="player{{attribute.value['media_id']}}" style="width: 320px; height: auto; float: left; clear: both"></div>
+<legend>{{attribute.value['author']}}</legend></div>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#player{{attribute.value['media_id']}}").flowplayer({
+            splash: true,
+            playlist: [
+              	[
+                	{ flash: '/{{attribute.value['path']}}' }
+              	]
+            ],
+        });
+        flowplayer("#player{{attribute.value['media_id']}}").play(0);
+	});
+</script>
+{% endif %}
+
