@@ -442,7 +442,7 @@ class PageRepository extends EntityRepository
                 'is_mobile' => $template_block->getIsMobile(),
                 'is_tablet' => $template_block->getIsTablet(),
                 'is_desktop' => $template_block->getIsDesktop(),
-                'sort' => $template_block->getIsMobile(),
+                'sort' => $template_block->getSort(),
                 'has_draft' => $has_draft,
                 'items' => array()
                 );
