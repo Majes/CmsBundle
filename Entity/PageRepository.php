@@ -222,6 +222,7 @@ class PageRepository extends EntityRepository
         
             //If there is a content, then populate the attribute array
             if($content){ 
+                $order = 0;
                 foreach($content['attributes'] as $key => $attributes){
 
                     //If block is repeatable, then get the real index, otherwise we only need index 0 (back front end purpose)
@@ -231,6 +232,7 @@ class PageRepository extends EntityRepository
                     //Set id and title of the block, title is only used for repeatable block
                     $response[$template_block->getId()]['items'][$index]['title'] = $attributes['title'];
                     $response[$template_block->getId()]['items'][$index]['id'] = $attributes['id'];
+                    $response[$template_block->getId()]['items'][$index]['order'] = $order;
 
                     //Parse all attributes of a set
                     foreach($block_attributes as $block_attribute){
@@ -246,6 +248,8 @@ class PageRepository extends EntityRepository
                             'value' => isset($content['attributes'][$attributes['id']]['content'][$block_attribute->getRef()]) ? $content['attributes'][$attributes['id']]['content'][$block_attribute->getRef()] : false
                         );
                     }
+
+                    $order++;
                         
                 }
 
@@ -452,6 +456,7 @@ class PageRepository extends EntityRepository
         
             //If there is a content, then populate the attribute array
             if($content){ 
+                $order = 0;
                 foreach($content['attributes'] as $key => $attributes){
 
                     //If block is repeatable, then get the real index, otherwise we only need index 0 (back front end purpose)
@@ -461,6 +466,7 @@ class PageRepository extends EntityRepository
                     //Set id and title of the block, title is only used for repeatable block
                     $response[$template_block->getRef()]['items'][$index]['title'] = $attributes['title'];
                     $response[$template_block->getRef()]['items'][$index]['id'] = $attributes['id'];
+                    $response[$template_block->getRef()]['items'][$index]['order'] = $order;
 
                     //Parse all attributes of a set
                     foreach($block_attributes as $block_attribute){
@@ -476,7 +482,7 @@ class PageRepository extends EntityRepository
                             'value' => isset($content['attributes'][$attributes['id']]['content'][$block_attribute->getRef()]) ? $content['attributes'][$attributes['id']]['content'][$block_attribute->getRef()] : false
                         );
                     }
-                        
+                    $order++;
                 }
 
 
