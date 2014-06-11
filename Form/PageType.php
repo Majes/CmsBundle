@@ -9,6 +9,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class PageType extends AbstractType
 {
@@ -58,6 +60,7 @@ class PageType extends AbstractType
         }
 
         $builder->add('link_url', 'choice', array(
+            'label' => 'Internal link',
             'required' => false, 
             'select2' => array(
                 'url' => 'ajaxurl',
@@ -65,6 +68,11 @@ class PageType extends AbstractType
                 'value' => 'url'
             ),
             'choices' => $values));
+
+        $builder->add('link_url2', 'text', array(
+            'label' => 'Or external',
+            'mapped' => false,
+            'required' => false));
         
         $builder->add('target_url', 'choice', array(
             'required' => false,
@@ -86,6 +94,21 @@ class PageType extends AbstractType
             'required' => false));
 
         $builder->add('lang', new PageLangType());
+
+
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA, function(FormEvent $event)
+            {
+                $form = $event->getForm();
+                $data = $event->getData();
+
+                $form->add('link_url2', 'text', array(
+                    'label' => 'Or external',
+                    'mapped' => false,
+                    'required' => false,
+                    'data' => $data->getLinkUrl()));
+            }
+        );
 
     }
 

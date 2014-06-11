@@ -123,8 +123,14 @@ class AdminController extends Controller implements SystemController
             if ($form->isValid()) {
                 $page = $form->getData();
                 if(is_null($page->getId())){
-                    $page->setUser($this->_user);                    
+                    $page->setUser($this->_user);
+
                 }
+                
+                //Check if external page is set
+                $external_link = $form['link_url2']->getData();
+                if(!empty($external_link))
+                    $page->setLinkUrl($external_link);
 
                 if(!is_null($page_parent)) $page->setParent($page_parent);
                 if(!is_null($menu)) $page->setMenu($menu);
