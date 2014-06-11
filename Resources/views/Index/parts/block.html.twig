@@ -1,6 +1,6 @@
-<section id="s_{{ block.block_ref }}" class="block{% if block.is_tablet == 0 %} hidden-tablet{% endif %}{% if block.is_desktop == 0 %} hidden-desktop{% endif %}{% if block.is_mobile == 0 %} hidden-phone{% endif %}">
+{% if container == true %}<section id="s_{{ block.block_ref }}" class="block{% if block.is_tablet == 0 %} hidden-tablet{% endif %}{% if block.is_desktop == 0 %} hidden-desktop{% endif %}{% if block.is_mobile == 0 %} hidden-phone{% endif %}">{% endif %}
 	{% include [
 		'MajesTeelBundle:Cms:blocks/' ~ block.block_ref ~ '.html.twig', 
 		'MajesCmsBundle:Index:block/' ~ block.block_ref ~ '.html.twig', 
 		'MajesCmsBundle:Index:block/none.html.twig'] %}
-</section>
+{% if container == true %}</section>{% endif %}

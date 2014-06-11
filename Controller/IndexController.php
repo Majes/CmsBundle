@@ -90,10 +90,13 @@ class IndexController extends Controller implements SystemController
     public function blockAction(){
         $request = $this->getRequest();
 
+        $container = $request->get('container');
         $params = $request->get('params');
         $params = !empty($params) ? $params : array();
+
         return $this->render('MajesCmsBundle:Index:parts/block.html.twig', array(
             'block' => $request->get('block'),
+            'container' => $container,
             'params' => $params,
             'lang' => $this->_lang
             ));
