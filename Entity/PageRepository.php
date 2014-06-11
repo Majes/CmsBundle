@@ -452,7 +452,7 @@ class PageRepository extends EntityRepository
                 );
 
             $block_attributes = $block->getBlockAttributes();
-            $is_repeatable = $block->getIsRepeatable();
+            $is_repeatable = $template_block->getIsRepeatable();
         
             //If there is a content, then populate the attribute array
             if($content){ 
