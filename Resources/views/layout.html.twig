@@ -81,8 +81,8 @@
         {% endblock %}
 
         
-        {% if page is not defined %}{% set menu_footer = getMenu(host.id, lang, 'footer', 1, null, 1) %}
-        {% else %}{% set menu_footer = getMenu(host.id, lang, 'footer', 1, page.id, 1) %}
+        {% if page is not defined %}{% set menu_footer = getMenu(host.id, lang, 'footer', 2, null, 1) %}
+        {% else %}{% set menu_footer = getMenu(host.id, lang, 'footer', 2, page.id, 1) %}
         {% endif %}
 
         {% block teel_footer %}
