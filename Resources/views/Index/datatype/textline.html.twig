@@ -1,1 +1,1 @@
-{% if attribute.value %}<span class="mjcms_textline">{{ attribute.value['value'] }}</span>{% endif %}
+{% if attribute.value %}{% if container == true %}<span class="mjcms_textline">{% endif %}{{ attribute.value['value'] }}{% if container == true %}</span>{% endif %}{% endif %}

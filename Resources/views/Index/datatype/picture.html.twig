@@ -1,5 +1,5 @@
 {% if attribute.value['media_id'] %}
-<span class="mjcms_picture">
+{% if container == true %}<span class="mjcms_picture">{% endif %}
 	<img src="{{ path('_media_load', {'id': attribute.value['media_id'], 'width': attribute.value['width']}) }}" title="{{attribute.value['title']}}" />
 	<legend>{{attribute.value['author']}}</legend>
-</span>{% endif %}
+{% if container == true %}</span>{% endif %}{% endif %}

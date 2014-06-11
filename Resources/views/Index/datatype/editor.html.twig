@@ -1,1 +1,1 @@
-{% if attribute.value %}<div class="mjcms_editor">{{ attribute.value['value']|raw }}</div>{% endif %}
+{% if attribute.value %}{% if container == true %}<div class="mjcms_editor">{% endif %}{{ attribute.value['value']|raw }}{% if container == true %}</div>{% endif %}{% endif %}
