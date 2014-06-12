@@ -102,11 +102,13 @@ class PageType extends AbstractType
                 $form = $event->getForm();
                 $data = $event->getData();
 
+                $link_url = empty($data) ? '' : $data->getLinkUrl();
+
                 $form->add('link_url2', 'text', array(
                     'label' => 'Or external',
                     'mapped' => false,
                     'required' => false,
-                    'data' => $data->getLinkUrl()));
+                    'data' => $link_url));
             }
         );
 
