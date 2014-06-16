@@ -1069,7 +1069,85 @@ class AdminController extends Controller implements SystemController
         }else
             return new Response();
     }
+    
+    /**
+     * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
+     */
+    public function pageBlockDeleteAction(){
 
+
+        $request = $this->getRequest();
+        if($request->getMethod() == 'POST'){
+
+            $page_template_block_id = $request->get('page_template_block_id');
+            $page_id = $request->get('page_id');
+            $id = $request->get('id');
+            $template_block_id = $request->get('template_block_id');
+            $lang = $request->get('lang');
+            $title = $request->get('title', '');
+            $wysiwyg = $request->get('wysiwyg', false);
+
+
+
+            
+            $em = $this->getDoctrine()->getManager();
+            
+            //Set pageTemplateBlock        
+            $pageTemplateBlock = $em->getRepository('MajesCmsBundle:PageTemplateBlock')
+                ->findOneById($page_template_block_id);
+            $attributes=json_decode($pageTemplateBlock->getContent(),true);
+        
+
+
+            $page = $em->getRepository('MajesCmsBundle:Page')
+                ->findOneById($page_id);
+
+
+
+            //Check permissions
+            if(!Helper::hasAdminRole($page, $this->container->get('security.context')))
+                throw new \Exception('Unauthorized access.', 403);
+
+            $templateBlock = $em->getRepository('MajesCmsBundle:TemplateBlock')
+                ->findOneById($template_block_id);
+
+            $block = $em->getRepository('MajesCmsBundle:Page')
+                ->getBlock($page, $templateBlock, $lang, $id);
+
+            $pageLang = $em->getRepository('MajesCmsBundle:PageLang')
+                ->findOneBy(array('page' => $page, 'locale' => $lang));
+
+
+
+            
+            $draft = $pageTemplateBlock->getDraft();
+
+            unset($attributes['attributes'][$id]);
+            $pageTemplateBlock->setContent(json_encode($attributes));
+            
+            if(!is_null($draft)){
+                $pageTemplateBlock->setVersion($draft->getVersion());
+
+                $draft->setContent(json_encode($attributes));
+                $draft->setStatus('published');
+
+                $em->persist($draft);
+                $em->flush();
+            }
+
+            $em->persist($pageTemplateBlock);
+            $em->flush();
+
+            //Hack to index content
+            $pageLang->setUpdateDate(new \DateTime());
+            $em->persist($pageLang);
+            $em->flush();        
+            
+            return new Response(json_encode(array("success" => true)));
+
+        }else
+            return new Response(json_encode(array("success" => false)));
+    }
     /**
      * @Secure(roles="ROLE_CMS_PUBLISH, ROLE_SUPERADMIN")
      *
