@@ -34,6 +34,10 @@ _cms_pageblock_edit:
     pattern:  /cms/page-block/edit
     defaults: { _controller: MajesCmsBundle:Admin:PageBlockEdit }
 
+_cms_pageblock_delete:
+    pattern:  /cms/page-block/delete
+    defaults: { _controller: MajesCmsBundle:Admin:PageBlockDelete }
+
 _cms_templates_list:
     pattern:  /cms/templates
     defaults: { _controller: MajesCmsBundle:Admin:templates}
