@@ -30,7 +30,7 @@ class CmsExtension extends \Twig_Extension
     }
 
     public function hasTranslation($page_id, $lang){
-    	
+    	if(empty($page_id)) return false;
     	$page = $this->_em->getRepository('MajesCmsBundle:Page')
             ->findOneById($page_id);
 
