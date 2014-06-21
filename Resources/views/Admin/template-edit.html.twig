@@ -71,7 +71,9 @@
 
                       <button class="close" data-dismiss="alert" type="button">×</button>
                           <input type="hidden" name="blocks[][{{ template_block.block.id }}][]" value="{{ template_block.id }}" />
+
                           <span class="pull-left" style=""><input type="text" name="title[{{ template_block.id }}]" value="{% if template_block.title == '' %}{{ template_block.block.title }}{% else %}{{template_block.title}}{% endif %}" class="form-control" style="margin: -6px 0 0"/></span>
+                           <span class="pull-left" style=""> | {{ template_block.block.ref }}</span>
 
                           <a href="{{ path('_cms_template_block_edit',{'id':template_block.id}) }}" class="icon-repeat pull-right clickable{% if template_block.isRepeatable %} on{% endif %}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Is repeatable"></a>
                           <a href="{{ path('_cms_template_block_edit',{'id':template_block.id}) }}" class="icon-desktop pull-right clickable{% if template_block.isDesktop %} on{% endif %}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Is viewable on a desktop"></a>
