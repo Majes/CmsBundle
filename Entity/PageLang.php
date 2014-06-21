@@ -96,6 +96,11 @@ class PageLang{
      */
     private $content;
 
+    /**
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+
 
     /**
      * @inheritDoc
@@ -237,6 +242,15 @@ class PageLang{
     /**
      * @inheritDoc
      */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function setSearchDescription($searchDescription)
     {
         $this->searchDescription = $searchDescription;
@@ -359,6 +373,14 @@ class PageLang{
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 
     /**

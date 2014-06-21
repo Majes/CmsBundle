@@ -39,7 +39,7 @@
       			  	<ul class="dropdown-menu" style="min-width: 50px">
                   {% if page.parent is null %}{% set page_parent_id = 0 %}{% else %}{% set page_parent_id = page.parent.id %}{% endif %}
                   {% for lang in app.session.get('langs') %}
-                  {% set has_translation = hasTranslation(page.id, lang.locale) %}
+                  {% set has_translation = hasTranslation(page.id, lang.locale, true) %}
       			    	<li>
       			    	  <a href="{{ path('_cms_content', {id: page.id, page_parent_id: page_parent_id, lang: lang.locale, menu_id: page.menu.id}) }}" {% if has_translation is empty %}class="duplicateTranslation"{% endif %}><img src="{{ asset('bundles/majescore/images/flag-' ~ lang.locale ~ '.png') }}"/></a>
       			    	</li>

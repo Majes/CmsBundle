@@ -38,8 +38,8 @@
 
         {% set host = getHost() %}
         {% if lang is not defined %}{% set lang = app.request.locale %}{% endif %}
-        {% if page is not defined %}{% set menu = getMenu(host.id, lang, 'main', 2, null, 1) %}
-        {% else %}{% set menu = getMenu(host.id, lang, 'main', 2, page.id, 1) %}
+        {% if page is not defined %}{% set menu = getMenu(host.id, lang, 'main', 2, null, 1, null, true) %}
+        {% else %}{% set menu = getMenu(host.id, lang, 'main', 2, page.id, 1, null, true) %}
         {% endif %}
 
         {% block teel_gatracking %}
@@ -81,8 +81,8 @@
         {% endblock %}
 
         
-        {% if page is not defined %}{% set menu_footer = getMenu(host.id, lang, 'footer', 2, null, 1) %}
-        {% else %}{% set menu_footer = getMenu(host.id, lang, 'footer', 2, page.id, 1) %}
+        {% if page is not defined %}{% set menu_footer = getMenu(host.id, lang, 'footer', 2, null, 1, null, true) %}
+        {% else %}{% set menu_footer = getMenu(host.id, lang, 'footer', 2, page.id, 1, null, true) %}
         {% endif %}
 
         {% block teel_footer %}

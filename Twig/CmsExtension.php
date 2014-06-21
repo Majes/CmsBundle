@@ -7,15 +7,15 @@ use Majes\CmsBundle\Utils\Helper;
 class CmsExtension extends \Twig_Extension
 {
    
-	private $_em;
+    private $_em;
     private $_router;
     private $_container;
 
-	public function __construct($em, $router, $container){
-		$this->_em = $em;
+    public function __construct($em, $router, $container){
+        $this->_em = $em;
         $this->_router = $router;
         $this->_container = $container;
-	}
+    }
 
     public function getFunctions()
     {
@@ -29,15 +29,18 @@ class CmsExtension extends \Twig_Extension
         );
     }
 
-    public function hasTranslation($page_id, $lang){
-    	if(empty($page_id)) return false;
-    	$page = $this->_em->getRepository('MajesCmsBundle:Page')
+    public function hasTranslation($page_id, $lang, $admin = false){
+        if(empty($page_id)) return false;
+        $page = $this->_em->getRepository('MajesCmsBundle:Page')
             ->findOneById($page_id);
 
         $pageLangs = $page->getLangs();
         foreach($pageLangs as $pageLang){
 
-        	if($pageLang->getLocale() == $lang) return true;
+            if($pageLang->getLocale() == $lang){
+                if(!$admin && $pageLang->getIsActive() == false) return false;
+                return true;
+            }
 
         }
 
@@ -74,10 +77,10 @@ class CmsExtension extends \Twig_Extension
 
     }
 
-    public function getMenu($host_id, $lang, $ref, $level, $page_id, $is_inmenu = 1, $page_parent_id = null){
+    public function getMenu($host_id, $lang, $ref, $level, $page_id, $is_inmenu = 1, $page_parent_id = null, $is_active = null){
         
         $menu = $this->_em->getRepository('MajesCmsBundle:Page')
-                    ->getMenu($host_id, $lang, $ref, $level, $page_id, $is_inmenu, '', $page_parent_id);
+                    ->getMenu($host_id, $lang, $ref, $level, $page_id, $is_inmenu, '', $page_parent_id, $is_active);
 
         return $menu;
     
