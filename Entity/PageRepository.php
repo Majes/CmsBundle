@@ -13,21 +13,12 @@ class PageRepository extends EntityRepository
     /**
      * GET all pages for a specific host and then generate menu
      */
-    public function getMenu($host_id, $lang, $menu = 'main', $level = null, $current_page_id = null, $is_inmenu = null, $status = '', $page_parent_id = null, $is_active = null) {
+    public function getMenu($host_id, $lang, $menu = 'main', $level = null, $current_page_id = null, $is_inmenu = null, $status = '', $page_parent_id = null) {
 
         $query = $this->createQueryBuilder('p')
             ->innerJoin('p.langs', 'pl')
             ->innerJoin('p.menu', 'm')
             ->where('p.status = :status AND p.host = :host_id AND pl.locale = :lang AND m.ref = :menu');
-
-
-        if(!is_null($is_active)){
-
-            $query = $query
-                ->andWhere('p.isActive = 1')
-                ->andWhere('pl.isActive = 1');
-
-        }
 
         if(!is_null($is_inmenu)){
 
@@ -228,9 +219,10 @@ class PageRepository extends EntityRepository
 
             $block_attributes = $block->getBlockAttributes();
             $is_repeatable = $template_block->getIsRepeatable();
-
+        
             //If there is a content, then populate the attribute array
             if($content){ 
+                $order = 1;
                 foreach($content['attributes'] as $key => $attributes){
 
                     //If block is repeatable, then get the real index, otherwise we only need index 0 (back front end purpose)
@@ -240,6 +232,8 @@ class PageRepository extends EntityRepository
                     //Set id and title of the block, title is only used for repeatable block
                     $response[$template_block->getId()]['items'][$index]['title'] = $attributes['title'];
                     $response[$template_block->getId()]['items'][$index]['id'] = $attributes['id'];
+                    $response[$template_block->getId()]['items'][$index]['order'] = $order;
+                    $order++;
 
                     //Parse all attributes of a set
                     foreach($block_attributes as $block_attribute){
@@ -359,12 +353,15 @@ class PageRepository extends EntityRepository
         //If there is a content, then populate the attribute array
         if($content && !empty($id)){
 
+            $order = 1;
             foreach($content['attributes'] as $key => $attributes){
 
                 if($attributes['id'] == $id){   
 
                     $response['item']['title'] = $attributes['title'];
                     $response['item']['id'] = $attributes['id'];
+                    $response['item']['order'] = $order;
+                    $order++;
 
                     foreach($block_attributes as $block_attribute){
                         $attribute = $block_attribute->getAttribute();
@@ -457,10 +454,11 @@ class PageRepository extends EntityRepository
                 );
 
             $block_attributes = $block->getBlockAttributes();
-            $is_repeatable = $template_block->getIsRepeatable();
+            $is_repeatable = $block->getIsRepeatable();
         
             //If there is a content, then populate the attribute array
             if($content){ 
+                $order = 1;
                 foreach($content['attributes'] as $key => $attributes){
 
                     //If block is repeatable, then get the real index, otherwise we only need index 0 (back front end purpose)
@@ -470,6 +468,8 @@ class PageRepository extends EntityRepository
                     //Set id and title of the block, title is only used for repeatable block
                     $response[$template_block->getRef()]['items'][$index]['title'] = $attributes['title'];
                     $response[$template_block->getRef()]['items'][$index]['id'] = $attributes['id'];
+                    $response[$template_block->getRef()]['items'][$index]['order'] = $order;
+                    $order++;
 
                     //Parse all attributes of a set
                     foreach($block_attributes as $block_attribute){
