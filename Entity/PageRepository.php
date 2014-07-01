@@ -12,7 +12,7 @@ class PageRepository extends EntityRepository
 
     public function findAllOrdered()
     {
-        return $this->findBy(array(), array('order' => 'ASC'));
+        return $this->findBy(array(), array('sort' => 'ASC'));
     }
 
     /**
