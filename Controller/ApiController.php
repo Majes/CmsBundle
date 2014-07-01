@@ -29,6 +29,8 @@ class ApiController extends Controller implements SystemController
         	'pages' => array());
 
         foreach($pages as $page){
+            $status = $page->getStatus();
+            if($status == 'deleted') continue;
 
         	$page->setLang($this->_lang);
         	$pageLang = $page->getLang();
@@ -40,6 +42,7 @@ class ApiController extends Controller implements SystemController
             		'url' => $pageLang->getUrl(),
                     'order' => $page->getSort(),
             		'content' => $content);
+            
             unset($pageLang, $content);
 
         }
