@@ -22,7 +22,7 @@ class ApiController extends Controller implements SystemController
     	$em = $this->getDoctrine()->getManager();
 
         $pages = $em->getRepository('MajesCmsBundle:Page')
-            ->findAll();
+            ->findAllOrdered();
 
         $response = array(
         	'lang' => $this->_lang,
@@ -38,6 +38,7 @@ class ApiController extends Controller implements SystemController
             if(!empty($pageLang))
             	$response['pages'][] = array(
             		'url' => $pageLang->getUrl(),
+                    'order' => $page->getSort(),
             		'content' => $content);
             unset($pageLang, $content);
 

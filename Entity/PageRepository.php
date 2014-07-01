@@ -10,6 +10,11 @@ class PageRepository extends EntityRepository
     private $_menu;
     private $_pages;
 
+    public function findAllOrdered()
+    {
+        return $this->findBy(array(), array('order' => 'ASC'));
+    }
+
     /**
      * GET all pages for a specific host and then generate menu
      */
