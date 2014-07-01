@@ -133,6 +133,8 @@ class Datatype
         $media = $this->_em->getRepository('MajesMediaBundle:Media')
             ->findOneById($attribute['media_id']); 
 
+        if (is_null($media) && is_null($file)) return null;
+
         if(is_null($media)){
             $media = new Media();
             $media->setCreateDate(new \DateTime(date('Y-m-d H:i:s')));
@@ -176,6 +178,8 @@ class Datatype
 
         $media = $this->_em->getRepository('MajesMediaBundle:Media')
             ->findOneById($attribute['media_id']); 
+
+        if (is_null($media) && is_null($file)) return null;
 
         if(is_null($media)){
             $media = new Media();
