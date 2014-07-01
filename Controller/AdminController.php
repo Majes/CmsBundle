@@ -1095,7 +1095,7 @@ class AdminController extends Controller implements SystemController
             //Set pageTemplateBlock        
             $pageTemplateBlock = $em->getRepository('MajesCmsBundle:PageTemplateBlock')
                 ->findOneById($page_template_block_id);
-            $attributes=json_decode($pageTemplateBlock->getContent(),true);
+            //$attributes=json_decode($pageTemplateBlock->getContent(),true);
         
 
 
@@ -1122,14 +1122,19 @@ class AdminController extends Controller implements SystemController
             
             $draft = $pageTemplateBlock->getDraft();
 
-            unset($attributes['attributes'][$id]);
-            $pageTemplateBlock->setContent(json_encode($attributes));
             
-            if(!is_null($draft)){
-                $pageTemplateBlock->setVersion($draft->getVersion());
+            if(is_null($draft)){
+                $version = $pageTemplateBlock->getLastVersion()+1;
 
+                $draft = new PageTemplateBlockVersion();
+                $draft->setVersion($version);
+                $draft->setUser($this->_user);
+                $draft->setPageTemplateBlock($pageTemplateBlock);
+                $draft->setLocale($pageTemplateBlock->getLocale());
+
+                $attributes=json_decode($pageTemplateBlock->getContent(),true);
+                unset($attributes['attributes'][$id]);
                 $draft->setContent(json_encode($attributes));
-                $draft->setStatus('published');
 
                 $em->persist($draft);
                 $em->flush();
