@@ -3,7 +3,8 @@
 	{% for attribute in item['attributes'] %}
 	    {% if attribute.value is not empty %}
 			{{ include(
-     			    'MajesCmsBundle:Index:datatype/' ~ attribute.ref  ~ '.html.twig'
+     			    'MajesCmsBundle:Index:datatype/' ~ attribute.ref  ~ '.html.twig', 
+     			    {container : true}
      			) }}
         {% endif %}
 	{% endfor %}
