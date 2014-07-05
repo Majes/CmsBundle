@@ -1,57 +1,59 @@
+{% set langexists_translation = hasTranslation(page.id, lang, true) %}
 <div class="row" id="cmsActions">
-  	<div class="col-lg-12">
-    	<div class="widget-container fluid-height clearfix">
-    		<div class="heading">
-          <a class="btn btn-default" href="{{path('majes_cms_' ~ page.id ~ '_' ~ lang)}}" target="_blank"><i class="icon-picture"></i> {% trans %}Wysiwyg mode{% endtrans %}</a>
-    			<div class="btn-group">
-
-           			<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            			<i class="icon-zoom-in"></i> {% trans %}Preview{% endtrans %}<span class="caret"></span>
-            		</button>
-            		<ul class="dropdown-menu">
-      			    	<li>
-      			    	  <a href="{{path('majes_cms_' ~ page.id ~ '_' ~ lang)}}?draft=1" target="_blank"><i class="icon-edit"></i> {% trans %}Draft{% endtrans %}</a>
-      			    	</li>
-      			    	<li>
-      			    	  <a href="{{path('majes_cms_' ~ page.id ~ '_' ~ lang)}}" target="_blank"><i class="icon-save"></i> {% trans %}Published{% endtrans %}</a>
-      			    	</li>
-      			  	</ul>
-            	</div>
-    			<div class="btn-group">
-      			  <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-      			  	<i class="icon-thumbs-up"></i> {% trans %}Share{% endtrans %}<span class="caret"></span></button>
-      			  	<ul class="dropdown-menu">
-      			    	<li>
-      			    	  <a href="#"><i class="icon-facebook"></i> Facebook</a>
-      			    	</li>
-      			    	<li>
-      			    	  <a href="#"><i class="icon-twitter"></i> Twitter</a>
-      			    	</li>
-      			    	<li>
-      			    	  <a href="#"><i class="icon-envelope"></i> Email</a>
-      			    	</li>
-      			  	</ul>
-      			</div>
-				
-				<div class="btn-group pull-right">
-      			  <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-      			  	<img src="{{ asset('bundles/majescore/images/flag-' ~ lang ~ '.png') }}" style="margin: 0 5px 3px"/> {% trans %}Languages{% endtrans %}<span class="caret"></span></button>
-      			  	<ul class="dropdown-menu" style="min-width: 50px">
+    <div class="col-lg-12">
+      <div class="widget-container fluid-height clearfix">
+        <div class="heading">
+          {% if langexists_translation is not empty %}<a class="btn btn-default" href="{{path('majes_cms_' ~ page.id ~ '_' ~ lang)}}" target="_blank"><i class="icon-picture"></i> {% trans %}Wysiwyg mode{% endtrans %}</a>{% endif %}
+          <div class="btn-group">
+                {% if langexists_translation is not empty %}
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                  <i class="icon-zoom-in"></i> {% trans %}Preview{% endtrans %}<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="{{path('majes_cms_' ~ page.id ~ '_' ~ lang)}}?draft=1" target="_blank"><i class="icon-edit"></i> {% trans %}Draft{% endtrans %}</a>
+                  </li>
+                  <li>
+                    <a href="{{path('majes_cms_' ~ page.id ~ '_' ~ lang)}}" target="_blank"><i class="icon-save"></i> {% trans %}Published{% endtrans %}</a>
+                  </li>
+                </ul>
+                {% endif %}
+              </div>
+          <div class="btn-group">
+              <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-thumbs-up"></i> {% trans %}Share{% endtrans %}<span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="#"><i class="icon-facebook"></i> Facebook</a>
+                  </li>
+                  <li>
+                    <a href="#"><i class="icon-twitter"></i> Twitter</a>
+                  </li>
+                  <li>
+                    <a href="#"><i class="icon-envelope"></i> Email</a>
+                  </li>
+                </ul>
+            </div>
+        
+        <div class="btn-group pull-right">
+              <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                <img src="{{ asset('bundles/majescore/images/flag-' ~ lang ~ '.png') }}" style="margin: 0 5px 3px"/> {% trans %}Languages{% endtrans %}<span class="caret"></span></button>
+                <ul class="dropdown-menu" style="min-width: 50px">
                   {% if page.parent is null %}{% set page_parent_id = 0 %}{% else %}{% set page_parent_id = page.parent.id %}{% endif %}
                   {% for lang in app.session.get('langs') %}
                   {% set has_translation = hasTranslation(page.id, lang.locale, true) %}
-      			    	<li>
-      			    	  <a href="{{ path('_cms_content', {id: page.id, page_parent_id: page_parent_id, lang: lang.locale, menu_id: page.menu.id}) }}" {% if has_translation is empty %}class="duplicateTranslation"{% endif %}><img src="{{ asset('bundles/majescore/images/flag-' ~ lang.locale ~ '.png') }}"/></a>
-      			    	</li>
+                  <li>
+                    <a href="{{ path('_cms_content', {id: page.id, page_parent_id: page_parent_id, lang: lang.locale, menu_id: page.menu.id}) }}" {% if has_translation is empty %}class="duplicateTranslation"{% endif %}><img src="{{ asset('bundles/majescore/images/flag-' ~ lang.locale ~ '.png') }}"/></a>
+                  </li>
                   {% endfor %}
-      			  	</ul>
-      			</div>
-				
+                </ul>
+            </div>
+        
         {% if page_has_draft %}<a class="btn btn-success pull-right" href="{{ path('_cms_publish', {'id' : page_id, 'lang' : lang}) }}" onclick="return CoreAdmin.Common.confirmDelete('{% trans %}Are you sure you want to publish this page?{% endtrans %}')"><i class="icon-zoom-in"></i> {% trans %}Publish{% endtrans %}</a>{% endif %}
-    			
-			</div>
-    	</div>
-  	</div>
+          
+      </div>
+      </div>
+    </div>
 </div>
 
 <div class="modal fade" id="duplicateTranslationModal" style="display: none;" aria-hidden="true">
