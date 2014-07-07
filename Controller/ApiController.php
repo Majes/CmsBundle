@@ -18,30 +18,34 @@ class ApiController extends Controller implements SystemController
      */
     public function getContentsAction()
     {
-        
-    	$em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();
+
+        $_lang = $request->get('lang');
+
+        if(empty($_lang)) $_lang = $this->_lang;
 
         $pages = $em->getRepository('MajesCmsBundle:Page')
             ->findAllOrdered();
 
         $response = array(
-        	'lang' => $this->_lang,
-        	'pages' => array());
+            'lang' => $_lang,
+            'pages' => array());
 
         foreach($pages as $page){
             $status = $page->getStatus();
             if($status == 'deleted') continue;
 
-        	$page->setLang($this->_lang);
-        	$pageLang = $page->getLang();
+            $page->setLang($_lang);
+            $pageLang = $page->getLang();
 
-        	$content = $em->getRepository('MajesCmsBundle:Page')
-                    ->getContent($page, $this->_lang);
+            $content = $em->getRepository('MajesCmsBundle:Page')
+                    ->getContent($page, $_lang);
             if(!empty($pageLang))
-            	$response['pages'][] = array(
-            		'url' => $pageLang->getUrl(),
+                $response['pages'][] = array(
+                    'url' => $pageLang->getUrl(),
                     'order' => $page->getSort(),
-            		'content' => $content);
+                    'content' => $content);
             
             unset($pageLang, $content);
 
@@ -57,11 +61,11 @@ class ApiController extends Controller implements SystemController
     public function getContentAction($url)
     {
 
-    	$em = $this->getDoctrine()->getManager();
-    	$pageLang = $em->getRepository('MajesCmsBundle:PageLang')
+        $em = $this->getDoctrine()->getManager();
+        $pageLang = $em->getRepository('MajesCmsBundle:PageLang')
             ->findOneBy(array(
-            	'url' => $url,
-            	'locale' => $this->_lang));
+                'url' => $url,
+                'locale' => $this->_lang));
 
         $page = $pageLang->getPage();
 
@@ -69,13 +73,13 @@ class ApiController extends Controller implements SystemController
                     ->getContent($page, $this->_lang);
 
         return array(
-        	'lang' => $this->_lang, 
-        	'pages' => array(
-        		0 => array(
-        			'url' => $url,
-        			'content' => $content
-        			)
-        		));
+            'lang' => $this->_lang, 
+            'pages' => array(
+                0 => array(
+                    'url' => $url,
+                    'content' => $content
+                    )
+                ));
     }
 
 }
