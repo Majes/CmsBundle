@@ -3,17 +3,18 @@ namespace Majes\CmsBundle\Entity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Majes\CoreBundle\Annotation\DataTable;
 
 
 /**
  * Majes\CmsBundle\Entity\BlockAttribute
- *
- * @ORM\Table(name="cms_block_attribute")
  * @ORM\Entity
+ * @ORM\Table(name="cms_block_attribute")
+ * @ORM\HasLifecycleCallbacks
  */
 class BlockAttribute{
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -21,40 +22,38 @@ class BlockAttribute{
 
     /**
      * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Block", inversedBy="blockAttributes", cascade={"persist"})
-     * @ORM\JoinColumn(name="block_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="block_id", referencedColumnName="id", nullable=false)
      */
     private $block;
 
     /**
      * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Attribute", inversedBy="blockAttributes", cascade={"persist"})
-     * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", nullable=false)
      */
     private $attribute;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="sort", type="integer", nullable=false)
      */
-    private $sort;
+    private $sort=0;
     
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(name="ref", type="string", length=150, nullable=false)
      */
-    private $ref;
+    private $ref='';
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(name="title", type="string", length=150, nullable=true)
      */
-    private $title;
+    private $title=null;
 
     /**
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="update_date", type="datetime")
+     * @ORM\Column(name="update_date", type="datetime", nullable=false)
      */
     private $updateDate;
 
     /**
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="create_date", type="datetime")
+     * @ORM\Column(name="create_date", type="datetime", nullable=false)
      */
     private $createDate;
 
@@ -205,6 +204,19 @@ class BlockAttribute{
     {
         return $this->updateDate;
     }
+    /**
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        $this->setUpdateDate(new \DateTime(date('Y-m-d H:i:s')));
 
+        if($this->getCreateDate() == null)
+        {
+            $this->setCreateDate(new \DateTime(date('Y-m-d H:i:s')));
+        }
+    }
 
 }

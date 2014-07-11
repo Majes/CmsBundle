@@ -16,7 +16,7 @@ use Majes\CoreBundle\Annotation\DataTable;
  */
 class Route extends SymfonyRoute implements RouteObjectInterface{
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -24,33 +24,33 @@ class Route extends SymfonyRoute implements RouteObjectInterface{
 
     /**
      * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Page")
-     * @ORM\JoinColumn(name="page_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="page_id", referencedColumnName="id", nullable=false)
      */
     private $page;
 
     /**
-     * @ORM\Column(name="host", type="string", length=255)
+     * @ORM\Column(name="host", type="string", length=255, nullable=false)
      */
     private $host;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(name="locale", type="string", length=5, nullable=false)
      */
     private $locale;
 
     /**
-     * @ORM\Column(type="string", length=250)
+     * @ORM\Column(name="title", type="string", length=250, nullable=false)
      */
-    private $title;
+    private $title='';
 
 
     /**
-     * @ORM\Column(name="url", type="string", length=255)
+     * @ORM\Column(name="url", type="string", length=255, nullable=false)
      */
     private $url;
 
     /**
-     * @ORM\Column(name="redirect_url", type="string", length=255)
+     * @ORM\Column(name="redirect_url", type="string", length=255, nullable=false)
      */
     private $redirectUrl;
 

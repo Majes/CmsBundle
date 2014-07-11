@@ -11,94 +11,93 @@ use Majes\CoreBundle\Annotation\DataTable;
  *
  * @ORM\Entity(repositoryClass="Majes\CmsBundle\Entity\PageRepository")
  * @ORM\Table(name="cms_page")
+ * @ORM\HasLifecycleCallbacks
  */
 class Page{
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @ORM\Column(name="link_url", type="string", length=255)
+     * @ORM\Column(name="link_url", type="string", length=255, nullable=true)
      */
-    private $linkUrl;
+    private $linkUrl=null;
 
     /**
-     * @ORM\Column(name="target_url", type="string", length=255)
+     * @ORM\Column(name="target_url", type="string", length=6, nullable=false)
      */
-    private $targetUrl;
+    private $targetUrl='_self';
 
     /**
-     * @ORM\Column(name="sort", type="integer")
+     * @ORM\Column(name="sort", type="integer", nullable=false)
      */
-    private $sort;
+    private $sort=0;
 
     /**
-     * @ORM\Column(name="is_inmenu", type="boolean")
+     * @ORM\Column(name="is_inmenu", type="boolean", nullable=false)
      */
-    private $isInmenu;
+    private $isInmenu=1;
 
     /**
-     * @ORM\Column(name="is_active", type="boolean")
+     * @ORM\Column(name="is_active", type="boolean", nullable=false)
      */
-    private $isActive;
+    private $isActive=1;
 
     /**
-     * @ORM\Column(name="is_folder", type="boolean")
+     * @ORM\Column(name="is_folder", type="boolean", nullable=false)
      */
-    private $isFolder;
+    private $isFolder=0;
 
     /**
-     * @ORM\Column(name="enable_comments", type="boolean")
+     * @ORM\Column(name="enable_comments", type="boolean", nullable=false)
      */
-    private $enableComments;
+    private $enableComments=0;
     
     /**
-     * @ORM\Column(name="status", type="string")
+     * @ORM\Column(name="status", type="string", nullable=false)
      */
-    private $status;
+    private $status='';
 
     /**
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="create_date", type="datetime")
+     * @ORM\Column(name="create_date", type="datetime", nullable=false)
      */
     private $createDate;
 
     /**
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="update_date", type="datetime")
+     * @ORM\Column(name="update_date", type="datetime", nullable=false)
      */
     private $updateDate;
 
     /**
      * @ORM\ManyToOne(targetEntity="Majes\CoreBundle\Entity\User\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Menu")
-     * @ORM\JoinColumn(name="menu_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="menu_id", referencedColumnName="id", nullable=true)
      */
-    private $menu;
+    private $menu=null;
 
     /**
      * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Page")
-     * @ORM\JoinColumn(name="page_id_parent", referencedColumnName="id")
+     * @ORM\JoinColumn(name="page_id_parent", referencedColumnName="id", nullable=true)
      */
-    private $parent;
+    private $parent=null;
 
     /**
      * @ORM\ManyToOne(targetEntity="Majes\CoreBundle\Entity\Host")
-     * @ORM\JoinColumn(name="host_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="host_id", referencedColumnName="id", nullable=false)
      */
     private $host;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Template")
-     * @ORM\JoinColumn(name="template_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Template", inversedBy="templatePages")
+     * @ORM\JoinColumn(name="template_id", referencedColumnName="id", nullable=false)
      */
     private $template;
 
@@ -525,6 +524,19 @@ class Page{
 
         return;
     }
-    
+    /**
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        $this->setUpdateDate(new \DateTime(date('Y-m-d H:i:s')));
+
+        if($this->getCreateDate() == null)
+        {
+            $this->setCreateDate(new \DateTime(date('Y-m-d H:i:s')));
+        }
+    }
 
 }

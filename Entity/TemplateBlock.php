@@ -10,10 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="cms_template_block")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class TemplateBlock{
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -21,60 +22,58 @@ class TemplateBlock{
 
     /**
      * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Block", inversedBy="templateBlocks", cascade={"persist"})
-     * @ORM\JoinColumn(name="block_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="block_id", referencedColumnName="id", nullable=false)
      */
     private $block;
 
     /**
      * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Template", inversedBy="templateBlocks", cascade={"persist"})
-     * @ORM\JoinColumn(name="template_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="template_id", referencedColumnName="id", nullable=false)
      */
     private $template;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="sort", type="integer", nullable=false)
      */
-    private $sort;
+    private $sort=0;
 
     /**
-     * @ORM\Column(type="boolean", name="is_mobile")
+     * @ORM\Column(type="boolean", name="is_mobile", nullable=false)
      */
-    private $isMobile;
+    private $isMobile=1;
 
     /**
-     * @ORM\Column(type="boolean", name="is_tablet")
+     * @ORM\Column(type="boolean", name="is_tablet", nullable=false)
      */
-    private $isTablet;
+    private $isTablet=1;
 
     /**
-     * @ORM\Column(type="boolean", name="is_desktop")
+     * @ORM\Column(type="boolean", name="is_desktop", nullable=false)
      */
-    private $isDesktop;
+    private $isDesktop=1;
 
     /**
-     * @ORM\Column(type="boolean", name="is_repeatable")
+     * @ORM\Column(type="boolean", name="is_repeatable", nullable=false)
      */
-    private $isRepeatable;
+    private $isRepeatable=0;
         
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(name="title",type="string", length=150, nullable=false)
      */
-    private $title;
+    private $title='';
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(name="ref", type="string", length=100, nullable=false)
      */
-    private $ref;
+    private $ref='';
 
     /**
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="update_date", type="datetime")
+     * @ORM\Column(name="update_date", type="datetime", nullable=false)
      */
     private $updateDate;
 
     /**
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="create_date", type="datetime")
+     * @ORM\Column(name="create_date", type="datetime", nullable=false)
      */
     private $createDate;
 
@@ -297,6 +296,19 @@ class TemplateBlock{
     {
         return $this->updateDate;
     }
+    /**
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        $this->setUpdateDate(new \DateTime(date('Y-m-d H:i:s')));
 
+        if($this->getCreateDate() == null)
+        {
+            $this->setCreateDate(new \DateTime(date('Y-m-d H:i:s')));
+        }
+    }
 
 }

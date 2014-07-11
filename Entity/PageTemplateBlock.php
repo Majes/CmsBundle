@@ -9,10 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="cms_page_template_block")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class PageTemplateBlock{
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -20,46 +21,44 @@ class PageTemplateBlock{
 
     /**
      * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\TemplateBlock")
-     * @ORM\JoinColumn(name="template_block_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="template_block_id", referencedColumnName="id", nullable=false)
      */
     private $templateBlock;
 
     /**
      * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Page", inversedBy="pageTemplateBlocks", cascade={"persist"})
-     * @ORM\JoinColumn(name="page_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="page_id", referencedColumnName="id", nullable=false)
      */
     private $page;
 
     /**
      * @ORM\ManyToOne(targetEntity="Majes\CoreBundle\Entity\User\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\Column( type="string", length=5)
+     * @ORM\Column(name="locale", type="string", length=5, nullable=false)
      */
     private $locale;
 
     /**
-     * @ORM\Column( type="integer")
+     * @ORM\Column(name="version", type="integer", nullable=false)
      */
-    private $version;
+    private $version=1;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="content", type="text", nullable=false)
      */
     private $content;
     
     /**
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="update_date", type="datetime")
+     * @ORM\Column(name="update_date", type="datetime", nullable=false)
      */
     private $updateDate;
 
     /**
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="create_date", type="datetime")
+     * @ORM\Column(name="create_date", type="datetime", nullable=false)
      */
     private $createDate;
 
@@ -274,5 +273,18 @@ class PageTemplateBlock{
         
         return $version_num;
     }
+    /**
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        $this->setUpdateDate(new \DateTime(date('Y-m-d H:i:s')));
 
+        if($this->getCreateDate() == null)
+        {
+            $this->setCreateDate(new \DateTime(date('Y-m-d H:i:s')));
+        }
+    }
 }

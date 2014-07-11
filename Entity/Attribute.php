@@ -14,19 +14,19 @@ use Majes\CoreBundle\Annotation\DataTable;
  */
 class Attribute{
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(name="ref", type="string", length=100, nullable=false)
      */
     private $ref;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(name="title", type="string", length=150, nullable=false)
      */
     private $title;
     

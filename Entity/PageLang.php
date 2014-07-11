@@ -11,12 +11,13 @@ use Majes\CoreBundle\Annotation\DataTable;
  *
  * @ORM\Table(name="cms_page_lang")
  * @ORM\Entity(repositoryClass="Majes\CmsBundle\Entity\PageLangRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class PageLang{
 
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -24,70 +25,68 @@ class PageLang{
 
     /**
      * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Page", inversedBy="langs", cascade={"persist"})
-     * @ORM\JoinColumn(name="page_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="page_id", referencedColumnName="id", nullable=false)
      */
     private $page;
 
     /**
-     * @ORM\Column( type="string", length=5)
+     * @ORM\Column(name="locale", type="string", length=5, nullable=false)
      */
     private $locale;
 
     /**
      * @ORM\ManyToOne(targetEntity="Majes\CoreBundle\Entity\User\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="title", type="string", length=150, nullable=false)
      */
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(name="url", type="string", length=150, nullable=false)
      */
     private $url;
 
     /**
-     * @ORM\Column(name="url_root", type="string", length=255)
+     * @ORM\Column(name="url_root", type="string", length=255, nullable=true)
      */
-    private $urlRoot;
+    private $urlRoot=null;
 
     /**
-     * @ORM\Column(name="meta_description", type="string", length=255)
+     * @ORM\Column(name="meta_description", type="string", length=255, nullable=true)
      */
-    private $metaDescription;
+    private $metaDescription=null;
 
     /**
-     * @ORM\Column(name="meta_keywords", type="string", length=255)
+     * @ORM\Column(name="meta_keywords", type="string", length=255, nullable=true)
      */
-    private $metaKeywords;
+    private $metaKeywords=null;
 
     /**
-     * @ORM\Column(name="meta_title", type="string", length=150)
+     * @ORM\Column(name="meta_title", type="string", length=150, nullable=true)
      */
-    private $metaTitle;
+    private $metaTitle=null;
 
     /**
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="create_date", type="datetime")
+     * @ORM\Column(name="create_date", type="datetime", nullable=false)
      */
     private $createDate;
 
     /**
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="update_date", type="datetime")
+     * @ORM\Column(name="update_date", type="datetime", nullable=false)
      */
     private $updateDate;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="tags", type="string", length=150, nullable=false)
      */
-    private $tags;
+    private $tags='Page';
 
     /**
-     * @ORM\Column(name="search_description", type="string")
+     * @ORM\Column(name="search_description", type="text", nullable=true)
      */
     private $searchDescription;
 
@@ -97,9 +96,9 @@ class PageLang{
     private $content;
 
     /**
-     * @ORM\Column(name="is_active", type="boolean")
+     * @ORM\Column(name="is_active", type="boolean", nullable=false)
      */
-    private $isActive;
+    private $isActive=1;
 
 
     /**
@@ -406,4 +405,18 @@ class PageLang{
     }
 
     public function entityRenderFront(){ return array('title' => $this->title, 'description' => $this->metaDescription, 'url' => array('route' => 'majes_page_'.$this->page->getId().'_'.$this->locale, 'params' => array()));}
+    /**
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        $this->setUpdateDate(new \DateTime(date('Y-m-d H:i:s')));
+
+        if($this->getCreateDate() == null)
+        {
+            $this->setCreateDate(new \DateTime(date('Y-m-d H:i:s')));
+        }
+    }
 }

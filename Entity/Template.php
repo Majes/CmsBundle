@@ -11,10 +11,11 @@ use Majes\CoreBundle\Annotation\DataTable;
  *
  * @ORM\Table(name="cms_template")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class Template{
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -22,29 +23,27 @@ class Template{
 
     /**
      * @ORM\ManyToOne(targetEntity="Majes\CoreBundle\Entity\User\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(name="title", type="string", length=150, nullable=false)
      */
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(name="ref", type="string", length=50, nullable=false)
      */
-    private $ref;
+    private $ref='';
     
     /**
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="update_date", type="datetime")
+     * @ORM\Column(name="update_date", type="datetime", nullable=false)
      */
     private $updateDate;
 
     /**
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="create_date", type="datetime")
+     * @ORM\Column(name="create_date", type="datetime", nullable=false)
      */
     private $createDate;
 
@@ -207,6 +206,19 @@ class Template{
 
         return;
     }
+    /**
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        $this->setUpdateDate(new \DateTime(date('Y-m-d H:i:s')));
 
+        if($this->getCreateDate() == null)
+        {
+            $this->setCreateDate(new \DateTime(date('Y-m-d H:i:s')));
+        }
+    }
 
 }

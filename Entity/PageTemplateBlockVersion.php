@@ -6,55 +6,53 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Majes\CmsBundle\Entity\PageTemplateBlock
- *
+ * @ORM\Entity 
  * @ORM\Table(name="cms_page_template_block_version")
- * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class PageTemplateBlockVersion{
     /**
      * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\PageTemplateBlock", inversedBy="versions")
-     * @ORM\JoinColumn(name="page_template_block_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="page_template_block_id", referencedColumnName="id", nullable=false)
      * @ORM\Id
      */
     private $pageTemplateBlock;
 
     /**
-     * @ORM\Column( type="integer")
+     * @ORM\Column(type="integer", nullable=false)
      * @ORM\Id
      */
-    private $version;
+    private $version=1;
 
 
     /**
      * @ORM\ManyToOne(targetEntity="Majes\CoreBundle\Entity\User\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="content", type="text", nullable=false)
      */
     private $content;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="locale", type="string", length=5, nullable=false)
      */
     private $locale;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="status", type="string", length=20, nullable=false)
      */
-    private $status;
+    private $status='draft';
     
     /**
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="update_date", type="datetime")
+     * @ORM\Column(name="update_date", type="datetime", nullable=false)
      */
     private $updateDate;
 
     /**
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="create_date", type="datetime")
+     * @ORM\Column(name="create_date", type="datetime", nullable=false)
      */
     private $createDate;
 
@@ -199,6 +197,19 @@ class PageTemplateBlockVersion{
     {
         return $this->updateDate;
     }
+    /**
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        $this->setUpdateDate(new \DateTime(date('Y-m-d H:i:s')));
 
+        if($this->getCreateDate() == null)
+        {
+            $this->setCreateDate(new \DateTime(date('Y-m-d H:i:s')));
+        }
+    }
 
 }
