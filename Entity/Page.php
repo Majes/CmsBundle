@@ -118,7 +118,7 @@ class Page{
     private $pageTemplateBlocks;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Majes\CoreBundle\Entity\User\Role", cascade={"remove"})
+     * @ORM\ManyToMany(targetEntity="Majes\CoreBundle\Entity\User\Role")
      * @ORM\JoinTable(name="cms_page_role",
      *      joinColumns={@ORM\JoinColumn(name="page_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
