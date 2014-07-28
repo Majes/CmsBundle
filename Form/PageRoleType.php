@@ -24,12 +24,12 @@ class PageRoleType extends AbstractType
     {
         
     	$roles = $this->em->getRepository('MajesCoreBundle:User\Role')
-            ->findAll();
+            ->findBy(array('deleted' => false));
 
         $roles_array = array();$roles_has = array();
         $bundle = null;
         foreach($roles as $role){
-            if($role->getInternal() && $role->getBundle() == 'cms'){
+            if(!$role->getIsSystem() && $role->getBundle() == 'cms'){
                 $roles_array[$role->getBundle()][$role->getId()] = $role->getName();
 
                 if(empty($this->page)) $roles_has[$role->getBundle()][$role->getId()] = true;

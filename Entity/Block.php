@@ -64,6 +64,11 @@ class Block{
     private $templateBlocks;
 
     /**
+     * @ORM\Column(name="deleted", type="boolean", nullable=false)
+     */
+    private $deleted=0;
+
+    /**
      * @DataTable(isTranslatable=0, hasAdd=1, hasPreview=0, isDatatablejs=0)
      */
     public function __construct()
@@ -265,6 +270,30 @@ class Block{
         {
             $this->setCreateDate(new \DateTime(date('Y-m-d H:i:s')));
         }
+    }
+
+    /**
+     * Gets the value of deleted.
+     *
+     * @return mixed
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Sets the value of deleted.
+     *
+     * @param mixed $deleted the deleted
+     *
+     * @return self
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
     }
 
 }

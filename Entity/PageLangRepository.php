@@ -13,8 +13,8 @@ class PageLangRepository extends EntityRepository
 
         $query = $this->createQueryBuilder('pl')
             ->innerJoin('pl.page', 'p')
-            ->where('p.status != :status')
-            ->setParameter('status', 'deleted')
+            ->where('p.deleted != :deleted')
+            ->setParameter('deleted', 0)
             ->orderBy('p.id', 'ASC');
 
         return $query;
@@ -28,8 +28,8 @@ class PageLangRepository extends EntityRepository
 
         $query = $this->createQueryBuilder('pl')
             ->innerJoin('pl.page', 'p')
-            ->where('p.status != :status')
-            ->setParameter('status', 'deleted')
+            ->where('p.deleted != :deleted')
+            ->setParameter('deleted', 0)
             ->orderBy('pl.updateDate', 'DESC')
             ->setFirstResult( 0 )
             ->setMaxResults( 5 )

@@ -13,6 +13,7 @@ use Majes\CoreBundle\Annotation\DataTable;
  *
  * @ORM\Entity
  * @ORM\Table(name="cms_route")
+ * @ORM\HasLifeCycleCallbacks
  */
 class Route extends SymfonyRoute implements RouteObjectInterface{
     /**
@@ -52,7 +53,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface{
     /**
      * @ORM\Column(name="redirect_url", type="string", length=255, nullable=false)
      */
-    private $redirectUrl;
+    private $redirectUrl='';
 
     protected $content;
 
@@ -199,5 +200,16 @@ class Route extends SymfonyRoute implements RouteObjectInterface{
     }
     
     public function getRouteKey(){ return null;}
+
+    /**
+     *
+     * @ORM\PrePersist
+     */
+    public function defaultValues()
+    {
+        if(is_null($this->redirectUrl)){
+            $this->redirectUrl='';
+        }
+    }
 
 }

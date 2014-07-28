@@ -118,7 +118,8 @@
                                             </div>
                                             {% if attribute_block.new is not defined %}<div class="panel-collapse collapse" id="collapse{{key}}" style="height: 0px;">
                                                 <div class="panel-body">
-                                                    <a class="deleteBlock icon-trash pull-right" href="{{path('_cms_pageblock_delete')}}" data-pagetemplateblock="{{block.page_template_block}}" data-page="{{block.page}}" data-templateblock="{{block.template_block}}" data-id="{{attribute_block.id}}" data-lang="{{lang}}"></a>
+                                                    {% set params =  {'id':attribute_block.id, 'page':block.page, 'pagetemplateblock':block.page_template_block, 'templateblock':block.template_block, 'lang':lang } %}
+                                                    <a class="icon-trash pull-right" href="{{path('_cms_pageblock_delete', params)}}" onclick="return CoreAdmin.Common.confirmDelete('{% trans %}Are you sure you want to do this ?{% endtrans %}')"></a>
                                                     <a class="editBlock icon-edit pull-right" href="#" data-pagetemplateblock="{{block.page_template_block}}" data-page="{{block.page}}" data-templateblock="{{block.template_block}}" data-id="{{attribute_block.id}}"></a>
 
                                                     {% for attribute in attribute_block.attributes %}

@@ -122,6 +122,7 @@ class AdminController extends Controller implements SystemController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $page = $form->getData();
+                
                 if(is_null($page->getId())){
                     $page->setUser($this->_user);
 
@@ -273,12 +274,67 @@ class AdminController extends Controller implements SystemController
         if(!Helper::hasAdminRole($page, $this->container->get('security.context')))
             throw new \Exception('Unauthorized access.', 403);
 
-        $page->setStatus('deleted');
+        $page->setDeleted(true);
+
+        $pageLangs = $em->getRepository('MajesCmsBundle:PageLang')
+            ->findBy(array("page" => $id));
+        foreach($pageLangs as $pagelang){
+            $pagelang->setDeleted(true);
+            $em->persist($pagelang);
+            $em->flush();
+        }
 
         $em->persist($page);
         $em->flush();
         
+        //Set routes to table
+        $em->getRepository('MajesCmsBundle:Page')->generateRoutes($page->getMenu()->getRef(), $this->_is_multilingual);
+
         return $this->redirect($this->get('router')->generate('_cms_content', array('menu_id' => null, 'id' => null, 'lang' => null, 'page_parent_id' => null)));
+    }
+
+    /**
+     * @Secure(roles="ROLE_CMS_PUBLISH,ROLE_SUPERADMIN")
+     *
+     */
+    public function contentUndeleteAction($id)
+    {   
+
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+
+        $pageLang = $em->getRepository('MajesCmsBundle:PageLang')
+            ->findOneById($id);
+        
+        if(is_null($pageLang))
+            die();
+
+        $page = $pageLang->getPage();
+        $host = $page->getHost();
+
+
+        //Check permissions
+        if(!Helper::hasAdminRole($page, $this->container->get('security.context')))
+            throw new \Exception('Unauthorized access.', 403);
+
+        foreach ($page->getLangs() as $pageLangTemp) {
+            $pageLangTemp->setDeleted(false);
+            $em->persist($pageLangTemp);
+            $em->flush();
+        }
+        
+        $page->setDeleted(false);
+        $em->persist($page);
+        $em->flush();
+
+        $host->setDeleted(false);
+        $em->persist($host);
+        $em->flush();
+
+        //Set routes to table
+        $em->getRepository('MajesCmsBundle:Page')->generateRoutes($page->getMenu()->getRef(), $this->_is_multilingual);
+        
+        return $this->redirect($this->get('router')->generate('_admin_trashs', array()));
     }
 
     /**
@@ -337,6 +393,8 @@ class AdminController extends Controller implements SystemController
         
         return $this->redirect($this->get('router')->generate('_cms_content', array('menu_id' => $page->getMenu()->getId(), 'id' => $page->getId(), 'lang' => $lang, 'page_parent_id' => is_null($page_parent_id) ? "0" : $page_parent_id)));
     }
+
+
 
     /**
      * @Secure(roles="ROLE_CMS_PUBLISH,ROLE_SUPERADMIN")
@@ -397,7 +455,7 @@ class AdminController extends Controller implements SystemController
 
         //Get hosts
         $hosts = $em->getRepository('MajesCoreBundle:Host')
-            ->findAll();
+            ->findBy(array('deleted' => 0));
 
         //Get menus
         $navs = $em->getRepository('MajesCmsBundle:Menu')
@@ -435,11 +493,13 @@ class AdminController extends Controller implements SystemController
         
         $em = $this->getDoctrine()->getManager();
         $blocks = $em->getRepository('MajesCmsBundle:Block')
-            ->findAll();
+            ->findBy(array("deleted" => false));
         
         return $this->render('MajesCoreBundle:common:datatable.html.twig', array(
             'datas' => $blocks,
             'object' => new Block(),
+            'label' => 'blocks',
+            'message' => 'Are you sure you want to delete this block ?',
             'pageTitle' => $this->_translator->trans('Content management'),
             'pageSubTitle' => $this->_translator->trans('List of all available blocks?'),
             'urls' => array(
@@ -566,7 +626,6 @@ class AdminController extends Controller implements SystemController
 
         $pageSubTitle = empty($block) ? $this->_translator->trans('Add a new block') : $this->_translator->trans('Edit block'). ' ' . $block->getTitle();
         
-        //var_dump($block->getAttributes()); exit;
 
         return $this->render('MajesCmsBundle:Admin:block-edit.html.twig', array(
             'pageTitle' => $this->_translator->trans('Content management'),
@@ -577,7 +636,7 @@ class AdminController extends Controller implements SystemController
             ));
     }
 
-        /**
+    /**
      * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
      *
      */
@@ -590,11 +649,41 @@ class AdminController extends Controller implements SystemController
                 ->findOneById($id);
 
         if (!is_null($block)) {
-            $em->remove($block);
+            $templateblocks = $em->getRepository('MajesCmsBundle:TemplateBlock')
+                ->findBy(array("block" => $block));
+
+            foreach($templateblocks as $templateblock){
+                $em->remove($templateblock);
+                $em->flush();
+            }
+
+            $block->setDeleted(true);
+            $em->persist($block);
             $em->flush();
         }
         
         return $this->redirect($this->get('router')->generate('_cms_blocks_list', array()));
+    }
+
+    /**
+     * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
+     *
+     */
+    public function blockUndeleteAction($id) {
+
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+
+        $block = $em->getRepository('MajesCmsBundle:Block')
+                ->findOneById($id);
+
+        if (!is_null($block)) {
+            $block->setDeleted(false);
+            $em->persist($block);
+            $em->flush();
+        }
+        
+        return $this->redirect($this->get('router')->generate('_admin_trashs', array()));
     }
     
     /**
@@ -605,13 +694,15 @@ class AdminController extends Controller implements SystemController
     {   
         $em = $this->getDoctrine()->getManager();
         $templates = $em->getRepository('MajesCmsBundle:Template')
-            ->findAll();
+            ->findBy(array('deleted' => false));
         
         return $this->render('MajesCoreBundle:common:datatable.html.twig', array(
             'datas' => $templates,
             'object' => new Template(),
             'pageTitle' => $this->_translator->trans('Content management'),
             'pageSubTitle' => $this->_translator->trans('List of all available templates?'),
+            'label' => 'templates',
+            'message' => 'Are you sure you want to delete this template ? (only possible if the template is not currently used by any page)',
             'urls' => array(
                 'add' => '_cms_template_edit',
                 'edit' => '_cms_template_edit',
@@ -730,11 +821,10 @@ class AdminController extends Controller implements SystemController
 
         /*GET ATTRIBUTE LIST*/
         $blocks = $em->getRepository('MajesCmsBundle:Block')
-            ->findAll();
+            ->findBy(array("deleted" => false));
 
         $pageSubTitle = empty($block) ? $this->_translator->trans('Add a new template') : $this->_translator->trans('Edit template'). ' ' . $block->getTitle();
         
-        //var_dump($block->getAttributes()); exit;
 
         return $this->render('MajesCmsBundle:Admin:template-edit.html.twig', array(
             'pageTitle' => $this->_translator->trans('Content management'),
@@ -809,11 +899,40 @@ class AdminController extends Controller implements SystemController
                 ->findOneById($id);
 
         if (!is_null($template)) {
-            $em->remove($template);
-            $em->flush();
+            $pages = $em->getRepository('MajesCmsBundle:Page')
+                ->findBy(array("deleted" => false, "template" => $template));
+
+            $isLinked=sizeof($pages);
+            if($isLinked == 0){
+                $template->setDeleted(true);
+                $em->persist($template);
+                $em->flush();
+            }
         }
 
         return $this->redirect($this->get('router')->generate('_cms_templates_list', array()));
+    }
+
+    /**
+     * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
+     *
+     */
+    public function templateUndeleteAction($id){
+     
+        
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+
+        $template = $em->getRepository('MajesCmsBundle:Template')
+                ->findOneById($id);
+
+        if (!is_null($template)) {
+            $template->setDeleted(false);
+            $em->persist($template);
+            $em->flush();
+        }
+
+        return $this->redirect($this->get('router')->generate('_admin_trashs', array()));
     }
 
     /**
@@ -1056,7 +1175,6 @@ class AdminController extends Controller implements SystemController
             }  
 
             //Hack to index content
-            $pageLang->setUpdateDate(new \DateTime());
             $em->persist($pageLang);
             $em->flush();        
 
@@ -1073,19 +1191,16 @@ class AdminController extends Controller implements SystemController
     /**
      * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
      */
-    public function pageBlockDeleteAction(){
+    public function pageBlockDeleteAction($id, $page, $pagetemplateblock, $templateblock, $lang, $title='', $wysiwyg=false){
 
 
-        $request = $this->getRequest();
-        if($request->getMethod() == 'POST'){
-
-            $page_template_block_id = $request->get('page_template_block_id');
-            $page_id = $request->get('page_id');
-            $id = $request->get('id');
-            $template_block_id = $request->get('template_block_id');
-            $lang = $request->get('lang');
-            $title = $request->get('title', '');
-            $wysiwyg = $request->get('wysiwyg', false);
+            $page_template_block_id = $pagetemplateblock;
+            $page_id = $page;
+            $id = $id;
+            $template_block_id = $templateblock;
+            $lang = $lang;
+            $title = $title;
+            $wysiwyg = $wysiwyg;
 
 
 
@@ -1148,10 +1263,7 @@ class AdminController extends Controller implements SystemController
             $em->persist($pageLang);
             $em->flush();        
             
-            return new Response(json_encode(array("success" => true)));
-
-        }else
-            return new Response(json_encode(array("success" => false)));
+            return $this->redirect($this->get('router')->generate('_cms_content', array('id' => $page->getId(), 'menu_id' => $page->getMenu()->getId(), 'lang' => $lang, 'page_parent_id' => is_null($page->getParent()) ? "0" : $page->getParent()->getId())));
     }
     /**
      * @Secure(roles="ROLE_CMS_PUBLISH, ROLE_SUPERADMIN")
@@ -1161,11 +1273,13 @@ class AdminController extends Controller implements SystemController
         $em = $this->getDoctrine()->getManager();
         $roles = $em->getRepository('MajesCoreBundle:User\Role')
             ->findBy(array(
-                'bundle' => 'cms'));
+                'bundle' => 'cms', 'deleted' => false));
 
         return $this->render('MajesCoreBundle:common:datatable.html.twig', array(
             'datas' => $roles,
             'object' => new Role(),
+            'label' => 'roles',
+            'message' => 'Are you sure you want to delete this role ?',
             'pageTitle' => $this->_translator->trans('Roles'),
             'pageSubTitle' => $this->_translator->trans('List off all roles currently available'),
             'urls' => array(

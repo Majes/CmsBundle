@@ -18,12 +18,12 @@ class PageRepository extends EntityRepository
     /**
      * GET all pages for a specific host and then generate menu
      */
-    public function getMenu($host_id, $lang, $menu = 'main', $level = null, $current_page_id = null, $is_inmenu = null, $status = '', $page_parent_id = null) {
+    public function getMenu($host_id, $lang, $menu = 'main', $level = null, $current_page_id = null, $is_inmenu = null, $deleted = 0, $page_parent_id = null) {
 
         $query = $this->createQueryBuilder('p')
             ->innerJoin('p.langs', 'pl')
             ->innerJoin('p.menu', 'm')
-            ->where('p.status = :status AND p.host = :host_id AND pl.locale = :lang AND m.ref = :menu');
+            ->where('p.deleted = :deleted AND p.host = :host_id AND pl.locale = :lang AND m.ref = :menu');
 
         if(!is_null($is_inmenu)){
 
@@ -42,7 +42,7 @@ class PageRepository extends EntityRepository
         $query = $query->setParameter('host_id', $host_id)
             ->setParameter('lang', $lang)
             ->setParameter('menu', $menu)
-            ->setParameter('status', $status)
+            ->setParameter('deleted', $deleted)
             ->orderBy('p.sort', 'ASC')
             ->getQuery();
 
@@ -534,11 +534,11 @@ class PageRepository extends EntityRepository
 
         $pages = array();
         foreach($menu as $lang => $host){
-
+            
             foreach($host as $domain => $pages){
-
+                
                 foreach($pages as $page){
-
+        
                     $this->_pages[] = array(
                         'lang' => $lang,
                         'domain' => $domain,
@@ -552,6 +552,7 @@ class PageRepository extends EntityRepository
 
                     $this->recursiveMenu($page['children'], $lang, $domain, $page['url_alias']);
                 }
+                
             }
 
         }
@@ -584,6 +585,16 @@ class PageRepository extends EntityRepository
 
             $em->persist($routeObject);
             $em->flush();
+        }
+
+        // cleaning
+        $routes = $em->getRepository('MajesCmsBundle:Route')->findAll();
+        foreach ($routes as $route) {
+            $page = $em->getRepository('MajesCmsBundle:PageLang')->findOneBy(array("page" => $route->getPage()->getId(), "locale" => $route->getLocale()));
+            if($page->getDeleted()){
+                $em->remove($route);
+                $em->flush();
+            }         
         }
 
     }

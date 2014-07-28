@@ -6,6 +6,10 @@ _cms_content_delete:
     pattern:  /cms/page/delete/{id}/{lang}
     defaults: { _controller: MajesCmsBundle:Admin:contentDelete, id: null, lang: null }
 
+_admin_page_undelete:
+    pattern:  /cms/page/undelete/{id}
+    defaults: { _controller: MajesCmsBundle:Admin:contentUndelete, id: null }
+
 _cms_content_role:
     pattern:  /cms/page/role/{id}/{lang}
     defaults: { _controller: MajesCmsBundle:Admin:contentRole, id: null, lang: null }
@@ -35,8 +39,8 @@ _cms_pageblock_edit:
     defaults: { _controller: MajesCmsBundle:Admin:PageBlockEdit }
 
 _cms_pageblock_delete:
-    pattern:  /cms/page-block/delete
-    defaults: { _controller: MajesCmsBundle:Admin:PageBlockDelete }
+    pattern:  /cms/page-block/delete/{id}/{page}/{pagetemplateblock}/{templateblock}/{lang}/{title}/{wysiwyg}
+    defaults: { _controller: MajesCmsBundle:Admin:PageBlockDelete, id: null, page: null, pagetemplateblock: null, templateblock: null, lang: null, title: null, wysiwyg: null}
 
 _cms_templates_list:
     pattern:  /cms/templates
@@ -54,6 +58,10 @@ _cms_template_delete:
     pattern:  /cms/template/delete/{id}
     defaults: { _controller: MajesCmsBundle:Admin:templateDelete}
 
+_admin_template_undelete:
+    pattern:  /cms/template/undelete/{id}
+    defaults: { _controller: MajesCmsBundle:Admin:templateUndelete}
+
 _cms_blocks_list:
     pattern:  /cms/blocks
     defaults: { _controller: MajesCmsBundle:Admin:blocks}
@@ -65,6 +73,10 @@ _cms_block_edit:
 _cms_block_delete:
     pattern:  /cms/block/delete/{id}
     defaults: { _controller: MajesCmsBundle:Admin:blockDelete}
+
+_admin_block_undelete:
+    pattern:  /cms/block/undelete/{id}
+    defaults: { _controller: MajesCmsBundle:Admin:blockUndelete}
 
 _cms_roles:
     pattern:  /cms/roles

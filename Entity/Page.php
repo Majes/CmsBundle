@@ -57,9 +57,9 @@ class Page{
     private $enableComments=0;
     
     /**
-     * @ORM\Column(name="status", type="string", nullable=false)
+     * @ORM\Column(name="deleted", type="boolean", nullable=false)
      */
-    private $status='';
+    private $deleted=0;
 
     /**
      * @ORM\Column(name="create_date", type="datetime", nullable=false)
@@ -118,7 +118,7 @@ class Page{
     private $pageTemplateBlocks;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Majes\CoreBundle\Entity\User\Role")
+     * @ORM\ManyToMany(targetEntity="Majes\CoreBundle\Entity\User\Role", inversedBy="pages", cascade={"remove"})
      * @ORM\JoinTable(name="cms_page_role",
      *      joinColumns={@ORM\JoinColumn(name="page_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
@@ -133,7 +133,6 @@ class Page{
         $this->createDate = new \DateTime();
         $this->langs = new \Doctrine\Common\Collections\ArrayCollection();
         $this->sort = 0;
-        $this->status = '';
 
         $this->pageTemplateBlocks = new \Doctrine\Common\Collections\ArrayCollection();
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
@@ -202,14 +201,6 @@ class Page{
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-        return $this;
-    }
 
     /**
      * @inheritDoc
@@ -359,13 +350,6 @@ class Page{
         return $this->isFolder;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
 
     /**
      * @inheritDoc
@@ -539,4 +523,38 @@ class Page{
         }
     }
 
+    /**
+     * Gets the value of deleted.
+     *
+     * @return mixed
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Sets the value of deleted.
+     *
+     * @param mixed $deleted the deleted
+     *
+     * @return self
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     *
+     * @ORM\PrePersist
+     */
+    public function defaultValues()
+    {
+        if(is_null($this->targetUrl)){
+            $this->targetUrl='_self';
+        }
+    }
 }

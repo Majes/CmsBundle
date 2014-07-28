@@ -100,6 +100,11 @@ class PageLang{
      */
     private $isActive=1;
 
+    /**
+     * @ORM\Column(name="deleted", type="boolean", nullable=false)
+     */
+    private $deleted=0;
+
 
     /**
      * @inheritDoc
@@ -392,7 +397,7 @@ class PageLang{
 
     public function isIndexable(){
 
-        if($this->page->getStatus() == 'deleted')
+        if($this->page->getDeleted())
             return false;
         
         return true;
@@ -417,6 +422,41 @@ class PageLang{
         if($this->getCreateDate() == null)
         {
             $this->setCreateDate(new \DateTime(date('Y-m-d H:i:s')));
+        }
+    }
+
+    /**
+     * Gets the value of deleted.
+     *
+     * @return mixed
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Sets the value of deleted.
+     *
+     * @param mixed $deleted the deleted
+     *
+     * @return self
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     *
+     * @ORM\PrePersist
+     */
+    public function defaultValues()
+    {
+        if(is_null($this->tags)){
+            $this->tags='Page';
         }
     }
 }
