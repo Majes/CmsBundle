@@ -1,16 +1,19 @@
 {% set url = '' %}
 {% if attribute.value %}
   {% if attribute.value.page_id is defined %}
-    {% set url = path('majes_cms_' ~ attribute.value.page_id ~  '_' ~ lang) %}
+    {% set langexists_translation = hasTranslation(attribute.value.page_id, lang, true) %}
+    {% if langexists_translation %}{% set url = path('majes_cms_' ~ attribute.value.page_id ~  '_' ~ lang) %}
+    {% else %}{% set url = attribute.value.value %}
+    {% endif %}
   {% else %}
     {% set url = attribute.value.value %}
   {% endif %}
 {% endif %}
 <div class="form-group">
-	<label for="myaccount_media" class="control-label col-lg-3">{{attribute.title}} </label>
-	<div class="col-lg-9">
-		<input class="form-control" placeholder="Link url" type="text" name="attributes[{{attribute.block_attribute_ref}}][value]" value="{{url|replace({'/app_dev.php':''})}}"/>
-	</div>
+  <label for="myaccount_media" class="control-label col-lg-3">{{attribute.title}} </label>
+  <div class="col-lg-9">
+    <input class="form-control" placeholder="Link url" type="text" name="attributes[{{attribute.block_attribute_ref}}][value]" value="{{url|replace({'/app_dev.php':''})}}"/>
+  </div>
 </div>
 
 <div class="form-group">
@@ -28,12 +31,12 @@
 </div>
 
 <div class="form-group">
-	<label class="control-label col-lg-3">{% trans %}Target{% endtrans %}</label>
-  	<div class="col-lg-9">
-    	<select class="form-control" name="attributes[{{attribute.block_attribute_ref}}][target]">
-    		<option value="_self"{% if attribute.value and attribute.value.target == '_self' %} selected="selected"{% endif %}>Current window</option>
-    		<option value="_blank"{% if attribute.value and attribute.value.target == '_blank' %} selected="selected"{% endif %}>New window</option>
-    	</select>
-  	</div>
+  <label class="control-label col-lg-3">{% trans %}Target{% endtrans %}</label>
+    <div class="col-lg-9">
+      <select class="form-control" name="attributes[{{attribute.block_attribute_ref}}][target]">
+        <option value="_self"{% if attribute.value and attribute.value.target == '_self' %} selected="selected"{% endif %}>Current window</option>
+        <option value="_blank"{% if attribute.value and attribute.value.target == '_blank' %} selected="selected"{% endif %}>New window</option>
+      </select>
+    </div>
 </div>
 
