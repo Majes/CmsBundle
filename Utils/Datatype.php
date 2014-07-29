@@ -94,6 +94,10 @@ class Datatype
         return $attribute;
     }
 
+    public function date($attribute, $ref){
+        return $attribute;
+    }
+
     public function textarea($attribute, $ref){
         return $attribute;
     }
