@@ -1,0 +1,12 @@
+<div class="form-group">
+    <label class="control-label col-lg-3">{{attribute.title}}</label>
+    <div class="col-lg-9">
+        <input class="form-control" placeholder="Date" type="text" name="attributes[{{attribute.block_attribute_ref}}][value]" id="{{attribute.block_attribute_ref}}" value="{% if attribute.value %}{{attribute.value.value}}{% endif %}"/>
+    </div>
+</div>
+<script>
+$('input#{{attribute.block_attribute_ref}}').datepicker({
+    format: "yyyy-mm-dd 00:00:00",
+    autoclose: true
+});
+</script>
