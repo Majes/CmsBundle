@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Majes\CmsBundle\Entity\PageTemplateBlock
  *
  * @ORM\Table(name="cms_page_template_block")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Majes\CmsBundle\Entity\PageTemplateBlockRepository")
  * @ORM\HasLifecycleCallbacks
  */
 class PageTemplateBlock{

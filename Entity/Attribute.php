@@ -37,6 +37,11 @@ class Attribute{
     private $blockAttributes;
 
     /**
+     * @ORM\Column(name="setup", type="boolean", nullable=false)
+     */
+    private $setup=false;
+
+    /**
      * @DataTable(isTranslatable=0, hasAdd=1, hasPreview=0, isDatatablejs=0)
      */
     public function __construct(){
@@ -106,6 +111,27 @@ class Attribute{
         return $this->title;
     }
 
+    /**
+     * Gets the value of setup.
+     *
+     * @return mixed
+     */
+    public function getSetup()
+    {
+        return $this->setup;
+    }
 
+    /**
+     * Sets the value of setup.
+     *
+     * @param mixed $setup the setup
+     *
+     * @return self
+     */
+    public function setSetup($setup)
+    {
+        $this->setup = $setup;
 
+        return $this;
+    }
 }

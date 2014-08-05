@@ -101,7 +101,6 @@ class CmsExtension extends \Twig_Extension
     }
 
 
-
     public function getName()
     {
         return 'majescms_extension';

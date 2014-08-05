@@ -72,6 +72,7 @@
       				 				<li class="alert alert-warning"><input type="hidden" name="attributes[][{{ block_attribute.attribute.id }}][]" value="{{ block_attribute.id }}"/><button class="close" data-dismiss="alert" type="button">×</button>&nbsp;
                         <span class="pull-left" style=""><input type="text" name="title[{{ block_attribute.id }}]" value="{% if block_attribute.title == '' %}{{ block_attribute.attribute.title }}{% else %}{{block_attribute.title}}{% endif %}" class="form-control" style="margin: -6px 0 0"/></span>
                         <span class="pull-left" style=""> | {{ block_attribute.attribute.ref }}</span>
+                        {% if block_attribute.attribute.setup %}{{ include('MajesCoreBundle:Form:conditionnalField.html.twig') }}{% endif %}
 
 
                         <span class="pull-right" style="margin-right: 20px"><input type="text" name="ref[{{ block_attribute.id }}]" value="{{ block_attribute.ref }}" class="form-control" style="margin: -6px 0 0"/></span>

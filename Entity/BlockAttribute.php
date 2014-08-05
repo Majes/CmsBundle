@@ -48,6 +48,11 @@ class BlockAttribute{
     private $title=null;
 
     /**
+     * @ORM\Column(name="setup", type="string", length=255, nullable=true)
+     */
+    private $setup=null;
+
+    /**
      * @ORM\Column(name="update_date", type="datetime", nullable=false)
      */
     private $updateDate;
@@ -219,4 +224,27 @@ class BlockAttribute{
         }
     }
 
+    /**
+     * Gets the value of setup.
+     *
+     * @return mixed
+     */
+    public function getSetup()
+    {
+        return $this->setup;
+    }
+
+    /**
+     * Sets the value of setup.
+     *
+     * @param mixed $setup the setup
+     *
+     * @return self
+     */
+    public function setSetup($setup)
+    {
+        $this->setup = $setup;
+
+        return $this;
+    }
 }

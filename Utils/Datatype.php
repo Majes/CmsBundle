@@ -102,6 +102,10 @@ class Datatype
         return $attribute;
     }
 
+    public function listboxmultiple($attribute, $ref){
+        return $attribute;
+    }
+
     public function textarea($attribute, $ref){
         return $attribute;
     }
@@ -124,6 +128,24 @@ class Datatype
         if(!is_null($route)) 
         {
             $attribute['page_id'] = $route->getPage()->getId();
+        }
+
+        return $attribute;
+    }
+
+    public function internallink($attribute, $ref){
+
+        $url = $attribute['value'];
+
+        $route = $this->_em->getRepository('MajesCmsBundle:Route')
+            ->findOneBy(array('url' => $url));
+        $routebis = $this->_em->getRepository('MajesCmsBundle:PageLang')
+            ->findOneBy(array('page' => $route->getPage(), 'locale' => $route->getLocale()));
+
+        if(!is_null($route)) 
+        {
+            $attribute['page_id'] = $route->getPage()->getId();
+            $attribute['page_title'] = $routebis->getTitle();
         }
 
         return $attribute;

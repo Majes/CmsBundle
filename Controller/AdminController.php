@@ -539,6 +539,7 @@ class AdminController extends Controller implements SystemController
                 $attributes_tmp = $request->request->get('attributes');
                 $ref = $request->request->get('ref');
                 $title = $request->request->get('title');
+                $setup = $request->request->get('setup');
 
                 $attributes_tmp = is_null($attributes_tmp) ? array() : $attributes_tmp;
                 if(!is_null($attributes_tmp)){
@@ -583,6 +584,7 @@ class AdminController extends Controller implements SystemController
                                     $blockAttribute->setSort($sort);
                                     if(!empty($ref[$block_attribute_id])) $blockAttribute->setRef($ref[$block_attribute_id]);
                                     if(!empty($title[$block_attribute_id])) $blockAttribute->setTitle($title[$block_attribute_id]);
+                                    if(!empty($setup[$block_attribute_id])) $blockAttribute->setSetup($setup[$block_attribute_id]);
         
 
                                     $em->persist($blockAttribute);
@@ -1089,7 +1091,6 @@ class AdminController extends Controller implements SystemController
             $wysiwyg = $request->get('wysiwyg', false);
 
             $attributes = $request->get('attributes');
-
             
             $em = $this->getDoctrine()->getManager();
             

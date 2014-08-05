@@ -251,6 +251,7 @@ class PageRepository extends EntityRepository
                             'ref' => $attribute->getRef(),
                             'block_attribute_ref' => $block_attribute->getRef(),
                             'block_attribute_id' => $block_attribute->getId(),
+                            'block_attribute_setup' => $block_attribute->getSetup(),
                             'value' => isset($content['attributes'][$attributes['id']]['content'][$block_attribute->getRef()]) ? $content['attributes'][$attributes['id']]['content'][$block_attribute->getRef()] : false
                         );
                     }
@@ -273,6 +274,7 @@ class PageRepository extends EntityRepository
                             'ref' => $attribute->getRef(),
                             'block_attribute_ref' => $block_attribute->getRef(),
                             'block_attribute_id' => $block_attribute->getId(),
+                            'block_attribute_setup' => $block_attribute->getSetup(),
                             'value' => false
                         );
                     }
@@ -378,6 +380,7 @@ class PageRepository extends EntityRepository
                             'ref' => $attribute->getRef(),
                             'block_attribute_ref' => $block_attribute->getRef(),
                             'block_attribute_id' => $block_attribute->getId(),
+                            'block_attribute_setup' => $block_attribute->getSetup(),
                             'value' => isset($content['attributes'][$key]['content'][$block_attribute->getRef()]) ? $content['attributes'][$key]['content'][$block_attribute->getRef()] : false
                         );
                     }
@@ -398,6 +401,7 @@ class PageRepository extends EntityRepository
                     'ref' => $attribute->getRef(),
                     'block_attribute_ref' => $block_attribute->getRef(),
                     'block_attribute_id' => $block_attribute->getId(),
+                    'block_attribute_setup' => $block_attribute->getSetup(),
                     'value' => false
                 );
             }
@@ -487,6 +491,7 @@ class PageRepository extends EntityRepository
                             'ref' => $attribute->getRef(),
                             'block_attribute_ref' => $block_attribute->getRef(),
                             'block_attribute_id' => $block_attribute->getId(),
+                            'block_attribute_setup' => $block_attribute->getSetup(),
                             'value' => isset($content['attributes'][$attributes['id']]['content'][$block_attribute->getRef()]) ? $content['attributes'][$attributes['id']]['content'][$block_attribute->getRef()] : false
                         );
                     }
