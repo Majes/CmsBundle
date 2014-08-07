@@ -1,10 +1,10 @@
 <div class="form-group">
     <label class="control-label col-lg-3">{{attribute.title}}</label>
     <div class="col-lg-9">
-        <select class="form-control" name="attributes[{{attribute.block_attribute_ref}}][value][]" id="{{attribute.block_attribute_ref}}" value="{% if attribute.value %}{{attribute.value.value}}{% endif %}" style="padding:0;border:none;" multiple>
+        <select class="form-control" name="attributes[{{attribute.block_attribute_ref}}][value][]" id="{{attribute.block_attribute_ref}}" value="{% if attribute.value %}{{ attribute.value.value|join(' ') }}{% endif %}" style="padding:0;border:none;" multiple>
         	{% set list = getListbox(attribute.block_attribute_setup) %}
         	{% for item in list.content %}
-        		<option value="{{item.key}}" {% if (attribute.value) and (attribute.value.value == item.key) %}selected{% endif %}>{{item.value}}</option>
+        		<option value="{{item.key}}" {% if (attribute.value) and (item.key in attribute.value.value) %}selected{% endif %}>{{item.value}}</option>
         	{% endfor %}
         </select>
     </div>
