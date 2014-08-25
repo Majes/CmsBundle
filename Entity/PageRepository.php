@@ -228,6 +228,7 @@ class PageRepository extends EntityRepository
             //If there is a content, then populate the attribute array
             if($content){ 
                 $order = 0;
+                $index = 0;
                 foreach($content['attributes'] as $key => $attributes){
 
                     //If block is repeatable, then get the real index, otherwise we only need index 0 (back front end purpose)
