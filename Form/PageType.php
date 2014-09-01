@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Doctrine\ORM\EntityRepository;
 
 class PageType extends AbstractType
 {
@@ -48,6 +49,10 @@ class PageType extends AbstractType
         $builder->add('template', 'entity', array(
             'required' => true,
             'class' => 'MajesCmsBundle:Template',
+            'query_builder' => function(EntityRepository $er) {
+                return $er->createQueryBuilder('u')
+                            ->where('u.deleted = 0');
+            },
             'property' => 'title'));
 
 

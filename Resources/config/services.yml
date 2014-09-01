@@ -16,3 +16,7 @@ services:
         arguments: ["@doctrine.orm.entity_manager", "@majes.notification"]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
+    majescms.cms_service:
+        class: Majes\CmsBundle\Services\CmsService
+        arguments: ["@doctrine.orm.entity_manager"]
