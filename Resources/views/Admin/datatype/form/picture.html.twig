@@ -26,7 +26,7 @@
     <div class="col-lg-9">
 
         {% if attribute.value %}
-        <img src="{{ path('_media_load', {'id': attribute.value.media_id, 'width': '200'}) }}" width="200" title="{{attribute.value['title']}}" id="preview{{attribute.block_attribute_ref}}"/>
+        <img src="{{ teelMediaLoad(attribute.value.media_id, 200, 200, false, asset('bundles/majesmedia/img/icon-document.png'),{ 'src' : true })|raw }}" width="200" title="{{attribute.value['title']}}" id="preview{{attribute.block_attribute_ref}}"/>
         {% else %}
         <img src="" title="" id="preview{{attribute.block_attribute_ref}}" width="200"/>
         {% endif %}
