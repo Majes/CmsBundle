@@ -136,14 +136,15 @@
                                     </div>
 
                                 {% else %}
-                    
-                                    {% for attribute in block.items[0]['attributes'] %}
-                                            {% if attribute.value is not empty %}
-                                            {{ include(
-                                                    'MajesCmsBundle:Admin:datatype/' ~ attribute.ref  ~ '.html.twig'
-                                                ) }}
-                                            {% endif %}
-                                    {% endfor %}
+                                    {% if block.items[0]['attributes'] is defined %}
+                                        {% for attribute in block.items[0]['attributes'] %}
+                                                {% if attribute.value is not empty %}
+                                                {{ include(
+                                                        'MajesCmsBundle:Admin:datatype/' ~ attribute.ref  ~ '.html.twig'
+                                                    ) }}
+                                                {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
                                 {% endif %}
                                     <div style="clear: both"></div>
                                 </div>

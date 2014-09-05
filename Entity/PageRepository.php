@@ -449,6 +449,8 @@ class PageRepository extends EntityRepository
             $block = $template_block->getBlock();
             
             $response[$template_block->getRef()] = array(
+                'template_block_title' => $template_block->getTitle(),
+                'template_block_ref' => $template_block->getRef(),
                 'block' => $block->getTitle(),
                 'block_ref' => $block->getRef(),
                 'page' => $page->getId(),
