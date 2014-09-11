@@ -94,12 +94,13 @@ class AdminController extends Controller implements SystemController
 
                 $pageTemplateBlocks = $page->getPageTemplateBlocks();
                 foreach($pageTemplateBlocks as $pageTemplateBlock){
-                    $new_page_template_block = clone $pageTemplateBlock;
-                    $new_page_template_block->setLocale($lang);
-                    $new_page_template_block->setCreateDate(new \DateTime());
-                    $new_page_template_block->setUser($this->_user);
-
-                    $page->addPageTemplateBlock($new_page_template_block);
+                    if($this->_default_lang == $pageTemplateBlock->getLocale()){
+                        $new_page_template_block = clone $pageTemplateBlock;
+                        $new_page_template_block->setLocale($lang);
+                        $new_page_template_block->setCreateDate(new \DateTime());
+                        $new_page_template_block->setUser($this->_user);
+                        $page->addPageTemplateBlock($new_page_template_block);
+                    }
 
                 }
 
