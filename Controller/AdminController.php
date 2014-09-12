@@ -62,7 +62,7 @@ class AdminController extends Controller implements SystemController
         //Get blocks for this specific page
         $blocks = array(); $page_has_draft = false;
         if(!is_null($page)){
-            $blocks = $em->getRepository('MajesCmsBundle:Page')->getBlocks($page, $lang);
+            $blocks = $this->container->get('majescms.cms_service')->getBlocks($page, $lang);
             foreach($blocks as $block)
                 if($block['has_draft']){
                     $page_has_draft = true;  
@@ -108,7 +108,7 @@ class AdminController extends Controller implements SystemController
                 $em->flush();
 
                 //Set routes to table
-                $em->getRepository('MajesCmsBundle:Page')->generateRoutes($menu->getRef(), $this->_is_multilingual);
+                $this->container->get('majescms.cms_service')->generateRoutes($menu->getRef(), $this->_is_multilingual);
 
                 return $this->redirect($this->get('router')->generate('_cms_content', array('id' => $page->getId(), 'menu_id' => $menu_id, 'lang' => $lang, 'page_parent_id' => is_null($page_parent_id) ? "0" : $page_parent_id)));
 
@@ -157,7 +157,7 @@ class AdminController extends Controller implements SystemController
 
 
                 //Set routes to table
-                $em->getRepository('MajesCmsBundle:Page')->generateRoutes($menu->getRef(), $this->_is_multilingual);
+                $this->container->get('majescms.cms_service')->generateRoutes($menu->getRef(), $this->_is_multilingual);
 
                 return $this->redirect($this->get('router')->generate('_cms_content', array('id' => $page->getId(), 'menu_id' => $menu_id, 'lang' => $lang, 'page_parent_id' => is_null($page_parent_id) ? "0" : $page_parent_id)));
 
@@ -289,7 +289,7 @@ class AdminController extends Controller implements SystemController
         $em->flush();
         
         //Set routes to table
-        $em->getRepository('MajesCmsBundle:Page')->generateRoutes($page->getMenu()->getRef(), $this->_is_multilingual);
+        $this->container->get('majescms.cms_service')->generateRoutes($page->getMenu()->getRef(), $this->_is_multilingual);
 
         return $this->redirect($this->get('router')->generate('_cms_content', array('menu_id' => null, 'id' => null, 'lang' => null, 'page_parent_id' => null)));
     }
@@ -333,7 +333,7 @@ class AdminController extends Controller implements SystemController
         $em->flush();
 
         //Set routes to table
-        $em->getRepository('MajesCmsBundle:Page')->generateRoutes($page->getMenu()->getRef(), $this->_is_multilingual);
+        $this->container->get('majescms.cms_service')->generateRoutes($page->getMenu()->getRef(), $this->_is_multilingual);
         
         return $this->redirect($this->get('router')->generate('_admin_trashs', array()));
     }
@@ -466,7 +466,7 @@ class AdminController extends Controller implements SystemController
         foreach($hosts as $host){
             foreach($navs as $nav){
 
-                $response = $em->getRepository('MajesCmsBundle:Page')
+                $response = $this->container->get('majescms.cms_service')
                     ->getMenu($host->getId(), 'fr', $nav->getRef());
     
                 $response = array_values( (array)$response );
@@ -983,7 +983,7 @@ class AdminController extends Controller implements SystemController
             $em->flush();
 
             //Set routes to table
-            $em->getRepository('MajesCmsBundle:Page')->generateRoutes($page->getMenu()->getRef(), $this->_is_multilingual);
+            $this->container->get('majescms.cms_service')->generateRoutes($page->getMenu()->getRef(), $this->_is_multilingual);
             
         }
 
@@ -1058,7 +1058,7 @@ class AdminController extends Controller implements SystemController
             $templateBlock = $em->getRepository('MajesCmsBundle:TemplateBlock')
                 ->findOneById($template_block_id);
 
-            $block = $em->getRepository('MajesCmsBundle:Page')
+            $block = $this->container->get('majescms.cms_service')
                 ->getBlock($page, $templateBlock, $lang, $id);
 
             return $this->render('MajesCmsBundle:Admin:parts/form-block.html.twig', array(
@@ -1111,7 +1111,7 @@ class AdminController extends Controller implements SystemController
             $templateBlock = $em->getRepository('MajesCmsBundle:TemplateBlock')
                 ->findOneById($template_block_id);
 
-            $block = $em->getRepository('MajesCmsBundle:Page')
+            $block = $this->container->get('majescms.cms_service')
                 ->getBlock($page, $templateBlock, $lang, $id);
 
             $pageLang = $em->getRepository('MajesCmsBundle:PageLang')
@@ -1228,7 +1228,7 @@ class AdminController extends Controller implements SystemController
             $templateBlock = $em->getRepository('MajesCmsBundle:TemplateBlock')
                 ->findOneById($template_block_id);
 
-            $block = $em->getRepository('MajesCmsBundle:Page')
+            $block = $this->container->get('majescms.cms_service')
                 ->getBlock($page, $templateBlock, $lang, $id);
 
             $pageLang = $em->getRepository('MajesCmsBundle:PageLang')

@@ -36,13 +36,13 @@
             </div>-->
         <div class="btn-group pull-right">
               <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                <img src="{{ asset('bundles/majescore/images/flag-' ~ lang ~ '.png') }}" style="margin: 0 5px 3px"/> {% trans %}Languages{% endtrans %}<span class="caret"></span></button>
+                <img src="{{ asset('bundles/majescore/images/flag-' ~ app.request.get('_locale') ~ '.png') }}" style="margin: 0 5px 3px"/> {% trans %}Languages{% endtrans %}<span class="caret"></span></button>
                 <ul class="dropdown-menu" style="min-width: 50px">
                   {% if page.parent is null %}{% set page_parent_id = 0 %}{% else %}{% set page_parent_id = page.parent.id %}{% endif %}
                   {% for lang in app.session.get('langs') %}
                   {% set has_translation = hasTranslation(page.id, lang.locale, true) %}
                   <li>
-                    <a href="{{ path('_cms_content', {id: page.id, page_parent_id: page_parent_id, lang: lang.locale, menu_id: page.menu.id}) }}" {% if has_translation is empty %}class="duplicateTranslation"{% endif %}><img src="{{ asset('bundles/majescore/images/flag-' ~ lang.locale ~ '.png') }}"/></a>
+                    <a href="{{ path('_cms_content', {id: page.id, page_parent_id: page_parent_id, lang: lang.locale, menu_id: page.menu.id}) }}" {% if has_translation is empty %}class="duplicateTranslation"{% endif %}><img src="{{ asset('bundles/majescore/images/flag-' ~ lang.locale ~ '.png') }}"/> {{lang.locale}}</a>
                   </li>
                   {% endfor %}
                 </ul>

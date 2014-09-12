@@ -39,7 +39,7 @@ class ApiController extends Controller implements SystemController
             $page->setLang($_lang);
             $pageLang = $page->getLang();
 
-            $content = $em->getRepository('MajesCmsBundle:Page')
+            $content = $this->container->get('majescms.cms_service')
                     ->getContent($page, $_lang);
             if(!empty($pageLang))
                 $response['pages'][] = array(
@@ -69,7 +69,7 @@ class ApiController extends Controller implements SystemController
 
         $page = $pageLang->getPage();
 
-        $content = $em->getRepository('MajesCmsBundle:Page')
+        $content = $this->container->get('majescms.cms_service')
                     ->getContent($page, $this->_lang);
 
         return array(

@@ -59,7 +59,7 @@ class IndexController extends Controller implements SystemController
             throw $this->createNotFoundException('404_message');
 
     
-        $content = $em->getRepository('MajesCmsBundle:Page')
+        $content = $this->container->get('majescms.cms_service')
                     ->getContent($page, $lang, $draft);
 
         if($this->get('templating')->exists('MajesTeelBundle:Cms:templates/'.$template->getRef().'.html.twig'))

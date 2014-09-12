@@ -79,7 +79,7 @@ class CmsExtension extends \Twig_Extension
 
     public function getMenu($host_id, $lang, $ref, $level, $page_id, $is_inmenu = 1, $page_parent_id = null, $is_active = null){
         
-        $menu = $this->_em->getRepository('MajesCmsBundle:Page')
+        $menu = $this->_container->get('majescms.cms_service')
                     ->getMenu($host_id, $lang, $ref, $level, $page_id, $is_inmenu, '', $page_parent_id, $is_active);
 
         return $menu;

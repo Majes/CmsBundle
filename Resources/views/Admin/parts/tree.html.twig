@@ -12,6 +12,7 @@
                     </div>
                     <div class="panel-collapse{% if (page.host is defined and page.host.id == host.id) or (page.host is not defined and key == 0) %}{% else %} collapse{% endif %}" id="collapseType{{host.id}}">
                         <div class="panel-body">
+                            <a href="{{ path('_admin_sitemap', {'host_id' : host.id}) }}" class="btn btn-primary-outline pull-right"><i class="icon-code"></i>{% trans %}See Sitemap.xml{% endtrans %}</a>
                             {% for nav in menu[host.id] %}
                             <h3>{{ nav.data.title }}</h3>
                             <!-- Definition tree structure -->
