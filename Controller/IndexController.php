@@ -66,6 +66,8 @@ class IndexController extends Controller implements SystemController
             $template_twig = 'MajesTeelBundle:Cms:templates/'.$template->getRef().'.html.twig';
         elseif($this->get('templating')->exists('MajesCmsBundle:Index:templates/'.$template->getRef().'.html.twig'))
             $template_twig = 'MajesCmsBundle:Index:templates/'.$template->getRef().'.html.twig';
+        elseif($this->get('templating')->exists('MajesTeelBundle:Index:templates/load.html.twig'))
+            $template_twig = 'MajesTeelBundle:Index:templates/load.html.twig';
         else
             $template_twig = 'MajesCmsBundle:Index:load.html.twig';
 
