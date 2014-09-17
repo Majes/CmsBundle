@@ -13,10 +13,13 @@ tinymce.init({
     plugins: [
         "advlist autolink lists link image charmap print preview anchor",
         "searchreplace visualblocks code fullscreen",
-        "insertdatetime media table contextmenu paste mediapicker"
+        "insertdatetime media table contextmenu paste mediapicker textcolor colorpicker"
     ],
+    style_formats_merge: true,
+    custom_elements : 'mycustomblock,~mycustominline',
     relative_urls: false,
-    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+    toolbar1: "insertfile undo redo | styleselect |  link image ",
+    toolbar2: "bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent ",
 
     image_advtab: true ,
     
