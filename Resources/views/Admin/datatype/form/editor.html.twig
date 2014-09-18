@@ -8,7 +8,9 @@
 </div>
 
 <script>
+tinymce.EditorManager.execCommand('mceRemoveEditor',true, "{{attribute.block_attribute_ref}}");
 tinymce.init({
+    mode : "exact",
     selector: "textarea#{{attribute.block_attribute_ref}}",
     plugins: [
         "advlist autolink lists link image charmap print preview anchor",
