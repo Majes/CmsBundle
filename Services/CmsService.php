@@ -97,6 +97,7 @@ class CmsService {
                     $this->_menu[$page_id]['is_inmenu'] = $page->getIsinmenu();
                     $this->_menu[$page_id]['is_active'] = $page->getIsActive();
                     $this->_menu[$page_id]['is_folder'] = $page->getIsFolder();
+                    $this->_menu[$page_id]['has_option'] = $page->getHasOption();
                     $this->_menu[$page_id]['sort'] = $page->getSort();
                     $this->_menu[$page_id]['parent_id'] = is_null($parent_id) ? 0 : $parent_id;
 

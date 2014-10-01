@@ -92,7 +92,7 @@ class PageType extends AbstractType
         $builder->add('is_inmenu', 'checkbox', array(
             'required' => false));
 
-        $builder->add('enable_comments', 'checkbox', array(
+        $builder->add('hasOption', 'checkbox', array(
             'required' => false));
 
         $builder->add('is_active', 'checkbox', array(

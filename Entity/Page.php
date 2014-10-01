@@ -52,9 +52,9 @@ class Page{
     private $isFolder=0;
 
     /**
-     * @ORM\Column(name="enable_comments", type="boolean", nullable=false)
+     * @ORM\Column(name="has_option", type="boolean", nullable=false)
      */
-    private $enableComments=0;
+    private $hasOption=0;
     
     /**
      * @ORM\Column(name="deleted", type="boolean", nullable=false)
@@ -205,9 +205,9 @@ class Page{
     /**
      * @inheritDoc
      */
-    public function setEnableComments($enableComments)
+    public function setHasOption($hasOption)
     {
-        $this->enableComments = $enableComments;
+        $this->hasOption = $hasOption;
         return $this;
     }
 
@@ -354,9 +354,9 @@ class Page{
     /**
      * @inheritDoc
      */
-    public function getEnableComments()
+    public function getHasOption()
     {
-        return $this->enableComments;
+        return $this->hasOption;
     }
 
     /**
