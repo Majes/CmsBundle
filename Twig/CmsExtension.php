@@ -34,6 +34,9 @@ class CmsExtension extends \Twig_Extension
         $page = $this->_em->getRepository('MajesCmsBundle:Page')
             ->findOneById($page_id);
 
+        if(empty($page))
+            return false;
+
         $pageLangs = $page->getLangs();
         foreach($pageLangs as $pageLang){
 
