@@ -414,8 +414,30 @@ class CmsService {
         }
         return $response;
     }
+    /**
+     * Get PageLangContent 
+     */
+    public function getPageLangContent($id, $lang)
+    {
 
+        $pageLang = $this->_em->getRepository('MajesCmsBundle:PageLang')
+            ->findOneBy(array(
+                'page' => $id,
+                'locale' => $lang));
 
+        $page = $pageLang->getPage();
+
+        $content = $this->_em->getRepository('MajesCmsBundle:Page')
+                    ->getContent($page, $lang);
+
+        return array(
+            'content' => $content,
+            'page' => $page,
+            'host' => $page->getHost()->getId(),
+            'template' => $page->getTemplate()->getRef()
+            );
+    }
+    
     /**
      * Get page content
      */
