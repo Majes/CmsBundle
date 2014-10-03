@@ -421,9 +421,6 @@ class CmsService {
      */
     public function getContent($page, $lang, $isDraft = false){
         
-        if(is_int($page))
-            $page = $this->_em->getRepository('MajesCmsBundle:Page')->findOneById($page);
-        
         $pageTemplateBlockRepo = $this->_em->getRepository('MajesCmsBundle:PageTemplateBlock');
 
         $template = $page->getTemplate();
