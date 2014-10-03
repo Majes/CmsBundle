@@ -427,8 +427,7 @@ class CmsService {
 
         $page = $pageLang->getPage();
 
-        $content = $this->_em->getRepository('MajesCmsBundle:Page')
-                    ->getContent($page, $lang);
+        $content = $this->getContent($page, $lang);
 
         return array(
             'content' => $content,
