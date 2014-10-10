@@ -623,15 +623,12 @@ class CmsService {
         $routes = $this->_em->getRepository('MajesCmsBundle:Route')->findAll();
         foreach ($routes as $route) {
             $page = $this->_em->getRepository('MajesCmsBundle:PageLang')->findOneBy(array("page" => $route->getPage()->getId(), "locale" => $route->getLocale()));
-            if ($page instanceof PageLang) {
+            
                 if($page->getDeleted()){
                     $this->_em->remove($route);
                     $this->_em->flush();
                 }
-            }else{
-                $this->_em->remove($route);
-                $this->_em->flush();
-            }         
+                   
         }
         
 
