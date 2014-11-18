@@ -135,10 +135,10 @@ class Datatype
 
     public function internallink($attribute, $ref){
 
-        $url = $attribute['value'];
+        $id = $attribute['value'];
 
         $route = $this->_em->getRepository('MajesCmsBundle:Route')
-            ->findOneBy(array('url' => $url));
+            ->findOneBy(array('id' => $id));
         $routebis = $this->_em->getRepository('MajesCmsBundle:PageLang')
             ->findOneBy(array('page' => $route->getPage(), 'locale' => $route->getLocale()));
 

@@ -39,9 +39,24 @@ class RouteLoader implements RouteProviderInterface{
                             array('_controller' => 'FrameworkBundle:Redirect:urlRedirect', 'path' => $redirect_url)
                         )
                 );
+                $collection->add('majes_route_'.$route->getId(), 
+                    new SymfonyRoute(
+                            $route->getUrl(), 
+                            array('_controller' => 'FrameworkBundle:Redirect:urlRedirect', 'path' => $redirect_url)
+                        )
+                );
             }else{
                 
                 $collection->add('majes_cms_'.$route->getPage()->getId().'_'.$route->getLocale(), 
+                    new SymfonyRoute(
+                            $route->getUrl(), 
+                            array('_controller' => 'MajesCmsBundle:Index:load', '_locale' => $route->getLocale()), 
+                            array(), 
+                            array('page_id' => $route->getPage()->getId(), 'lang' => $route->getLocale()),
+                            $route->getHost()
+                        )
+                );
+                $collection->add('majes_route_'.$route->getId(), 
                     new SymfonyRoute(
                             $route->getUrl(), 
                             array('_controller' => 'MajesCmsBundle:Index:load', '_locale' => $route->getLocale()), 
@@ -65,13 +80,18 @@ class RouteLoader implements RouteProviderInterface{
         $explode = explode('_', $name);
         if(!isset($explode[2])) return false;
 
-        $page = $this->em->getRepository('MajesCmsBundle:Page')
-            ->findOneById($explode[2]);
+        if(isset($explode[3])){
+            $page = $this->em->getRepository('MajesCmsBundle:Page')
+                ->findOneById($explode[2]);
 
-        $route = $this->em->getRepository('MajesCmsBundle:Route')->findOneBy(array(
-            'page' => $page,
-            'locale' => $explode[3]
-            ));
+            $route = $this->em->getRepository('MajesCmsBundle:Route')->findOneBy(array(
+                'page' => $page,
+                'locale' => $explode[3]
+                ));
+        }else{
+            $route = $this->em->getRepository('MajesCmsBundle:Route')->findOneBy(array('id' => $explode[2]));
+            $page = $route->getPage();
+        }
 
         if (!$route) {
             return;
