@@ -90,6 +90,24 @@ class Datatype
         return $attribute;
     }
 
+    public function media($attribute, $ref){
+
+        if(isset($attribute['remove']) && $attribute['remove']) return null;
+
+        unset($attribute['value']);
+
+        $media = $this->_em->getRepository('MajesMediaBundle:Media')
+            ->findOneById($attribute['media_id']);
+
+        if (is_null($media)) return null;
+
+        $is_protected = $media->getIsProtected();
+        $attribute['path'] = $is_protected ? '' : $media->getWebPath();
+        $attribute['media_id'] = $media->getId();
+        $attribute['type'] = $media->getType();
+        return $attribute;
+    }
+
     public function textline($attribute, $ref){
         return $attribute;
     }
