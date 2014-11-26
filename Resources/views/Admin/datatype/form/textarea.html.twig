@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label class="control-label col-lg-3">{{attribute.title}}</label>
+    {# <label class="control-label col-lg-3">{{attribute.title}}</label> #}
     <div class="col-lg-9">
         <textarea class="form-control" rows="3" name="attributes[{{attribute.block_attribute_ref}}][value]">{% if attribute.value %}{{attribute.value.value}}{% endif %}</textarea>
     </div>

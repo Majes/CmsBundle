@@ -3,7 +3,7 @@ namespace Majes\CmsBundle\Utils;
 
 use Majes\MediaBundle\Entity\Media;
 
-class Datatype
+class Datatyper
 {
     
     public $_content;

@@ -78,6 +78,14 @@ _admin_block_undelete:
     pattern:  /cms/block/undelete/{id}
     defaults: { _controller: MajesCmsBundle:Admin:blockUndelete}
 
+_cms_attributes_list:
+    pattern:  /cms/attributes
+    defaults: { _controller: MajesCmsBundle:Admin:attributes}
+
+_cms_attribute_edit:
+    pattern:  /cms/attribute/edit/{id}
+    defaults: { _controller: MajesCmsBundle:Admin:attributeEdit, id: null}
+
 _cms_roles:
     pattern:  /cms/roles
     defaults: { _controller: MajesCmsBundle:Admin:roles}

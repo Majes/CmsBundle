@@ -19,11 +19,12 @@ use Majes\CmsBundle\Entity\PageLang;
 use Majes\CmsBundle\Entity\PageTemplateBlock;
 use Majes\CmsBundle\Entity\PageTemplateBlockVersion;
 
-use Majes\CmsBundle\Utils\Datatype;
+use Majes\TeelBundle\Utils\Datatype;
 use Majes\CmsBundle\Utils\Helper;
 
 use Majes\CoreBundle\Form\User\RoleType;
 use Majes\CmsBundle\Form\BlockType;
+use Majes\CmsBundle\Form\AttributeType;
 use Majes\CmsBundle\Form\TemplateType;
 use Majes\CmsBundle\Form\PageType;
 use Majes\CmsBundle\Form\PageBlockType;
@@ -489,6 +490,77 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
      *
      */
+    public function attributesAction()
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $attribute = $em->getRepository('MajesCmsBundle:Attribute')
+            ->findAll();
+        
+        return $this->render('MajesCoreBundle:common:datatable.html.twig', array(
+            'datas' => $attribute,
+            'object' => new Attribute(),
+            'label' => 'attribute',
+            'message' => 'Are you sure you want to delete this block ?',
+            'pageTitle' => $this->_translator->trans('Content management'),
+            'pageSubTitle' => $this->_translator->trans('List of all available attribute?'),
+            'urls' => array(
+                'add' => '_cms_attribute_edit',
+                'edit' => '_cms_attribute_edit'
+                )
+            ));
+    }
+
+    /**
+     * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
+     *
+     */
+    public function attributeEditAction($id)
+    {
+        
+        $request = $this->getRequest();
+
+        $em = $this->getDoctrine()->getManager();
+        $attribute = $em->getRepository('MajesCmsBundle:Attribute')
+            ->findOneById($id);
+
+
+        $form = $this->createForm(new AttributeType(), $attribute);
+
+        if($request->getMethod() == 'POST'){
+
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+
+                if(is_null($attribute)) $attribute = $form->getData();
+            
+                $em->persist($attribute);
+                $em->flush();
+
+                return $this->redirect($this->get('router')->generate('_cms_block_edit', array('id' => $attribute->getId())));
+
+            }else{
+                foreach ($form->getErrors() as $error) {
+                    echo $message[] = $error->getMessage();
+                }
+            }
+        }
+
+        $pageSubTitle = empty($block) ? $this->_translator->trans('Add a new attribute') : $this->_translator->trans('Edit attribute'). ' ' . $attribute->getTitle();
+        
+
+        return $this->render('MajesCmsBundle:Admin:attribute-edit.html.twig', array(
+            'pageTitle' => $this->_translator->trans('Content management'),
+            'pageSubTitle' => $pageSubTitle,
+            'attribute' => $attribute,
+            'form' => $form->createView()
+            ));
+    }
+
+    /**
+     * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
+     *
+     */
     public function blocksAction()
     {
         
@@ -535,7 +607,6 @@ class AdminController extends Controller implements SystemController
                 if(is_null($block)) $block = $form->getData();
 
                 $block->setUser($this->_user);
-
                 //Get attributes from form data
                 $attributes_tmp = $request->request->get('attributes');
                 $ref = $request->request->get('ref');
@@ -543,6 +614,7 @@ class AdminController extends Controller implements SystemController
                 $setup = $request->request->get('setup');
 
                 $attributes_tmp = is_null($attributes_tmp) ? array() : $attributes_tmp;
+
                 if(!is_null($attributes_tmp)){
                     //Get all already existant block_attribute_ids that are in the form, in order to keep them
                     $block_attributes_ids = array();
@@ -575,6 +647,7 @@ class AdminController extends Controller implements SystemController
                     /*SET ATTRIBUTES*/
                     //$block->removeAttributes();
                     $sort = 10;
+
                     foreach($attributes_tmp as $attributes)
                         foreach ($attributes as $attribute_id => $block_attributes) {
                             foreach ($block_attributes as $block_attribute_id) {
@@ -767,6 +840,14 @@ class AdminController extends Controller implements SystemController
                             $templateBlock = $em->getRepository('MajesCmsBundle:TemplateBlock')
                                     ->findOneById($old_block->getId());
                             if($templateBlock){
+                                $pageTemplateBlocks = $em->getRepository('MajesCmsBundle:PageTemplateBlock')->findBy(array('templateBlock' => $templateBlock));
+                                foreach($pageTemplateBlocks as $pageTemplateBlock) {
+                                    $pageTemplateBlockVersions = $em->getRepository('MajesCmsBundle:PageTemplateBlockVersion')->findBy(array('pageTemplateBlock' => $pageTemplateBlock));
+                                    foreach($pageTemplateBlockVersions as $pageTemplateBlockVersion) {
+                                        $em->remove($pageTemplateBlockVersion);
+                                    }
+                                    $em->remove($pageTemplateBlock);
+                                }
                                 $em->remove($templateBlock);
                                 $em->flush();
                             }
@@ -844,7 +925,7 @@ class AdminController extends Controller implements SystemController
      */
     public function templateBlockEditAction($id)
     {
-        
+
         $request = $this->getRequest();
 
         $em = $this->getDoctrine()->getManager();

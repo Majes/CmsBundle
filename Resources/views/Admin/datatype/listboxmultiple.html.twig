@@ -1,10 +1,12 @@
-{% if attribute.value %}
-{% spaceless %}
-	<span class="textline">
-		{% set list = getListbox(attribute.block_attribute_setup) %}
-			{% for item in list.content %}
-	        	{% if item.key in attribute.value.value %}{{item.value}}{% endif %}
-	        {% endfor %}
-	</span><br/>
-{% endspaceless %}
+{% if attribute.block_attribute_setup is not null %}
+	{% if attribute.value %}
+	{% spaceless %}
+		<span class="textline">
+			{% set list = getListbox(attribute.block_attribute_setup) %}
+				{% for item in list.content %}
+		        	{% if item.key in attribute.value.value %}{{item.value}}{% endif %}
+		        {% endfor %}
+		</span><br/>
+	{% endspaceless %}
+	{% endif %}
 {% endif %}

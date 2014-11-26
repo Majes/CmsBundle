@@ -23,12 +23,15 @@
 	{% endif %}
 
     {% for attribute in block.item.attributes %}
+    	<h3>{{attribute.title}}</h3>
     	<blockquote class="">
     	<input type="hidden" name="attributes[{{attribute.block_attribute_ref}}][id]" value="{{attribute.block_attribute_id}}"/>
     	<input type="hidden" name="attributes[{{attribute.block_attribute_ref}}][ref]" value="{{attribute.ref}}"/>
-		{{ include(
-    	    'MajesCmsBundle:Admin:datatype/form/' ~ attribute.ref  ~ '.html.twig'
-    		) }}
+    	{% if datatypeTemplateExist('form/' ~ attribute.ref) %}
+    		{{ include('MajesTeelBundle:Admin:datatype/form/' ~ attribute.ref  ~ '.html.twig') }}
+    	{% else %}
+    		{{ include('MajesCmsBundle:Admin:datatype/form/' ~ attribute.ref  ~ '.html.twig') }}
+    	{% endif %}
     	</blockquote>
 	{% endfor %}
 	

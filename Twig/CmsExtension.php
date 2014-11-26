@@ -25,6 +25,7 @@ class CmsExtension extends \Twig_Extension
             new \Twig_SimpleFunction('wysiwygTagEnd', array($this, 'wysiwygTagEnd')),
             new \Twig_SimpleFunction('getMenu', array($this, 'getMenu')),
             new \Twig_SimpleFunction('getBreadcrumb', array($this, 'getBreadcrumb')),
+            new \Twig_SimpleFunction('datatypeTemplateExist', array($this, 'datatypeTemplateExist')),
             new \Twig_SimpleFunction('getHost', array($this, 'getHost'))
         );
     }
@@ -101,6 +102,12 @@ class CmsExtension extends \Twig_Extension
         $host = $this->_em->getRepository('MajesCoreBundle:Host')
                     ->findOneBy(array('url' => $domain));
         return $host;
+    }
+
+    public function datatypeTemplateExist($attributeRef){
+        if(file_exists($this->_container->get('kernel')->getRootDir()."/../src/Majes/TeelBundle/Resources/views/Admin/datatype/".$attributeRef.'.html.twig'))
+            return true;
+        return false;
     }
 
 

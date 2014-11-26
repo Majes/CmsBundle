@@ -95,7 +95,7 @@
                                     
 
                                     
-                                    {% if block.has_draft %}<a class="cancelDraft icon-warning-sign pull-right" title="Cancel draft" href="{{ path('_cms_discard_draft', {id: block.page_template_block}) }}" onclick="return CoreAdmin.Common.confirmDelete('{% trans %}Are you sure you want to cancel this draft?{% endtrans %}')"></a>{% endif %}
+                                    {% if block.has_draft %}<a class="cancelDraft btn btn-xs btn-warning-outline icon-warning-sign pull-right" title="Cancel draft" href="{{ path('_cms_discard_draft', {id: block.page_template_block}) }}" onclick="return CoreAdmin.Common.confirmDelete('{% trans %}Are you sure you want to cancel this draft?{% endtrans %}')"> Discard Draft</a>{% endif %}
                                 </div>
                                 <div class="widget-content{% if block.is_repeatable == 0 %} padded{% endif %}">
                                 
@@ -123,10 +123,11 @@
                                                     <a class="editBlock icon-edit pull-right" href="#" data-pagetemplateblock="{{block.page_template_block}}" data-page="{{block.page}}" data-templateblock="{{block.template_block}}" data-id="{{attribute_block.id}}"></a>
 
                                                     {% for attribute in attribute_block.attributes %}
-                                                        {{ include(
-                                                            'MajesCmsBundle:Admin:datatype/' ~ attribute.ref  ~ '.html.twig'
-                                                            ) }}
-                                               
+                                                        {% if datatypeTemplateExist(attribute.ref) %}
+                                                            {{ include('MajesTeelBundle:Admin:datatype/' ~ attribute.ref  ~ '.html.twig') }}
+                                                        {% else %}
+                                                            {{ include('MajesCmsBundle:Admin:datatype/' ~ attribute.ref  ~ '.html.twig') }}
+                                                        {% endif %}
                                                     {% endfor %}
                                                 </div>
                                             </div>
@@ -139,9 +140,11 @@
                                     {% if block.items[0]['attributes'] is defined %}
                                         {% for attribute in block.items[0]['attributes'] %}
                                                 {% if attribute.value is not empty %}
-                                                {{ include(
-                                                        'MajesCmsBundle:Admin:datatype/' ~ attribute.ref  ~ '.html.twig'
-                                                    ) }}
+                                                    {% if datatypeTemplateExist(attribute.ref) %}
+                                                        {{ include('MajesTeelBundle:Admin:datatype/' ~ attribute.ref  ~ '.html.twig') }}
+                                                    {% else %}
+                                                        {{ include('MajesCmsBundle:Admin:datatype/' ~ attribute.ref  ~ '.html.twig') }}
+                                                    {% endif %}
                                                 {% endif %}
                                         {% endfor %}
                                     {% endif %}
