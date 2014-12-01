@@ -1,1 +1,3 @@
-{% if attribute.value %}<span class="textline">{% if attribute.value['value'] is defined %}{{ attribute.value['value'] }}{% endif %}</span>{% endif %}
+{% if attribute.value %}
+	<span class="textline">{% if attribute.value['value'] is defined %}Is {% else %}Not {% endif %}{{attribute.title}}</span>
+{% endif %}
