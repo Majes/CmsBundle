@@ -140,14 +140,20 @@ class Datatyper
 
         $url = $attribute['value'];
 
+        if(!empty($attribute['internal'])){
+            $url = $this->_em->getRepository('MajesCmsBundle:Route')->findOneById($attribute['internal'])->getUrl();
+            $attribute['value'] = $url;
+        }
+
         $route = $this->_em->getRepository('MajesCmsBundle:Route')
             ->findOneBy(array('url' => $url));
 
         if(!is_null($route)) 
         {
             $attribute['page_id'] = $route->getPage()->getId();
+            $attribute['locale'] = $route->getLocale();
+            $attribute['route_id'] = $route->getId();
         }
-
         return $attribute;
     }
 

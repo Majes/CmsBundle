@@ -1,10 +1,9 @@
 {% set url = '' %}
 {% if attribute.value %}
-  {% if attribute.value.page_id is defined %}
-    {% set langexists_translation = hasTranslation(attribute.value.page_id, lang, true) %}
-    {% if langexists_translation %}{% set url = path('majes_cms_' ~ attribute.value.page_id ~  '_' ~ lang) %}
-    {% else %}{% set url = attribute.value.value %}
-    {% endif %}
+  {% if attribute.value.route_id is defined %}
+    {% set url = path('majes_route_' ~ attribute.value.route_id) %}  
+  {% elseif attribute.value.page_id is defined and attribute.value.locale is defined %}
+    {% set url = path('majes_cms_' ~ attribute.value.page_id ~  '_' ~ attribute.value.locale) %}
   {% else %}
     {% set url = attribute.value.value %}
   {% endif %}
@@ -14,6 +13,19 @@
   <div class="col-lg-9">
     <input class="form-control" placeholder="Link url" type="text" name="attributes[{{attribute.block_attribute_ref}}][value]" value="{{url|replace({'/app_dev.php':''})}}"/>
   </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-lg-3">or internal Link</label>
+    <div class="col-lg-9">
+        <select class="form-control" name="attributes[{{attribute.block_attribute_ref}}][internal]" id="{{attribute.block_attribute_ref}}internal" value="{% if attribute.value %}{{attribute.value.value}}{% endif %}" style="padding:0;border:none;">
+          <option value="" </option>
+          {% set routes = getRoutes() %}
+          {% for route in routes %}
+            <option value="{{ route.id }}">{{route.title}} - {{ route.url }}</option>
+          {% endfor %}
+        </select>
+    </div>
 </div>
 
 <div class="form-group">
@@ -40,3 +52,8 @@
     </div>
 </div>
 
+<script>
+  $('select#{{attribute.block_attribute_ref}}internal').select2({
+    allowClear: true
+  });
+</script>
