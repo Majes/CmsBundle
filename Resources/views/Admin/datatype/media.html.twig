@@ -1,1 +1,9 @@
-{% if attribute.value['media_id'] is defined %}<span class="picture" style="display: block; margin: 0 10px 10px 0; float: left"><i class="icon-download-alt"></i> <a href="/{{  attribute.value['path'] }}" title="{{attribute.value['title']}}" target="_blank">{{attribute.value['title']}}</a><legend>{{attribute.value['author']}}</legend></span>{% endif %}
+{% if attribute.value['media_id'] is defined %}
+	{% if attribute.value.type == 'picture' %}
+		<div class="picture" style="display: block; margin: 0 10px 10px 0; float: left; clear: both"><img src="{{ teelMediaLoad(attribute.value.media_id, 200, 200, false, null, { 'src' : true})|raw }}" title="{{attribute.value['title']}}" onerror='this.src="{{ asset('bundles/majesmedia/img/icon-document.png')}}"'/><legend>{{attribute.value['author']}}</legend></div>
+	{% elseif attribute.value.type == 'video' %}
+		<span class="picture" style="display: block; margin: 0 10px 10px 0; float: left"><i class="icon-facetime-video"></i> <a href="/{{  attribute.value['path'] }}" title="{{attribute.value['title']}}" target="_blank">{{attribute.value['title']}}</a><legend>{{attribute.value['author']}}</legend></span>
+	{% else %}
+		<span class="picture" style="display: block; margin: 0 10px 10px 0; float: left"><i class="icon-download-alt"></i> <a href="/{{  attribute.value['path'] }}" title="{{attribute.value['title']}}" target="_blank">{{attribute.value['title']}}</a><legend>{{attribute.value['author']}}</legend></span>
+	{% endif %}
+{% endif %}

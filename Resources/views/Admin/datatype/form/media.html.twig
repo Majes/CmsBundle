@@ -12,13 +12,25 @@
     </div>
 </div>
 
-<div class="form-group">
+{# <div class="form-group">
     <label for="myaccount_is_active" class="control-label col-lg-3">{% trans %}Download{% endtrans %}</label>
     <div class="col-lg-9">
 		<label style="padding-top: 7px"><span>{% if attribute.value %}
         <i class="icon-download-alt"></i> <a href="/{{ attribute.value.path }}" title="{{attribute.value['title']}}" id="preview{{attribute.block_attribute_ref}}" target="_blank">{{ attribute.value['title'] }}</a>
         {% endif %}</span></label>
         
+    </div>
+</div>
+ #}
+<div class="form-group">
+    <label for="myaccount_is_active" class="control-label col-lg-3">{% trans %}Preview{% endtrans %}</label>
+    <div class="col-lg-9">
+
+        {% if attribute.value %}
+        <img src="{{ teelMediaLoad(attribute.value.media_id, 200, 200, false, asset('bundles/majesmedia/img/icon-document.png'),{ 'src' : true })|raw }}" width="200" title="{{attribute.value['title']}}" id="preview{{attribute.block_attribute_ref}}" onerror='this.src="{{ asset('bundles/majesmedia/img/icon-document.png')}}"'/>
+        {% else %}
+        <img src="" title="" id="preview{{attribute.block_attribute_ref}}" width="200"/>
+        {% endif %}
     </div>
 </div>
 
@@ -36,11 +48,8 @@
             </div>
                 <div class="tab-pane" id="tab2{{attribute.block_attribute_ref}}">
                     <iframe src="{{path('_media_picker', {'context': 'cms'})}}?ref={{attribute.block_attribute_ref}}" style="width: 100%; border: 0; height: 500px;"></iframe>
-                </div>
-                  
+                </div>    
         </div>
-		
-		
 	</div>
 </div>
 
