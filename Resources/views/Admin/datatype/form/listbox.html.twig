@@ -6,7 +6,7 @@
             <select class="form-control" name="attributes[{{attribute.block_attribute_ref}}][value]" id="{{attribute.block_attribute_ref}}" value="{% if attribute.value %}{{attribute.value.value}}{% endif %}" style="padding:0;border:none;">
                 <option></option>
                 {% for item in list.content %}
-                    <option value="{{item.key}}" {% if (attribute.value) and (attribute.value.value == item.key) %}selected{% endif %}>{{item.value}}</option>
+                    <option value="{{item.slug}}" {% if (attribute.value) and (attribute.value.value == item.key) %}selected{% endif %}>{{item.value}}</option>
                 {% endfor %}
             </select>
         </div>
