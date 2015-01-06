@@ -664,7 +664,7 @@ class CmsService {
         }
         foreach ($routes as $route) {
             $child = $sitemap->addChild('url');
-            $child->addChild('loc', $route->getHost().$route->getUrl());
+            $child->addChild('loc', 'http://'.$route->getHost().$route->getUrl());
             $child->addChild('lastmod', $route->getPage()->getUpdateDate()->format('Y-m-d'));
             $child->addChild('changefreq', 'weekly');
         }
