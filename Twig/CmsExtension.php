@@ -24,6 +24,7 @@ class CmsExtension extends \Twig_Extension
             new \Twig_SimpleFunction('wysiwygTagBegin', array($this, 'wysiwygTagBegin')),
             new \Twig_SimpleFunction('wysiwygTagEnd', array($this, 'wysiwygTagEnd')),
             new \Twig_SimpleFunction('getMenu', array($this, 'getMenu')),
+            new \Twig_SimpleFunction('getContent', array($this, 'getContent')),
             new \Twig_SimpleFunction('getBreadcrumb', array($this, 'getBreadcrumb')),
             new \Twig_SimpleFunction('datatypeTemplateExist', array($this, 'datatypeTemplateExist')),
             new \Twig_SimpleFunction('getHost', array($this, 'getHost'))
@@ -87,6 +88,21 @@ class CmsExtension extends \Twig_Extension
                     ->getMenu($host_id, $lang, $ref, $level, $page_id, $is_inmenu, '', $page_parent_id, $is_active);
 
         return $menu;
+    
+    }
+
+    public function getContent($page, $lang, $isDraft = false){
+        
+        if(is_int($page))
+            $page = $this->_em->getRepository('MajesCmsBundle:Page')
+                ->findOneById($page);
+
+        if(empty($page)) return false;
+
+        $content = $this->_container->get('majescms.cms_service')
+                    ->getContent($page, $lang, $isDraft);
+
+        return $content;
     
     }
 
