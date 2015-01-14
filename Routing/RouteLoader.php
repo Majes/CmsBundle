@@ -89,8 +89,13 @@ class RouteLoader implements RouteProviderInterface{
                 'locale' => $explode[3]
                 ));
         }else{
-            $route = $this->em->getRepository('MajesCmsBundle:Route')->findOneBy(array('id' => $explode[2]));
-            $page = $route->getPage();
+            if(is_numeric($explode[2])){
+                $route = $this->em->getRepository('MajesCmsBundle:Route')->findOneBy(array('id' => $explode[2]));
+                $page = $route->getPage();
+            }else{
+                $route = $this->em->getRepository('MajesCmsBundle:Route')->findOneBy(array('url' => $explode[2]));
+                $page = $route->getPage();
+            }
         }
 
         if (!$route) {
