@@ -11,9 +11,11 @@ use Majes\CmsBundle\Entity\Route;
 class CmsService {
 
     private $_em;
+    private $_pages;
 
     public function __construct($em) {
         $this->_em = $em;
+        $this->_pages = array();
     }
 
     /**
