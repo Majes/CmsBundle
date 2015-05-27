@@ -166,13 +166,12 @@ class Datatyper
             
         $routebis = $this->_em->getRepository('MajesCmsBundle:PageLang')
             ->findOneBy(array('page' => $route->getPage(), 'locale' => $route->getLocale()));
-        
-        $attribute['value'] = $route->getUrl();
 
         if(!is_null($route)) 
         {
             $attribute['page_id'] = $route->getPage()->getId();
             $attribute['page_title'] = $routebis->getTitle();
+            $attribute['url'] = $route->getUrl();
         }
 
         return $attribute;
