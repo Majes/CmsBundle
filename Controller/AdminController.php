@@ -1208,7 +1208,7 @@ class AdminController extends Controller implements SystemController
                 $pageTemplateBlock->setLocale($lang);
                 $pageTemplateBlock->setVersion(1);
 
-                $datatype = new Datatype($pageTemplateBlock, $block, $attributes, $em, $request, $this->_user, $id, $title);
+                $datatype = new Datatype($pageTemplateBlock, $block, $attributes, $em, $request, $this->_user, $id, $title, $this->container->get('majesmedia.mediaService'));
                 $pageTemplateBlock->setContent(json_encode($datatype->_content));
     
                 $em->persist($pageTemplateBlock);
@@ -1216,7 +1216,7 @@ class AdminController extends Controller implements SystemController
             }elseif($wysiwyg == 1){
                 $draft = $pageTemplateBlock->getDraft();
 
-                $datatype = new Datatype($pageTemplateBlock, $block, $attributes, $em, $request, $this->_user, $id, $title);
+                $datatype = new Datatype($pageTemplateBlock, $block, $attributes, $em, $request, $this->_user, $id, $title, $this->container->get('majesmedia.mediaService'));
                 $pageTemplateBlock->setContent(json_encode($datatype->_content));
                 
                 if(!is_null($draft)){
@@ -1245,10 +1245,10 @@ class AdminController extends Controller implements SystemController
                     $draft->setPageTemplateBlock($pageTemplateBlock);
                     $draft->setLocale($pageTemplateBlock->getLocale());
 
-                    $datatype = new Datatype($pageTemplateBlock, $block, $attributes, $em, $request, $this->_user, $id, $title);
+                    $datatype = new Datatype($pageTemplateBlock, $block, $attributes, $em, $request, $this->_user, $id, $title, $this->container->get('majesmedia.mediaService'));
                 
                 }else{
-                    $datatype = new Datatype($draft, $block, $attributes, $em, $request, $this->_user, $id, $title);
+                    $datatype = new Datatype($draft, $block, $attributes, $em, $request, $this->_user, $id, $title, $this->container->get('majesmedia.mediaService'));
                 }
 
                 $draft->setContent(json_encode($datatype->_content));
