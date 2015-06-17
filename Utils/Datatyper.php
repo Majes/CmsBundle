@@ -12,13 +12,15 @@ class Datatyper
     public $_request;
     public $_user;
     public $_block;
+    public $_mediaService;
 
-    public function __construct($pageTemplateBlock, $block, $attributes, $em, $request, $user, $id = '', $title = ''){
+    public function __construct($pageTemplateBlock, $block, $attributes, $em, $request, $user, $id = '', $title = '', $mediaService = null){
 
         $this->_em = $em; 
         $this->_request = $request; 
         $this->_user = $user;
         $this->_block = $block;
+        $this->_mediaService = $mediaService;
 
         $this->_content = !is_null($pageTemplateBlock) ? json_decode($pageTemplateBlock->getContent(), true) : array('attributes' => array());
 
@@ -163,7 +165,6 @@ class Datatyper
 
         $route = $this->_em->getRepository('MajesCmsBundle:Route')
             ->findOneBy(array('id' => $id));
-            
         $routebis = $this->_em->getRepository('MajesCmsBundle:PageLang')
             ->findOneBy(array('page' => $route->getPage(), 'locale' => $route->getLocale()));
 
@@ -171,7 +172,6 @@ class Datatyper
         {
             $attribute['page_id'] = $route->getPage()->getId();
             $attribute['page_title'] = $routebis->getTitle();
-            $attribute['url'] = $route->getUrl();
         }
 
         return $attribute;
