@@ -665,10 +665,15 @@ class CmsService {
             $routes = $this->_em->getRepository('MajesCmsBundle:Route')->findBy(array('host' => $host));
         }
         foreach ($routes as $route) {
-            $child = $sitemap->addChild('url');
-            $child->addChild('loc', 'http://'.$route->getHost().$route->getUrl());
-            $child->addChild('lastmod', $route->getPage()->getUpdateDate()->format('Y-m-d'));
-            $child->addChild('changefreq', 'weekly');
+            if ( !$route->getPage()->getDeleted() && $route->getPage()->getIsActive()) {
+                $page = $this->_em->getRepository('MajesCmsBundle:PageLang')->findOneBy(array("page" => $route->getPage()->getId(), "locale" => $route->getLocale()));
+                if ( !$page->getDeleted() && $page->getIsActive()) {
+                    $child = $sitemap->addChild('url');
+                    $child->addChild('loc', 'http://'.$route->getHost().$route->getUrl());
+                    $child->addChild('lastmod', $route->getPage()->getUpdateDate()->format('Y-m-d'));
+                    $child->addChild('changefreq', 'weekly');
+                }
+            }
         }
         
         return $sitemap;
