@@ -68,6 +68,21 @@ class RouteLoader implements RouteProviderInterface{
             }
 
         }
+
+        $redirects = $this->em->getRepository('MajesCmsBundle:Redirect')
+            ->findAll();
+
+        foreach($redirects as $redirect){
+
+            $collection->add('majes_redirect_'.$redirect->getId(), 
+                new SymfonyRoute(
+                        $redirect->getUrl(), 
+                        array('_controller' => 'FrameworkBundle:Redirect:urlRedirect', 'path' => $redirect->getRedirectUrl(), 'permanent' => $redirect->getPermanent() )
+                    )
+            );
+
+        }
+
         return $collection;
     }
 
