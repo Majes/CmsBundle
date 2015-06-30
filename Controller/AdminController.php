@@ -1436,5 +1436,125 @@ class AdminController extends Controller implements SystemController
 
         return $this->redirect($this->get('router')->generate('_cms_roles', array()));
     }
+    
+    /**
+     * @Secure(roles="ROLE_CMS_PUBLISH, ROLE_SUPERADMIN")
+     *
+     */
+    public function redirectsAction(){
+
+        $em = $this->getDoctrine()->getManager();
+
+        $request = $this->getRequest();
+
+        if ($request->isXmlHttpRequest()){
+
+            /**
+             * Get data from datatable
+             */
+            $draw = $request->get('draw', 1);
+            $length = $request->get('length', 10);
+            $start = $request->get('start', 0);
+            $columns = $request->get('columns');
+            $orderNum = $request->get('order');
+            $order = $orderNum[0]['column'];
+            $search = $request->get('search');
+
+            $redirects = $em->getRepository('MajesCmsBundle:Redirect')->findForAdmin($start, $length, $search['value']);
+
+            $coreTwig = $this->container->get('majescore.twig.core_extension');           
+            $dataTemp = array(
+                'object' => new Redirect(),
+                'datas' => !empty($redirects) ? $redirects : null,
+                'message' => $this->_translator->trans('Are you sure you want to delete this redirection ?'),
+                'urls' => array(
+                    'edit'   => '_admin_redirect_edit',
+                    'delete' => '_admin_redirect_delete'
+                ));
+            $data = $coreTwig->dataTableJson($dataTemp, $draw);
+                
+            return new JsonResponse($data);
+
+
+        
+        }else{       
+
+        return $this->render('MajesCoreBundle:common:datatable.html.twig', array(
+            'datas' => null,
+            'object' => new Redirect(),
+            'pageTitle' => 'Redirections',
+            'pageSubTitle' => $this->_translator->trans('List off all redirections currently "created"'),
+            'label' => 'redirection',
+            'message' => 'Are you sure you want to delete this redirection ?',
+            'urls' => array(
+                'add' => '_admin_redirect_edit',
+                'edit' => '_admin_redirect_edit',
+                'delete' => '_admin_redirect_delete'
+                )
+            ));
+        }
+    }
+
+    /**
+     * @Secure(roles="ROLE_CMS_PUBLISH, ROLE_SUPERADMIN")
+     *
+     */
+    public function redirectEditAction($id){
+
+        $request = $this->getRequest();
+
+        $em = $this->getDoctrine()->getManager();
+        
+        $redirect = $em->getRepository('MajesCmsBundle:Redirect')->findOneById($id);
+
+        $form = $this->createForm(new RedirectType(), $redirect);
+        
+        if($request->getMethod() == 'POST'){
+
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+
+                if(is_null($redirect)) $redirect = $form->getData();
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($redirect);
+                $em->flush();
+
+                return $this->redirect($this->get('router')->generate('_admin_redirect_edit', array('id' => $redirect->getId())));
+
+            }else{
+                foreach ($form->getErrors() as $error) {
+                    echo $message[] = $error->getMessage();
+                }
+            }
+        }
+
+        $pageSubTitle = empty($redirect) ? $this->_translator->trans('Add a new redirection') : $this->_translator->trans('Edit redirection');
+        
+        return $this->render('MajesCoreBundle:Index:role-edit.html.twig', array(
+            'pageTitle' => $this->_translator->trans('Redirections'),
+            'pageSubTitle' => $pageSubTitle,
+            'form' => $form->createView()));
+    }
+
+    /**
+     * @Secure(roles="ROLE_CMS_PUBLISH, ROLE_SUPERADMIN")
+     *
+     */
+    public function redirectDeleteAction($id){
+        
+        $request = $this->getRequest();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $redirect = $em->getRepository('MajesCmsBundle:Redirect')->findById($id);
+
+        if(!is_null($redirect)){
+            $em->remove($redirect);
+            $em->flush();
+        }
+
+        return $this->redirect($this->get('router')->generate('_admin_redirects', array()));
+    }
 
 }
