@@ -48,6 +48,7 @@ class RedirectType extends AbstractType
             )));
 
         $builder->add('permanent', 'checkbox', array(
+            'required' => false,
             ));
 
 
