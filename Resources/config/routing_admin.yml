@@ -97,3 +97,15 @@ _cms_role_edit:
 _cms_role_delete:
     pattern:  /cms/role/delete/{id}
     defaults: { _controller: MajesCmsBundle:Admin:roleDelete }
+
+_admin_redirects:
+    pattern:  /redirects
+    defaults: { _controller: MajesCmsBundle:Admin:redirects }
+
+_admin_redirect_edit:
+    pattern:  /redirect/edit/{id}
+    defaults: { _controller: MajesCmsBundle:Admin:redirectEdit, id: null }
+
+_admin_redirect_delete:
+    pattern:  /redirect/delete/{id}
+    defaults: { _controller: MajesCmsBundle:Admin:redirectDelete, id: null }
