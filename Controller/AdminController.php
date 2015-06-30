@@ -1550,7 +1550,7 @@ class AdminController extends Controller implements SystemController
 
         $em = $this->getDoctrine()->getManager();
 
-        $redirect = $em->getRepository('MajesCmsBundle:Redirect')->findById($id);
+        $redirect = $em->getRepository('MajesCmsBundle:Redirect')->findOneById($id);
 
         if(!is_null($redirect)){
             $em->remove($redirect);
