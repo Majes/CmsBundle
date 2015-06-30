@@ -18,6 +18,7 @@ use Majes\CmsBundle\Entity\Page;
 use Majes\CmsBundle\Entity\PageLang;
 use Majes\CmsBundle\Entity\PageTemplateBlock;
 use Majes\CmsBundle\Entity\PageTemplateBlockVersion;
+use Majes\CmsBundle\Entity\Redirect;
 
 use Majes\TeelBundle\Utils\Datatype;
 use Majes\CmsBundle\Utils\Helper;
@@ -29,6 +30,7 @@ use Majes\CmsBundle\Form\TemplateType;
 use Majes\CmsBundle\Form\PageType;
 use Majes\CmsBundle\Form\PageBlockType;
 use Majes\CmsBundle\Form\PageRoleType;
+use Majes\CmsBundle\Form\RedirectType;
 
 use Majes\CoreBundle\Utils\Logger;
 
