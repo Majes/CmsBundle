@@ -39,7 +39,7 @@ class Redirect extends SymfonyRoute implements RouteObjectInterface{
     private $redirectUrl;
 
     /**
-     * @ORM\Column(name="type", type="boolean", nullable=false)
+     * @ORM\Column(name="permanent", type="boolean", nullable=false)
      */
     private $permanent;
 
