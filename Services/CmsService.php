@@ -59,7 +59,7 @@ class CmsService {
         foreach ($results as $result) {
             $lang_page = $result->setLang($lang);
             $lang_page = $result->getLang();
-            
+
             if(!is_null($page_parent_id)) $result->setParent(null);
 
             $array[] = $result;
@@ -109,7 +109,7 @@ class CmsService {
                     if($current && $this->_menu[$page_id]['parent_id']){
                         $this->setCurrent($parent_id);
                     }
-                    
+
                     unset($pages[$key]);
 
                     $this->generateNav($pages, $lang, $page_id, $maxlevel, $current_page_id);
@@ -180,7 +180,7 @@ class CmsService {
 
         //Foreach block of a template
         foreach ($template_blocks as $template_block) {
-            
+
             //Check if there is content for this page on this specific block
             $pageTemplateBlock = $pageTemplateBlockRepo->findBy(
                 array('templateBlock' => $template_block, 'page' => $page, 'locale' => $lang));
@@ -230,9 +230,9 @@ class CmsService {
 
             $block_attributes = $block->getBlockAttributes();
             $is_repeatable = $template_block->getIsRepeatable();
-        
+
             //If there is a content, then populate the attribute array
-            if($content){ 
+            if($content){
                 $order = 0;
                 $index = 0;
                 foreach($content['attributes'] as $key => $attributes){
@@ -252,7 +252,7 @@ class CmsService {
                         $attribute = $block_attribute->getAttribute();
                         $title = $block_attribute->getTitle();
                         $title = empty($title) ? $attribute->getTitle() : $title;
-                        
+
                         $response[$template_block->getId()]['items'][$index]['attributes'][] = array(
                             'title' => $title,
                             'ref' => $attribute->getRef(),
@@ -262,7 +262,7 @@ class CmsService {
                             'value' => isset($content['attributes'][$attributes['id']]['content'][$block_attribute->getRef()]) ? $content['attributes'][$attributes['id']]['content'][$block_attribute->getRef()] : false
                         );
                     }
-                        
+
                 }
 
                 //If is repeatable, then we set an empty item
@@ -270,12 +270,12 @@ class CmsService {
                     $response[$template_block->getId()]['items'][$index+1]['title'] = $is_repeatable ? 'New item' : '';
                     $response[$template_block->getId()]['items'][$index+1]['id'] = '';
                     $response[$template_block->getId()]['items'][$index+1]['new'] = true;
-    
+
                     foreach($block_attributes as $block_attribute){
                         $attribute = $block_attribute->getAttribute();
                         $title = $block_attribute->getTitle();
                         $title = empty($title) ? $attribute->getTitle() : $title;
-                        
+
                         $response[$template_block->getId()]['items'][$index+1]['attributes'][] = array(
                             'title' => $title,
                             'ref' => $attribute->getRef(),
@@ -297,7 +297,7 @@ class CmsService {
                     $attribute = $block_attribute->getAttribute();
                     $title = $block_attribute->getTitle();
                     $title = empty($title) ? $attribute->getTitle() : $title;
-                    
+
                     $response[$template_block->getId()]['items'][0]['attributes'][] = array(
                         'title' => $title,
                         'ref' => $attribute->getRef(),
@@ -306,7 +306,7 @@ class CmsService {
                         'value' => false
                     );
                 }
-                
+
             }
 
 
@@ -323,7 +323,7 @@ class CmsService {
         $pageTemplateBlockRepo = $this->_em->getRepository('MajesCmsBundle:PageTemplateBlock');
         $response = array();
 
-        
+
         $pageTemplateBlock = $pageTemplateBlockRepo->findBy(
             array('templateBlock' => $template_block, 'page' => $page, 'locale' => $lang));
 
@@ -370,7 +370,7 @@ class CmsService {
             $order = 0;
             foreach($content['attributes'] as $key => $attributes){
 
-                if($attributes['id'] == $id){   
+                if($attributes['id'] == $id){
 
                     $response['item']['title'] = $attributes['title'];
                     $response['item']['id'] = $attributes['id'];
@@ -394,14 +394,14 @@ class CmsService {
                 }
             }
         }else{
-            
+
             $response['item']['title'] = '';
             $response['item']['id'] = '';
 
             foreach($block_attributes as $block_attribute){
                 $attribute = $block_attribute->getAttribute();
                 $title = $block_attribute->getTitle();
-                $title = empty($title) ? $attribute->getTitle() : $title; 
+                $title = empty($title) ? $attribute->getTitle() : $title;
 
                 $response['item']['attributes'][] = array(
                     'title' => $title,
@@ -412,12 +412,12 @@ class CmsService {
                     'value' => false
                 );
             }
-            
+
         }
         return $response;
     }
     /**
-     * Get PageLangContent 
+     * Get PageLangContent
      */
     public function getPageLangContent($id, $lang)
     {
@@ -438,12 +438,12 @@ class CmsService {
             'template' => $page->getTemplate()->getRef()
             );
     }
-    
+
     /**
      * Get page content
      */
     public function getContent($page, $lang, $isDraft = false){
-        
+
         $pageTemplateBlockRepo = $this->_em->getRepository('MajesCmsBundle:PageTemplateBlock');
 
         $template = $page->getTemplate();
@@ -453,7 +453,7 @@ class CmsService {
 
         //Foreach block of a template
         foreach ($template_blocks as $template_block) {
-            
+
             //Check if there is content for this page on this specific block
             $pageTemplateBlock = $pageTemplateBlockRepo->findBy(
                 array('templateBlock' => $template_block, 'page' => $page, 'locale' => $lang));
@@ -474,7 +474,7 @@ class CmsService {
 
             //Get params of this block
             $block = $template_block->getBlock();
-            
+
             $response[$template_block->getRef()] = array(
                 'template_block_title' => $template_block->getTitle(),
                 'template_block_ref' => $template_block->getRef(),
@@ -494,9 +494,9 @@ class CmsService {
 
             $block_attributes = $block->getBlockAttributes();
             $is_repeatable = $block->getIsRepeatable();
-        
+
             //If there is a content, then populate the attribute array
-            if($content){ 
+            if($content){
                 $order = 0;
                 foreach($content['attributes'] as $key => $attributes){
 
@@ -515,7 +515,7 @@ class CmsService {
                         $attribute = $block_attribute->getAttribute();
                         $title = $block_attribute->getTitle();
                         $title = empty($title) ? $attribute->getTitle() : $title;
-                        
+
                         $response[$template_block->getRef()]['items'][$index]['attributes'][$block_attribute->getRef()] = array(
                             'title' => $title,
                             'ref' => $attribute->getRef(),
@@ -525,7 +525,7 @@ class CmsService {
                             'value' => isset($content['attributes'][$attributes['id']]['content'][$block_attribute->getRef()]) ? $content['attributes'][$attributes['id']]['content'][$block_attribute->getRef()] : false
                         );
                     }
-                        
+
                 }
 
 
@@ -542,7 +542,7 @@ class CmsService {
      */
     public function generateRoutes($menu_ref = 'main', $is_multilingual = true){
 
-        
+
         //Get langs
         $langs = $this->_em->getRepository('MajesCoreBundle:Language')
             ->findBy(array('isActive' => 1));
@@ -553,26 +553,26 @@ class CmsService {
 
         $menu = array(); $domain_langs = array();
         foreach($langs as $lang){
-            
+
             $domain_langs[$lang->getLocale()] = $lang->getHost();
 
             foreach($hosts as $host){
-    
+
                 $response = $this->getMenu($host->getId(), $lang->getLocale(), $menu_ref);
 
                 $response = array_values( (array)$response );
                 $menu[$lang->getLocale()][$host->getUrl()] = $response;
-    
+
             }
         }
 
         $pages = array();
         foreach($menu as $lang => $host){
-            
+
             foreach($host as $domain => $pages){
-                
+
                 foreach($pages as $page){
-        
+
                     $this->_pages[] = array(
                         'lang' => $lang,
                         'domain' => $domain,
@@ -586,10 +586,11 @@ class CmsService {
 
                     $this->recursiveMenu($page['children'], $lang, $domain, $page['url_alias']);
                 }
-                
+
             }
 
         }
+        $batchSize = 20; $i = 0;
         foreach($this->_pages as $route){
 
             $domain_lang = $domain_langs[$route['lang']];
@@ -617,9 +618,15 @@ class CmsService {
             $routeObject->setTitle($route['title']);
             $routeObject->setRedirectUrl($route['link_url']);
 
+            $i++;
             $this->_em->persist($routeObject);
-            $this->_em->flush();
+            if (($i % $batchSize) == 0) {
+                $this->_em->flush();
+                $this->_em->clear(); // Detaches all objects from Doctrine!
+            }
         }
+
+        $this->_em->flush();
 
         // cleaning
         $routes = $this->_em->getRepository('MajesCmsBundle:Route')->findAll();
@@ -628,9 +635,9 @@ class CmsService {
             if($page->getDeleted()){
                 $this->_em->remove($route);
                 $this->_em->flush();
-            }         
+            }
         }
-        
+
 
     }
 
@@ -675,9 +682,9 @@ class CmsService {
                 }
             }
         }
-        
+
         return $sitemap;
-    
+
     }
 
 }
