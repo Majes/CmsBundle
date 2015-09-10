@@ -2,6 +2,7 @@
     <label class="control-label col-lg-3">Link</label>
     <div class="col-lg-9">
         <select class="form-control" name="attributes[{{attribute.block_attribute_ref}}][value]" id="{{attribute.block_attribute_ref}}" value="{% if attribute.value %}{{attribute.value.value}}{% endif %}" style="padding:0;border:none;">
+          <option></option>
           {% set routes = getRoutes() %}
           {% for route in routes %}
             <option value="{{ route.id }}" {% if (attribute.value) and (attribute.value.value == route.id) %}selected{% endif %}>{{route.title}} - {{ route.url }}</option>
@@ -10,5 +11,7 @@
     </div>
 </div>
 <script>
-  $('select#{{attribute.block_attribute_ref}}').select2();
+  $('select#{{attribute.block_attribute_ref}}').select2({
+      allowClear: true
+  });
 </script>
