@@ -162,7 +162,11 @@ class Datatyper
     public function internallink($attribute, $ref){
 
         $id = $attribute['value'];
-
+        if (empty($id)) {
+            $attribute = false;
+            return $attribute;
+        }
+        
         $route = $this->_em->getRepository('MajesCmsBundle:Route')
             ->findOneBy(array('id' => $id));
         $routebis = $this->_em->getRepository('MajesCmsBundle:PageLang')
