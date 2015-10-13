@@ -13,7 +13,7 @@ use Majes\CoreBundle\Annotation\DataTable;
  *
  * @ORM\Entity
  * @ORM\Table(name="cms_route")
- * @ORM\HasLifeCycleCallbacks
+ * @ORM\HasLifecycleCallbacks()
  */
 class Route extends SymfonyRoute implements RouteObjectInterface{
     /**
@@ -137,7 +137,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface{
         return $this;
     }
 
-    
+
     /**
      * @inheritDoc
      */
@@ -198,7 +198,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface{
     public function getContent(){
         return $this->content;
     }
-    
+
     public function getRouteKey(){ return null;}
 
     /**
