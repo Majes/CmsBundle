@@ -1,11 +1,11 @@
-<?php 
+<?php
 namespace Majes\CmsBundle\Routing;
- 
+
 use Symfony\Cmf\Component\Routing\RouteProviderInterface;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\HttpFoundation\Request;
- 
+
 class RouteLoader implements RouteProviderInterface{
 
     private $loaded = false;
@@ -33,18 +33,19 @@ class RouteLoader implements RouteProviderInterface{
 
             if(!empty($redirect_url))
             {
-                $collection->add('majes_cms_'.$route->getPage()->getId().'_'.$route->getLocale(), 
+
+                $collection->add('majes_cms_'.$route->getPage()->getId().'_'.$route->getLocale(),
                     new SymfonyRoute(
-                            $route->getUrl(), 
+                            $route->getUrl(),
                             array('_controller' => 'FrameworkBundle:Redirect:urlRedirect', 'path' => $redirect_url),
                             array(),
                             array(),
                             $route->getHost()
                         )
                 );
-                $collection->add('majes_route_'.$route->getId(), 
+                $collection->add('majes_route_'.$route->getId(),
                     new SymfonyRoute(
-                            $route->getUrl(), 
+                            $route->getUrl(),
                             array('_controller' => 'FrameworkBundle:Redirect:urlRedirect', 'path' => $redirect_url),
                             array(),
                             array(),
@@ -52,21 +53,21 @@ class RouteLoader implements RouteProviderInterface{
                         )
                 );
             }else{
-                
-                $collection->add('majes_cms_'.$route->getPage()->getId().'_'.$route->getLocale(), 
+
+                $collection->add('majes_cms_'.$route->getPage()->getId().'_'.$route->getLocale(),
                     new SymfonyRoute(
-                            $route->getUrl(), 
-                            array('_controller' => 'MajesCmsBundle:Index:load', '_locale' => $route->getLocale()), 
-                            array(), 
+                            $route->getUrl(),
+                            array('_controller' => 'MajesCmsBundle:Index:load', '_locale' => $route->getLocale()),
+                            array(),
                             array('page_id' => $route->getPage()->getId(), 'lang' => $route->getLocale()),
                             $route->getHost()
                         )
                 );
-                $collection->add('majes_route_'.$route->getId(), 
+                $collection->add('majes_route_'.$route->getId(),
                     new SymfonyRoute(
-                            $route->getUrl(), 
-                            array('_controller' => 'MajesCmsBundle:Index:load', '_locale' => $route->getLocale()), 
-                            array(), 
+                            $route->getUrl(),
+                            array('_controller' => 'MajesCmsBundle:Index:load', '_locale' => $route->getLocale()),
+                            array(),
                             array('page_id' => $route->getPage()->getId(), 'lang' => $route->getLocale()),
                             $route->getHost()
                         )
@@ -80,9 +81,9 @@ class RouteLoader implements RouteProviderInterface{
 
         foreach($redirects as $redirect){
 
-            $collection->add('majes_redirect_'.$redirect->getId(), 
+            $collection->add('majes_redirect_'.$redirect->getId(),
                 new SymfonyRoute(
-                        $redirect->getUrl(), 
+                        $redirect->getUrl(),
                         array('_controller' => 'FrameworkBundle:Redirect:urlRedirect', 'path' => $redirect->getRedirectUrl(), 'permanent' => $redirect->getPermanent() ),
                         array(),
                         array(),
@@ -115,9 +116,11 @@ class RouteLoader implements RouteProviderInterface{
         }else{
             if(is_numeric($explode[2])){
                 $route = $this->em->getRepository('MajesCmsBundle:Route')->findOneBy(array('id' => $explode[2]));
+                if(empty($route)) return;
                 $page = $route->getPage();
             }else{
                 $route = $this->em->getRepository('MajesCmsBundle:Route')->findOneBy(array('url' => $explode[2]));
+                if(empty($route)) return;
                 $page = $route->getPage();
             }
         }
@@ -130,15 +133,15 @@ class RouteLoader implements RouteProviderInterface{
         if(!empty($redirect_url))
         {
             return new SymfonyRoute(
-                        $route->getUrl(), 
+                        $route->getUrl(),
                         array('_controller' => 'FrameworkBundle:Redirect:urlRedirect')
                     );
         }else{
 
             return new SymfonyRoute(
-                        $route->getUrl(), 
-                        array('_controller' => 'MajesCmsBundle:Index:load'), 
-                        array(), 
+                        $route->getUrl(),
+                        array('_controller' => 'MajesCmsBundle:Index:load'),
+                        array(),
                         array('page_id' => $page->getId(), 'lang' => $route->getLocale()),
                         $route->getHost()
                     );
@@ -163,6 +166,6 @@ class RouteLoader implements RouteProviderInterface{
 
         return $routes;
     }
-    
-    
+
+
 }
