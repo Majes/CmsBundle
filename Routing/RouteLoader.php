@@ -105,6 +105,8 @@ class RouteLoader implements RouteProviderInterface{
         $explode = explode('_', $name);
         if(!isset($explode[2])) return false;
 
+        if($explode[0] != 'majes' || !in_array($explode, array('cms', 'redirect', 'route'))) return;
+
         if(isset($explode[3])){
             $page = $this->em->getRepository('MajesCmsBundle:Page')
                 ->findOneById($explode[2]);
