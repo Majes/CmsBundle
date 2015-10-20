@@ -1,0 +1,22 @@
+{% set setup = setupAttribute(attribute.ref) %}
+
+{% if setup.lists is not null %}
+
+
+    <div class="form-group">
+        <label class="control-label col-lg-3">Choix de la liste de sélection</label>
+        <div class="col-lg-9">
+            <select class="form-control" name="attributes[{{attribute.block_attribute_ref}}][value]" id="{{attribute.block_attribute_ref}}" value="{% if attribute.value %}{{attribute.value.value}}{% endif %}" style="padding:0;border:none;">
+                <option></option>
+                {% for list in setup.lists  %}
+                    <option value="{{list.id}}" {% if (attribute.value) and (attribute.value.value == list.id) %}selected{% endif %}>{{list.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <script>
+        $('select#{{attribute.block_attribute_ref}}').select2({
+            allowClear: true
+        });
+    </script>
+{% endif %}

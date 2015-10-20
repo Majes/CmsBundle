@@ -1,0 +1,12 @@
+{% set setup = setupAttribute(attribute.ref) %}
+{% if setup.lists is not null %}
+{% spaceless %}
+	<span class="textline">
+        {% for list in setup.lists  %}
+            {% if (attribute.value) and (attribute.value.value == list.id) %}
+			{{list.name}}
+			{% endif %}
+        {% endfor %}
+    </span>
+{% endspaceless %}
+{% endif %}

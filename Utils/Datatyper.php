@@ -5,7 +5,7 @@ use Majes\MediaBundle\Entity\Media;
 
 class Datatyper
 {
-    
+
     public $_content;
     public $_ref;
     public $_em;
@@ -16,8 +16,8 @@ class Datatyper
 
     public function __construct($pageTemplateBlock, $block, $attributes, $em, $request, $user, $id = '', $title = '', $mediaService = null){
 
-        $this->_em = $em; 
-        $this->_request = $request; 
+        $this->_em = $em;
+        $this->_request = $request;
         $this->_user = $user;
         $this->_block = $block;
         $this->_mediaService = $mediaService;
@@ -59,7 +59,7 @@ class Datatyper
             ->findOneById($attribute['media_id']);
 
         if (is_null($media) && is_null($file)) return null;
-        
+
         if(is_null($media)){
             $media = new Media();
             $media->setCreateDate(new \DateTime(date('Y-m-d H:i:s')));
@@ -82,7 +82,7 @@ class Datatyper
         $author = $media->getAuthor();
         if(empty($title)) $media->setTitle($attribute['title']);
         if(empty($author)) $media->setAuthor($attribute['author']);
-        
+
         $this->_em->persist($media);
         $this->_em->flush();
 
@@ -122,6 +122,10 @@ class Datatyper
         return $attribute;
     }
 
+    public function selection($attribute, $ref){
+        return $attribute;
+    }
+
     public function listboxmultiple($attribute, $ref){
         return $attribute;
     }
@@ -150,7 +154,7 @@ class Datatyper
         $route = $this->_em->getRepository('MajesCmsBundle:Route')
             ->findOneBy(array('url' => $url));
 
-        if(!is_null($route)) 
+        if(!is_null($route))
         {
             $attribute['page_id'] = $route->getPage()->getId();
             $attribute['locale'] = $route->getLocale();
@@ -166,13 +170,13 @@ class Datatyper
             $attribute = false;
             return $attribute;
         }
-        
+
         $route = $this->_em->getRepository('MajesCmsBundle:Route')
             ->findOneBy(array('id' => $id));
         $routebis = $this->_em->getRepository('MajesCmsBundle:PageLang')
             ->findOneBy(array('page' => $route->getPage(), 'locale' => $route->getLocale()));
 
-        if(!is_null($route)) 
+        if(!is_null($route))
         {
             $attribute['page_id'] = $route->getPage()->getId();
             $attribute['page_title'] = $routebis->getTitle();
@@ -191,7 +195,7 @@ class Datatyper
         unset($attribute['value']);
 
         $media = $this->_em->getRepository('MajesMediaBundle:Media')
-            ->findOneById($attribute['media_id']); 
+            ->findOneById($attribute['media_id']);
 
         if (is_null($media) && is_null($file)) return null;
 
@@ -217,7 +221,7 @@ class Datatyper
         $author = $media->getAuthor();
         if(empty($title)) $media->setTitle($attribute['title']);
         if(empty($author)) $media->setAuthor($attribute['author']);
-        
+
         $this->_em->persist($media);
         $this->_em->flush();
 
@@ -237,7 +241,7 @@ class Datatyper
         unset($attribute['value']);
 
         $media = $this->_em->getRepository('MajesMediaBundle:Media')
-            ->findOneById($attribute['media_id']); 
+            ->findOneById($attribute['media_id']);
 
         if (is_null($media) && is_null($file)) return null;
 
@@ -263,7 +267,7 @@ class Datatyper
         $author = $media->getAuthor();
         if(empty($title)) $media->setTitle($attribute['title']);
         if(empty($author)) $media->setAuthor($attribute['author']);
-        
+
         $this->_em->persist($media);
         $this->_em->flush();
 
