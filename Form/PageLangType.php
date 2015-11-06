@@ -1,4 +1,4 @@
-<?php 
+<?php
 // src/Majes/CoreBundle/Form/User/Myaccount.php
 namespace Majes\CmsBundle\Form;
 
@@ -38,7 +38,7 @@ class PageLangType extends AbstractType
             'constraints' => array(
                 new NotBlank()
             )));
-        
+
 
         $builder->add('tags', 'text', array(
             'required' => false));
@@ -50,7 +50,8 @@ class PageLangType extends AbstractType
             'required' => false));
 
         $builder->add('meta_description', 'textarea', array(
-            'required' => false));
+            'required' => false,
+            'maxchar' => 160));
 
         $builder->add('meta_keywords', 'text', array(
             'required' => false));
@@ -58,7 +59,7 @@ class PageLangType extends AbstractType
         $builder->add('is_active', 'checkbox', array(
             'label' => 'Is active in this language',
             'required' => false));
-       
+
     }
 
     public function getName()
