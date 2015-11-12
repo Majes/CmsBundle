@@ -96,6 +96,7 @@ class CmsService {
                     $this->_menu[$page_id]['title'] = $pageLang->getTitle();
                     $this->_menu[$page_id]['link_url'] = $page->getLinkUrl();
                     $this->_menu[$page_id]['target_url'] = $page->getTargetUrl();
+                    $this->_menu[$page_id]['icon'] = $page->getIcon();
                     $this->_menu[$page_id]['is_inmenu'] = $page->getIsinmenu();
                     $this->_menu[$page_id]['is_active'] = $page->getIsActive();
                     $this->_menu[$page_id]['is_folder'] = $page->getIsFolder();
@@ -655,6 +656,7 @@ class CmsService {
                         'link_url' => $page['link_url'],
                         'target_url' => $page['target_url'],
                         'is_folder' => $page['is_folder'],
+                        'icon' => $page['icon'],
                         'id' => $page['id']
                         );
 
