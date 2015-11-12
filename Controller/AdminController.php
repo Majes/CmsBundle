@@ -43,7 +43,7 @@ class AdminController extends Controller implements SystemController
      *
      */
     public function contentAction($id, $lang, $menu_id, $page_parent_id, $host_id)
-    {   
+    {
 
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
@@ -52,7 +52,7 @@ class AdminController extends Controller implements SystemController
         if(is_null($lang)) $lang = $this->_lang;
         if(is_null($page_parent_id) || $page_parent_id == 0) $page_parent_id = null;
         if(is_null($menu_id) || $menu_id == 0) $menu_id = 1;
-        
+
         $page = $em->getRepository('MajesCmsBundle:Page')
             ->findOneById($id);
 
@@ -61,7 +61,7 @@ class AdminController extends Controller implements SystemController
         //Check permissions
         if(!Helper::hasAdminRole($page, $this->container->get('security.context')))
             throw new \Exception('Unauthorized access.', 403);
-       
+
 
         //Get blocks for this specific page
         $blocks = array(); $page_has_draft = false;
@@ -69,7 +69,7 @@ class AdminController extends Controller implements SystemController
             $blocks = $this->container->get('majescms.cms_service')->getBlocks($page, $lang);
             foreach($blocks as $block)
                 if($block['has_draft']){
-                    $page_has_draft = true;  
+                    $page_has_draft = true;
                     break;
                 }
         }
@@ -94,7 +94,7 @@ class AdminController extends Controller implements SystemController
 
                 $page->addLang($new_lang);
 
-                
+
 
                 $pageTemplateBlocks = $page->getPageTemplateBlocks();
                 foreach($pageTemplateBlocks as $pageTemplateBlock){
@@ -121,18 +121,19 @@ class AdminController extends Controller implements SystemController
 
 
         //Perform post submit
-        $form = $this->createForm(new PageType($em, $this->_lang, $host_id), $page);
+        $cmsIcons = $this->container->getParameter('cms.icons');
+        $form = $this->createForm(new PageType($em, $this->_lang, $host_id, $cmsIcons), $page);
         if($request->getMethod() == 'POST'){
 
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $page = $form->getData();
-                
+
                 if(is_null($page->getId())){
                     $page->setUser($this->_user);
 
                 }
-                
+
                 //Check if external page is set
                 $external_link = $form['link_url2']->getData();
                 if(!empty($external_link))
@@ -154,7 +155,7 @@ class AdminController extends Controller implements SystemController
 
                     $page->addLang($pageLang);
                 }
-         
+
                 $em->persist($page);
                 $em->flush();
 
@@ -171,7 +172,7 @@ class AdminController extends Controller implements SystemController
                 }
             }
 
-            
+
         }
 
         $form_role = null;
@@ -247,7 +248,7 @@ class AdminController extends Controller implements SystemController
                 foreach ($form_role->getErrors() as $error) {
                     echo $message[] = $error->getMessage();
                 }
-       
+
             }
         }
 
@@ -260,7 +261,7 @@ class AdminController extends Controller implements SystemController
      *
      */
     public function contentDeleteAction($id, $lang)
-    {   
+    {
 
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
@@ -271,7 +272,7 @@ class AdminController extends Controller implements SystemController
 
         $page = $em->getRepository('MajesCmsBundle:Page')
             ->findOneById($id);
-        
+
         if(is_null($page))
             die();
 
@@ -291,7 +292,7 @@ class AdminController extends Controller implements SystemController
 
         $em->persist($page);
         $em->flush();
-        
+
         //Set routes to table
         $this->container->get('majescms.cms_service')->generateRoutes($page->getMenu()->getRef(), $this->_is_multilingual);
 
@@ -303,14 +304,14 @@ class AdminController extends Controller implements SystemController
      *
      */
     public function contentUndeleteAction($id)
-    {   
+    {
 
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
 
         $pageLang = $em->getRepository('MajesCmsBundle:PageLang')
             ->findOneById($id);
-        
+
         if(is_null($pageLang))
             die();
 
@@ -327,7 +328,7 @@ class AdminController extends Controller implements SystemController
             $em->persist($pageLangTemp);
             $em->flush();
         }
-        
+
         $page->setDeleted(false);
         $em->persist($page);
         $em->flush();
@@ -338,7 +339,7 @@ class AdminController extends Controller implements SystemController
 
         //Set routes to table
         $this->container->get('majescms.cms_service')->generateRoutes($page->getMenu()->getRef(), $this->_is_multilingual);
-        
+
         return $this->redirect($this->get('router')->generate('_admin_trashs', array()));
     }
 
@@ -347,7 +348,7 @@ class AdminController extends Controller implements SystemController
      *
      */
     public function publishAction($id, $lang)
-    {   
+    {
 
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
@@ -358,7 +359,7 @@ class AdminController extends Controller implements SystemController
 
         $page = $em->getRepository('MajesCmsBundle:Page')
             ->findOneById($id);
-        
+
         if(is_null($page))
             die();
 
@@ -371,11 +372,11 @@ class AdminController extends Controller implements SystemController
         if(!is_null($page_parent))
             $page_parent_id = $page_parent->getId();
 
-        
+
         $pageTemplateBlocks = $page->getPageTemplateBlocks();
         foreach($pageTemplateBlocks as $pageTemplateBlock){
             if($pageTemplateBlock->getLocale() != $lang) continue;
-            
+
             $draft = $pageTemplateBlock->getDraft();
             if(!is_null($draft)){
                 $draft->setStatus('published');
@@ -395,7 +396,7 @@ class AdminController extends Controller implements SystemController
             }
         }
 
-        
+
         return $this->redirect($this->get('router')->generate('_cms_content', array('menu_id' => $page->getMenu()->getId(), 'id' => $page->getId(), 'lang' => $lang, 'page_parent_id' => is_null($page_parent_id) ? "0" : $page_parent_id)));
     }
 
@@ -406,7 +407,7 @@ class AdminController extends Controller implements SystemController
      *
      */
     public function discardDraftAction($id)
-    {   
+    {
 
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
@@ -414,7 +415,7 @@ class AdminController extends Controller implements SystemController
 
         $pageTemplateBlock = $em->getRepository('MajesCmsBundle:PageTemplateBlock')
             ->findOneById($id);
-        
+
         if(is_null($pageTemplateBlock))
             die();
 
@@ -433,11 +434,11 @@ class AdminController extends Controller implements SystemController
         if(!is_null($page_parent))
             $page_parent_id = $page_parent->getId();
 
-        
-        
+
+
         $draft = $pageTemplateBlock->getDraft();
         if(!is_null($draft)){
- 
+
             $em->remove($draft);
             $em->flush();
 
@@ -472,7 +473,7 @@ class AdminController extends Controller implements SystemController
 
                 $response = $this->container->get('majescms.cms_service')
                     ->getMenu($host->getId(), 'fr', $nav->getRef());
-    
+
                 $response = array_values( (array)$response );
                 $menu[$host->getId()][$nav->getRef()]['data'] = $nav;
                 $menu[$host->getId()][$nav->getRef()]['tree'] = json_encode($response);
@@ -495,11 +496,11 @@ class AdminController extends Controller implements SystemController
      */
     public function attributesAction()
     {
-        
+
         $em = $this->getDoctrine()->getManager();
         $attribute = $em->getRepository('MajesCmsBundle:Attribute')
             ->findAll();
-        
+
         return $this->render('MajesCoreBundle:common:datatable.html.twig', array(
             'datas' => $attribute,
             'object' => new Attribute(),
@@ -520,7 +521,7 @@ class AdminController extends Controller implements SystemController
      */
     public function attributeEditAction($id)
     {
-        
+
         $request = $this->getRequest();
 
         $em = $this->getDoctrine()->getManager();
@@ -536,7 +537,7 @@ class AdminController extends Controller implements SystemController
             if ($form->isValid()) {
 
                 if(is_null($attribute)) $attribute = $form->getData();
-            
+
                 $em->persist($attribute);
                 $em->flush();
 
@@ -550,7 +551,7 @@ class AdminController extends Controller implements SystemController
         }
 
         $pageSubTitle = empty($block) ? $this->_translator->trans('Add a new attribute') : $this->_translator->trans('Edit attribute'). ' ' . $attribute->getTitle();
-        
+
 
         return $this->render('MajesCmsBundle:Admin:attribute-edit.html.twig', array(
             'pageTitle' => $this->_translator->trans('Content management'),
@@ -566,11 +567,11 @@ class AdminController extends Controller implements SystemController
      */
     public function blocksAction()
     {
-        
+
         $em = $this->getDoctrine()->getManager();
         $blocks = $em->getRepository('MajesCmsBundle:Block')
             ->findBy(array("deleted" => false));
-        
+
         return $this->render('MajesCoreBundle:common:datatable.html.twig', array(
             'datas' => $blocks,
             'object' => new Block(),
@@ -592,7 +593,7 @@ class AdminController extends Controller implements SystemController
      */
     public function blockEditAction($id)
     {
-        
+
         $request = $this->getRequest();
 
         $em = $this->getDoctrine()->getManager();
@@ -630,13 +631,13 @@ class AdminController extends Controller implements SystemController
 
                     //Get all block_attributes from object block
                     $old_attributes_temp = $block->getBlockAttributes();
-    
+
                     //Parse them all in order to keep them or remove them
                     $old_attributes_array = array();
                     foreach ($old_attributes_temp as $old_attribute) {
                         if(!in_array($old_attribute->getId(), $block_attributes_ids)){
                             $block->removeBlockAttribute($old_attribute);
-                            
+
                             $blockAttribute = $em->getRepository('MajesCmsBundle:BlockAttribute')
                                     ->findOneById($old_attribute->getId());
                             if($blockAttribute){
@@ -646,7 +647,7 @@ class AdminController extends Controller implements SystemController
                         }else
                             $old_attributes_array[] = $old_attribute->getId();
                     }
-    
+
                     /*SET ATTRIBUTES*/
                     //$block->removeAttributes();
                     $sort = 10;
@@ -657,35 +658,35 @@ class AdminController extends Controller implements SystemController
                                 if($block_attribute_id != 0){
                                     $blockAttribute = $em->getRepository('MajesCmsBundle:BlockAttribute')
                                         ->findOneById($block_attribute_id);
-                                    
+
                                     $blockAttribute->setSort($sort);
                                     if(!empty($ref[$block_attribute_id])) $blockAttribute->setRef($ref[$block_attribute_id]);
                                     if(!empty($title[$block_attribute_id])) $blockAttribute->setTitle($title[$block_attribute_id]);
                                     if(!empty($setup[$block_attribute_id])) $blockAttribute->setSetup($setup[$block_attribute_id]);
-        
+
 
                                     $em->persist($blockAttribute);
                                     $em->flush();
                                 }else{
                                     $attribute = $em->getRepository('MajesCmsBundle:Attribute')
                                         ->findOneById($attribute_id);
-        
+
                                     $blockAttribute = new BlockAttribute();
                                     $blockAttribute->setSort($sort);
                                     $blockAttribute->setBlock($block);
                                     $blockAttribute->setAttribute($attribute);
                                     $blockAttribute->setRef($block->getRef().'_'.$attribute->getRef());
-        
+
                                     $em->persist($blockAttribute);
                                     $em->flush();
-        
+
                                     $block->addBlockAttribute($blockAttribute);
                                 }
                                 $sort += 10;
                             }
                         }
                 }
-                
+
 
                 $em->persist($block);
                 $em->flush();
@@ -704,7 +705,7 @@ class AdminController extends Controller implements SystemController
             ->findAll();
 
         $pageSubTitle = empty($block) ? $this->_translator->trans('Add a new block') : $this->_translator->trans('Edit block'). ' ' . $block->getTitle();
-        
+
 
         return $this->render('MajesCmsBundle:Admin:block-edit.html.twig', array(
             'pageTitle' => $this->_translator->trans('Content management'),
@@ -740,7 +741,7 @@ class AdminController extends Controller implements SystemController
             $em->persist($block);
             $em->flush();
         }
-        
+
         return $this->redirect($this->get('router')->generate('_cms_blocks_list', array()));
     }
 
@@ -761,20 +762,20 @@ class AdminController extends Controller implements SystemController
             $em->persist($block);
             $em->flush();
         }
-        
+
         return $this->redirect($this->get('router')->generate('_admin_trashs', array()));
     }
-    
+
     /**
      * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
      *
      */
     public function templatesAction()
-    {   
+    {
         $em = $this->getDoctrine()->getManager();
         $templates = $em->getRepository('MajesCmsBundle:Template')
             ->findBy(array('deleted' => false));
-        
+
         return $this->render('MajesCoreBundle:common:datatable.html.twig', array(
             'datas' => $templates,
             'object' => new Template(),
@@ -797,7 +798,7 @@ class AdminController extends Controller implements SystemController
      */
     public function templateEditAction($id)
     {
-        
+
         $request = $this->getRequest();
 
         $em = $this->getDoctrine()->getManager();
@@ -830,16 +831,16 @@ class AdminController extends Controller implements SystemController
                                 if($template_block_id != 0) $template_blocks_ids[] = $template_block_id;
                             }
                         }
-    
+
                     //Get all template_blocks from object block
                     $old_blocks_temp = $template->getTemplateBlocks();
-    
+
                     //Parse them all in order to keep them or remove them
                     $old_blocks_array = array();
                     foreach ($old_blocks_temp as $old_block) {
                         if(!in_array($old_block->getId(), $template_blocks_ids)){
                             $template->removeTemplateBlock($old_block);
-                            
+
                             $templateBlock = $em->getRepository('MajesCmsBundle:TemplateBlock')
                                     ->findOneById($old_block->getId());
                             if($templateBlock){
@@ -857,7 +858,7 @@ class AdminController extends Controller implements SystemController
                         }else
                             $old_blocks_array[] = $old_block->getId();
                     }
-    
+
                     /*SET ATTRIBUTES*/
                     $sort = 10;
                     foreach($blocks_tmp as $blocks)
@@ -866,27 +867,27 @@ class AdminController extends Controller implements SystemController
                                 if($template_block_id != 0){
                                     $templateBlock = $em->getRepository('MajesCmsBundle:TemplateBlock')
                                         ->findOneById($template_block_id);
-        
+
                                     $templateBlock->setSort($sort);
                                     if(!empty($ref[$template_block_id])) $templateBlock->setRef($ref[$template_block_id]);
                                     if(!empty($title[$template_block_id])) $templateBlock->setTitle($title[$template_block_id]);
-        
+
 
                                     $em->persist($templateBlock);
                                     $em->flush();
                                 }else{
                                     $block = $em->getRepository('MajesCmsBundle:Block')
                                         ->findOneById($block_id);
-        
+
                                     $templateBlock = new TemplateBlock();
                                     $templateBlock->setSort($sort);
                                     $templateBlock->setBlock($block);
                                     $templateBlock->setTemplate($template);
                                     $templateBlock->setRef($template->getRef().'_'.$block->getRef());
-    
+
                                     $em->persist($templateBlock);
                                     $em->flush();
-        
+
                                     $template->addTemplateBlock($templateBlock);
                                 }
                                 $sort += 10;
@@ -911,7 +912,7 @@ class AdminController extends Controller implements SystemController
             ->findBy(array("deleted" => false));
 
         $pageSubTitle = empty($block) ? $this->_translator->trans('Add a new template') : $this->_translator->trans('Edit template'). ' ' . $block->getTitle();
-        
+
 
         return $this->render('MajesCmsBundle:Admin:template-edit.html.twig', array(
             'pageTitle' => $this->_translator->trans('Content management'),
@@ -942,7 +943,7 @@ class AdminController extends Controller implements SystemController
                     case 'isMobile':
                         $template_block->setIsMobile($template_block->getIsMobile() ? 0 : 1);
                         break;
-                    
+
                     case 'isTablet':
                         $template_block->setIsTablet($template_block->getIsTablet() ? 0 : 1);
                         break;
@@ -971,14 +972,14 @@ class AdminController extends Controller implements SystemController
 
         return new Response();
     }
-    
+
     /**
      * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
      *
      */
     public function templateDeleteAction($id){
-     
-        
+
+
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
 
@@ -1005,8 +1006,8 @@ class AdminController extends Controller implements SystemController
      *
      */
     public function templateUndeleteAction($id){
-     
-        
+
+
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
 
@@ -1036,8 +1037,8 @@ class AdminController extends Controller implements SystemController
             $ids = $request->get('ids');
 
             $em = $this->getDoctrine()->getManager();
-            
-            //Set parent        
+
+            //Set parent
             $page = $em->getRepository('MajesCmsBundle:Page')
                 ->findOneById($page_id);
 
@@ -1045,7 +1046,7 @@ class AdminController extends Controller implements SystemController
                 ->findOneById($parent_id) : null;
 
             $page->setParent($parent);
-            
+
             //Set order
             $sort = 0;
             foreach($ids as $id){
@@ -1068,7 +1069,7 @@ class AdminController extends Controller implements SystemController
 
             //Set routes to table
             $this->container->get('majescms.cms_service')->generateRoutes($page->getMenu()->getRef(), $this->_is_multilingual);
-            
+
         }
 
         return new Response(json_encode(array('error' => false)));
@@ -1086,8 +1087,8 @@ class AdminController extends Controller implements SystemController
             $ids = $request->get('ids');
 
             $em = $this->getDoctrine()->getManager();
-            
-            //Set parent        
+
+            //Set parent
             $pageTemplateBlock = $em->getRepository('MajesCmsBundle:PageTemplateBlock')
                 ->findOneById($page_template_block_id);
 
@@ -1117,7 +1118,7 @@ class AdminController extends Controller implements SystemController
     public function pageBlockFormAction($lang){
 
         $request = $this->getRequest();
-        
+
         if($request->isXmlHttpRequest()){
 
             $page_template_block_id = $request->get('page_template_block_id');
@@ -1125,10 +1126,10 @@ class AdminController extends Controller implements SystemController
             $template_block_id = $request->get('template_block_id');
             $id = $request->get('id');
             $wysiwyg = $request->get('wysiwyg', false);
-            
+
             $em = $this->getDoctrine()->getManager();
-            
-            //Set pageTemplateBlock        
+
+            //Set pageTemplateBlock
             $pageTemplateBlock = $em->getRepository('MajesCmsBundle:PageTemplateBlock')
                 ->findOneById($page_template_block_id);
 
@@ -1176,10 +1177,10 @@ class AdminController extends Controller implements SystemController
             $wysiwyg = $request->get('wysiwyg', false);
 
             $attributes = $request->get('attributes');
-            
+
             $em = $this->getDoctrine()->getManager();
-            
-            //Set pageTemplateBlock        
+
+            //Set pageTemplateBlock
             $pageTemplateBlock = $em->getRepository('MajesCmsBundle:PageTemplateBlock')
                 ->findOneById($page_template_block_id);
 
@@ -1213,7 +1214,7 @@ class AdminController extends Controller implements SystemController
 
                 $datatype = new Datatype($pageTemplateBlock, $block, $attributes, $em, $request, $this->_user, $id, $title, $this->container->get('majesmedia.mediaService'));
                 $pageTemplateBlock->setContent(json_encode($datatype->_content));
-    
+
                 $em->persist($pageTemplateBlock);
                 $em->flush();
             }elseif($wysiwyg == 1){
@@ -1221,7 +1222,7 @@ class AdminController extends Controller implements SystemController
 
                 $datatype = new Datatype($pageTemplateBlock, $block, $attributes, $em, $request, $this->_user, $id, $title, $this->container->get('majesmedia.mediaService'));
                 $pageTemplateBlock->setContent(json_encode($datatype->_content));
-                
+
                 if(!is_null($draft)){
                     $pageTemplateBlock->setVersion($draft->getVersion());
 
@@ -1249,7 +1250,7 @@ class AdminController extends Controller implements SystemController
                     $draft->setLocale($pageTemplateBlock->getLocale());
 
                     $datatype = new Datatype($pageTemplateBlock, $block, $attributes, $em, $request, $this->_user, $id, $title, $this->container->get('majesmedia.mediaService'));
-                
+
                 }else{
                     $datatype = new Datatype($draft, $block, $attributes, $em, $request, $this->_user, $id, $title, $this->container->get('majesmedia.mediaService'));
                 }
@@ -1258,11 +1259,11 @@ class AdminController extends Controller implements SystemController
 
                 $em->persist($draft);
                 $em->flush();
-            }  
+            }
 
             //Hack to index content
             $em->persist($pageLang);
-            $em->flush();        
+            $em->flush();
 
             if($wysiwyg)
                 return $this->redirect($this->get('router')->generate('majes_cms_'.$page_id.'_'.$lang));
@@ -1273,7 +1274,7 @@ class AdminController extends Controller implements SystemController
         }else
             return new Response();
     }
-    
+
     /**
      * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
      */
@@ -1290,14 +1291,14 @@ class AdminController extends Controller implements SystemController
 
 
 
-            
+
             $em = $this->getDoctrine()->getManager();
-            
-            //Set pageTemplateBlock        
+
+            //Set pageTemplateBlock
             $pageTemplateBlock = $em->getRepository('MajesCmsBundle:PageTemplateBlock')
                 ->findOneById($page_template_block_id);
             //$attributes=json_decode($pageTemplateBlock->getContent(),true);
-        
+
 
 
             $page = $em->getRepository('MajesCmsBundle:Page')
@@ -1320,10 +1321,10 @@ class AdminController extends Controller implements SystemController
 
 
 
-            
+
             $draft = $pageTemplateBlock->getDraft();
 
-            
+
             if(is_null($draft)){
                 $version = $pageTemplateBlock->getLastVersion()+1;
 
@@ -1347,8 +1348,8 @@ class AdminController extends Controller implements SystemController
             //Hack to index content
             $pageLang->setUpdateDate(new \DateTime());
             $em->persist($pageLang);
-            $em->flush();        
-            
+            $em->flush();
+
             return $this->redirect($this->get('router')->generate('_cms_content', array('id' => $page->getId(), 'menu_id' => $page->getMenu()->getId(), 'lang' => $lang, 'page_parent_id' => is_null($page->getParent()) ? "0" : $page->getParent()->getId())));
     }
     /**
@@ -1391,7 +1392,7 @@ class AdminController extends Controller implements SystemController
 
         $form = $this->createForm(new RoleType(), $role);
         $form->get('bundle')->setData('cms');
-        
+
         if($request->getMethod() == 'POST'){
 
             $form->handleRequest($request);
@@ -1413,7 +1414,7 @@ class AdminController extends Controller implements SystemController
         }
 
         $pageSubTitle = empty($role) ? $this->_translator->trans('Add a new role') : $this->_translator->trans('Edit role'). ' ' . $role->getRole();
-        
+
         return $this->render('MajesCoreBundle:Index:role-edit.html.twig', array(
             'pageTitle' => $this->_translator->trans('Roles'),
             'pageSubTitle' => $pageSubTitle,
@@ -1439,7 +1440,7 @@ class AdminController extends Controller implements SystemController
 
         return $this->redirect($this->get('router')->generate('_cms_roles', array()));
     }
-    
+
     /**
      * @Secure(roles="ROLE_CMS_PUBLISH, ROLE_SUPERADMIN")
      *
@@ -1465,7 +1466,7 @@ class AdminController extends Controller implements SystemController
 
             $redirects = $em->getRepository('MajesCmsBundle:Redirect')->findForAdmin($start, $length, $search['value']);
 
-            $coreTwig = $this->container->get('majescore.twig.core_extension');           
+            $coreTwig = $this->container->get('majescore.twig.core_extension');
             $dataTemp = array(
                 'object' => new Redirect(),
                 'datas' => !empty($redirects) ? $redirects : null,
@@ -1475,12 +1476,12 @@ class AdminController extends Controller implements SystemController
                     'delete' => '_admin_redirect_delete'
                 ));
             $data = $coreTwig->dataTableJson($dataTemp, $draw);
-                
+
             return new JsonResponse($data);
 
 
-        
-        }else{       
+
+        }else{
 
         return $this->render('MajesCoreBundle:common:datatable.html.twig', array(
             'datas' => null,
@@ -1507,11 +1508,11 @@ class AdminController extends Controller implements SystemController
         $request = $this->getRequest();
 
         $em = $this->getDoctrine()->getManager();
-        
+
         $redirect = $em->getRepository('MajesCmsBundle:Redirect')->findOneById($id);
 
         $form = $this->createForm(new RedirectType(), $redirect);
-        
+
         if($request->getMethod() == 'POST'){
 
             $form->handleRequest($request);
@@ -1533,7 +1534,7 @@ class AdminController extends Controller implements SystemController
         }
 
         $pageSubTitle = empty($redirect) ? $this->_translator->trans('Add a new redirection') : $this->_translator->trans('Edit redirection');
-        
+
         return $this->render('MajesCoreBundle:Index:role-edit.html.twig', array(
             'pageTitle' => $this->_translator->trans('Redirections'),
             'pageSubTitle' => $pageSubTitle,
@@ -1545,7 +1546,7 @@ class AdminController extends Controller implements SystemController
      *
      */
     public function redirectDeleteAction($id){
-        
+
         $request = $this->getRequest();
 
         $em = $this->getDoctrine()->getManager();

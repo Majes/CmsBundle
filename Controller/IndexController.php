@@ -24,7 +24,7 @@ use Majes\CmsBundle\Utils\Helper;
 
 class IndexController extends Controller implements SystemController
 {
-    
+
     /**
      * Load cms front page
      */
@@ -58,7 +58,7 @@ class IndexController extends Controller implements SystemController
         if(!$draft && (empty($pageLangActive) ||  empty($pageActive)))
             throw $this->createNotFoundException('404_message');
 
-    
+
         $content = $this->container->get('majescms.cms_service')
                     ->getContent($page, $lang, $draft);
 
@@ -119,5 +119,5 @@ class IndexController extends Controller implements SystemController
             ));
     }
 
-    
+
 }

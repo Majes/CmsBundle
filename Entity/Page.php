@@ -55,7 +55,7 @@ class Page{
      * @ORM\Column(name="has_option", type="boolean", nullable=false)
      */
     private $hasOption=0;
-    
+
     /**
      * @ORM\Column(name="deleted", type="boolean", nullable=false)
      */
@@ -78,25 +78,25 @@ class Page{
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Menu")
+     * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Menu", fetch="EAGER")
      * @ORM\JoinColumn(name="menu_id", referencedColumnName="id", nullable=true)
      */
     private $menu=null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Page")
+     * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Page", fetch="EAGER")
      * @ORM\JoinColumn(name="page_id_parent", referencedColumnName="id", nullable=true)
      */
     private $parent=null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Majes\CoreBundle\Entity\Host")
+     * @ORM\ManyToOne(targetEntity="Majes\CoreBundle\Entity\Host", fetch="EAGER")
      * @ORM\JoinColumn(name="host_id", referencedColumnName="id", nullable=false)
      */
     private $host;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Template", inversedBy="templatePages")
+     * @ORM\ManyToOne(targetEntity="Majes\CmsBundle\Entity\Template", inversedBy="templatePages", fetch="EAGER")
      * @ORM\JoinColumn(name="template_id", referencedColumnName="id", nullable=false)
      */
     private $template;
@@ -125,6 +125,11 @@ class Page{
      * )
      */
     private $roles;
+
+    /**
+     * @ORM\Column(name="icon", type="string", length=50, nullable=true)
+     */
+    private $icon;
 
     /**
      * @inheritDoc
@@ -162,6 +167,15 @@ class Page{
     public function setTargetUrl($targetUrl)
     {
         $this->targetUrl = $targetUrl;
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setIcon($icon)
+    {
+        $this->icon = $icon;
         return $this;
     }
 
@@ -293,7 +307,7 @@ class Page{
         return $this;
     }
 
-    
+
     /**
      * @inheritDoc
      */
@@ -316,6 +330,14 @@ class Page{
     public function getTargetUrl()
     {
         return $this->targetUrl;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getIcon()
+    {
+        return $this->icon;
     }
 
     /**

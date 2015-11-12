@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Majes\CmsBundle\Form;
 
@@ -20,10 +20,11 @@ class PageType extends AbstractType
     protected $lang;
     protected $host_id;
 
-    public function __construct($em = null, $lang = 'en', $host_id = 1){
+    public function __construct($em = null, $lang = 'en', $host_id = 1, $cmsIcons = array()){
         $this->em = $em;
         $this->lang = $lang;
         $this->host_id = $host_id;
+        $this->cms_icons = $cmsIcons;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -66,7 +67,7 @@ class PageType extends AbstractType
 
         $builder->add('link_url', 'choice', array(
             'label' => 'Internal link',
-            'required' => false, 
+            'required' => false,
             'select2' => array(
                 'url' => 'ajaxurl',
                 'label' => 'title',
@@ -78,7 +79,7 @@ class PageType extends AbstractType
             'label' => 'Or external',
             'mapped' => false,
             'required' => false));
-        
+
         $builder->add('target_url', 'choice', array(
             'required' => false,
             'choices' => array(
