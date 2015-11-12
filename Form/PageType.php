@@ -41,6 +41,10 @@ class PageType extends AbstractType
         $host = $this->em->getRepository('MajesCoreBundle:Host')
             ->findOneById($this->host_id);
 
+        $builder->add('icon', 'choice', array(
+            'required' => false,
+            'choices' => $this->cms_icons));
+
         $builder->add('host', 'entity', array(
             'required' => true,
             'class' => 'MajesCoreBundle:Host',
