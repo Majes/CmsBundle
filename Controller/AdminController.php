@@ -87,6 +87,11 @@ class AdminController extends Controller implements SystemController
             $is_copy = $request->get('copy');
             if(is_null($page->getLang()) && !is_null($is_copy)){
                 $page->setLang($this->_default_lang);
+                if(is_null($page->getLang())){
+                    $pageLangs = $page->getLangs();
+                    $page->setLang($pageLangs[0]->getLocale());
+                }
+
                 $new_lang = clone $page->getLang();
                 $new_lang->setLocale($lang);
                 $new_lang->setCreateDate(new \DateTime());
@@ -471,8 +476,11 @@ class AdminController extends Controller implements SystemController
         foreach($hosts as $host){
             foreach($navs as $nav){
 
+                if(!is_null($host->getDefaultLocale())) $langForHost = $host->getDefaultLocale();
+                else $langForHost = $this->_lang;
+
                 $response = $this->container->get('majescms.cms_service')
-                    ->getMenu($host->getId(), 'fr', $nav->getRef());
+                    ->getMenu($host->getId(), $langForHost, $nav->getRef());
 
                 $response = array_values( (array)$response );
                 $menu[$host->getId()][$nav->getRef()]['data'] = $nav;
