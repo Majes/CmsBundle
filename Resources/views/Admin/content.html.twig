@@ -21,7 +21,7 @@
 {% block content_header '' %}
 
 {% block content %}
-    
+
 <div class="container-fluid main-content">
 
     {{ include(
@@ -33,11 +33,11 @@
     </div>
 
     <div class="row">
-        
+
         <!-- Site tree -->
         {% if page is null %}{% set page_id = null %}{% else %}{% set page_id = page.id %}{% endif %}
-        {{ render_esi(controller('MajesCmsBundle:Admin:menu', { 'id' : page_id })) }}
-        
+        {{ render(controller('MajesCmsBundle:Admin:menu', { 'id' : page_id })) }}
+
         <!-- Gallery with filtering and actions -->
         <div class="col-lg-9">
             {% if page is not null %}
@@ -45,12 +45,12 @@
                'MajesCmsBundle:Admin:parts/actions.html.twig'
             ) }}
             {% endif %}
-            
+
             <div class="widget-container fluid-height clearfix">
-                
+
                 {% if edit == 1 %}
                 <div class="heading tabs">
-                    <i class="icon-save"></i> <em>{{pageSubTitle}}</em> 
+                    <i class="icon-save"></i> <em>{{pageSubTitle}}</em>
                     <ul class="nav nav-tabs pull-right" data-tabs="tabs" id="tabs">
                         {% if page is not null %}<li class="active">
                             <a data-toggle="tab" href="#cmsEditing">
@@ -70,43 +70,43 @@
                                 <span>{% trans %}Roles / permissions{% endtrans %}  </span>
                             </a>
                         </li>{% endif %}
-               
+
                     </ul>
                 </div>
-                    
+
                 <div class="tab-content padded" id="my-tab-content">
                     {% if page is not null %}<div class="tab-pane active" id="cmsEditing">
-                    
+
 
                     <div class="row">
                         <div class="col-md-12">
-                    
-                            {% for block in blocks %}           
+
+                            {% for block in blocks %}
                             <div class="widget-container fluid-height{% if block.has_draft %} draft{% endif %}">
                                 <div class="heading">
                                     <i class="icon-align-left"></i> {{block.title}}
                                     {% if block.is_repeatable %}
-                                    
+
                                     {% else %}
                                     <a class="editBlock icon-edit pull-right" data-pagetemplateblock="{{block.page_template_block}}" data-page="{{block.page}}" data-templateblock="{{block.template_block}}" data-id="{{ block.items[0].id }}"></a>
 
-                                    
-                                    {% endif %}
-                                    
 
-                                    
+                                    {% endif %}
+
+
+
                                     {% if block.has_draft %}<a class="cancelDraft btn btn-xs btn-warning-outline icon-warning-sign pull-right" title="Cancel draft" href="{{ path('_cms_discard_draft', {id: block.page_template_block}) }}" onclick="return CoreAdmin.Common.confirmDelete('{% trans %}Are you sure you want to cancel this draft?{% endtrans %}')"> Discard Draft</a>{% endif %}
                                 </div>
                                 <div class="widget-content{% if block.is_repeatable == 0 %} padded{% endif %}">
-                                
+
                                 {% if block.is_repeatable %}
-                                
+
                                     <div class="panel-group sortable" id="accordion" data-pagetemplateblock="{{block.page_template_block}}">
                                     {% for key, attribute_block in block.items %}
                                         <div class="panel" data-id="{{key}}">
                                             <div class="panel-heading">
                                                 <div class="panel-title">
-                                                    
+
                                                     {% if attribute_block.new is not defined %}
                                                     <a class="accordion-toggle collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapse{{key}}"><div class="caret pull-right"></div>
                                                         #{{attribute_block.title}}
@@ -155,32 +155,32 @@
                             </div>
 
                             {% endfor %}
-                                    
+
                         </div>
 
                     </div>
-                                                
+
                     </div>{% endif %}
                     <div class="tab-pane{% if page is null %} active{% endif %}" id="tab2">
                         {% form_theme form 'MajesCoreBundle:Form:fields.html.twig' %}
                         {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
                         <div class="col-md-3">
-                            
+
                         </div>
                         <div class="col-md-6">
-                            
+
                             <div class="widget-content padded">
-                                
+
 
                                 {{ form_errors(form) }}
                                 {{ form_widget(form.lang) }}
                                 {{ form_widget(form) }}
-                                
+
                                 <div class="form-actions col-lg-offset-3 col-lg-9">
                                     <input type="submit" class="btn btn-primary" value="{% trans %}Submit{% endtrans %}" />
                                     <a href="{{ path('_admin_users') }}" class="btn btn-default-outline">{% trans %}Cancel{% endtrans %}</a>
                                 </div>
-                                
+
                             </div>
                         </div>
                         {{ form_end(form) }}
@@ -190,28 +190,28 @@
                         {% form_theme form_role 'MajesCoreBundle:Form:fields.html.twig' %}
                         {{ form_start(form_role, { 'attr': {'class': 'form-horizontal'} }) }}
                         <div class="col-md-3">
-                            
+
                         </div>
                         <div class="col-md-6">
-                            
+
                             <div class="widget-content padded">
-                                
+
 
                                 {{ form_errors(form_role) }}
                                 {{ form_widget(form_role) }}
-                                
+
                                 <div class="form-actions col-lg-offset-3 col-lg-9">
                                     <input type="submit" class="btn btn-primary" value="{% trans %}Submit{% endtrans %}" />
                                     <a href="{{ path('_admin_users') }}" class="btn btn-default-outline">{% trans %}Cancel{% endtrans %}</a>
                                 </div>
-                                
+
                             </div>
                         </div>
                         {{ form_end(form) }}
                     </div>{% endif %}
                 </div>
                 {% endif %}
-                
+
             </div>
         </div>
 
@@ -223,19 +223,19 @@
 <div class="modal fade" id="editModal" style="display: none;" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content" id="ajaxEditBlock">
-            
+
         </div>
     </div>
 </div>
 
 <script>
 $(function() {
-    $( ".sortable" ).sortable({ 
-        axis: "y", 
+    $( ".sortable" ).sortable({
+        axis: "y",
         containment: "parent",
         update: function( event, ui ) {
             var page_template_block = $(event.target).data('pagetemplateblock');
-            
+
             var ids = new Array();
             $(event.target).find('.panel').each(function(i){
                 ids.push($(this).data('id'));
@@ -269,7 +269,7 @@ $(function() {
                 $('#editModal').modal('show');
             }
         });
-        
+
     });
 
 });
