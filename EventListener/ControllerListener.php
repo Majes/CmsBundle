@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Majes\CmsBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
@@ -49,12 +49,12 @@ class ControllerListener
                 if(!is_null($page->getUser()->getMedia()))
                     $media_id = $page->getUser()->getMedia()->getId();
 
-                $url = $controllerObject->get('router')->generate('_cms_content', array('id' => $page->getPage()->getId(), 'page_parent_id' => is_null($page->getPage()->getParent())? 0 : $page->getPage()->getParent()->getId(), 'menu_id' => $page->getPage()->getMenu()->getId(), 'lang' => $page->getLocale()));
+                //$url = $controllerObject->get('router')->generate('_cms_content', array('id' => $page->getPage()->getId(), 'page_parent_id' => is_null($page->getPage()->getParent())? 0 : $page->getPage()->getParent()->getId(), 'menu_id' => $page->getPage()->getMenu()->getId(), 'lang' => $page->getLocale()));
 
-                $notification->add('messages', array('status' => 'success', 'title' => '<strong>'.$page->getTitle().'</strong> has been updated', 'url' => $url, 'media_id' => $media_id));
+                //$notification->add('messages', array('status' => 'success', 'title' => '<strong>'.$page->getTitle().'</strong> has been updated', 'url' => $url, 'media_id' => $media_id));
 
             }
-            
+
         }
     }
 }
