@@ -142,7 +142,7 @@ class PageLang{
         return $this;
     }
 
-    
+
 
     /**
      * @inheritDoc
@@ -366,7 +366,7 @@ class PageLang{
         $blocks = $this->page->getPageTemplateBlocks();
         $content = array();
         foreach($blocks as $block){
-            $content[] = json_decode($block->getContent(), true);
+            if($this->locale == $block->getLocale()) $content[] = json_decode($block->getContent(), true);
         }
         return json_encode($content);
     }
@@ -399,10 +399,10 @@ class PageLang{
 
         if($this->page->getDeleted())
             return false;
-        
+
         return true;
     }
-    
+
     public function entityRender(){
 
         return array('title' => $this->title, 'description' => $this->metaDescription, 'url' => array('route' => '_cms_content', 'params' => array('id' => $this->page->getId(), 'page_parent_id' => is_null($this->page->getParent())? 0 : $this->page->getParent()->getId(), 'menu_id' => $this->page->getMenu()->getId(), 'lang' => $this->locale)));
