@@ -105,6 +105,8 @@ class PageLang{
      */
     private $deleted=0;
 
+    private $indexType;
+
 
     /**
      * @inheritDoc
@@ -401,6 +403,10 @@ class PageLang{
             return false;
 
         return true;
+    }
+
+    public function getIndexType(){
+        return 'cms';
     }
 
     public function entityRender(){
