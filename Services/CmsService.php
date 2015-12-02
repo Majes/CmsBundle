@@ -607,12 +607,15 @@ class CmsService {
 
             $routeObject->setLocale($route['lang']);
 
-            if(!empty($domain_lang))
+            if(!empty($domain_lang)){
+                $route['url'] = $route['url'] == '' ? '/' : $route['url'];
                 $routeObject->setUrl($route['url']);
-            elseif($is_multilingual)
+            }elseif($is_multilingual)
                 $routeObject->setUrl('/'.$route['lang'].$route['url']);
-            else
+            else{
+                $route['url'] = $route['url'] == '' ? '/' : $route['url'];
                 $routeObject->setUrl($route['url']);
+            }
 
             $routeObject->setPage($page);
             $routeObject->setHost(!empty($domain_lang) ? $domain_lang : $route['domain']);
