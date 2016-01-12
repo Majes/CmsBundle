@@ -97,6 +97,9 @@ class PageType extends AbstractType
         $builder->add('is_inmenu', 'checkbox', array(
             'required' => false));
 
+        $builder->add('display_menu', 'checkbox', array(
+            'required' => false));
+
         $builder->add('hasOption', 'checkbox', array(
             'required' => false));
 

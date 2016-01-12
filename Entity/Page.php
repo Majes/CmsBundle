@@ -42,6 +42,11 @@ class Page{
     private $isInmenu=1;
 
     /**
+     * @ORM\Column(name="display_menu", type="boolean", nullable=false)
+     */
+    private $displayMenu=1;
+
+    /**
      * @ORM\Column(name="is_active", type="boolean", nullable=false)
      */
     private $isActive=1;
@@ -200,6 +205,15 @@ class Page{
     /**
      * @inheritDoc
      */
+    public function setDisplayMenu($displayMenu)
+    {
+        $this->displayMenu = $displayMenu;
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function setIsActive($isActive)
     {
         $this->isActive = $isActive;
@@ -352,6 +366,14 @@ class Page{
      * @inheritDoc
      */
     public function getIsInmenu()
+    {
+        return $this->isInmenu;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDisplayMenu()
     {
         return $this->isInmenu;
     }

@@ -122,6 +122,8 @@ class AdminController extends Controller implements SystemController
                 return $this->redirect($this->get('router')->generate('_cms_content', array('id' => $page->getId(), 'menu_id' => $menu_id, 'lang' => $lang, 'page_parent_id' => is_null($page_parent_id) ? "0" : $page_parent_id)));
 
             }
+        }else{
+            $page = new Page();
         }
 
 

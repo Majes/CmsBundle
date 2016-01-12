@@ -35,12 +35,12 @@
     <div class="row">
 
         <!-- Site tree -->
-        {% if page is null %}{% set page_id = null %}{% else %}{% set page_id = page.id %}{% endif %}
+        {% if page is null and page.id is not null %}{% set page_id = null %}{% else %}{% set page_id = page.id %}{% endif %}
         {{ render(controller('MajesCmsBundle:Admin:menu', { 'id' : page_id })) }}
 
         <!-- Gallery with filtering and actions -->
         <div class="col-lg-9">
-            {% if page is not null %}
+            {% if page is not null and page.id is not null %}
             {{ include(
                'MajesCmsBundle:Admin:parts/actions.html.twig'
             ) }}
@@ -52,19 +52,19 @@
                 <div class="heading tabs">
                     <i class="icon-save"></i> <em>{{pageSubTitle}}</em>
                     <ul class="nav nav-tabs pull-right" data-tabs="tabs" id="tabs">
-                        {% if page is not null %}<li class="active">
+                        {% if page is not null and page.id is not null %}<li class="active">
                             <a data-toggle="tab" href="#cmsEditing">
                                 <i class="icon-edit"></i>
                                 <span>{% trans %}Content{% endtrans %}  </span>
                             </a>
                         </li>{% endif %}
-                        <li{% if page is null %} class="active"{% endif %}>
+                        <li{% if page.id is null %} class="active"{% endif %}>
                             <a data-toggle="tab" href="#tab2">
                                 <i class="icon-cog"></i>
                                 <span>{% trans %}Setup & Meta data{% endtrans %}  </span>
                             </a>
                         </li>
-                        {% if page is not null %}<li>
+                        {% if page is not null and page.id is not null %}<li>
                             <a data-toggle="tab" href="#tab3">
                                 <i class="icon-cog"></i>
                                 <span>{% trans %}Roles / permissions{% endtrans %}  </span>
@@ -75,7 +75,7 @@
                 </div>
 
                 <div class="tab-content padded" id="my-tab-content">
-                    {% if page is not null %}<div class="tab-pane active" id="cmsEditing">
+                    {% if page is not null and page.id is not null %}<div class="tab-pane active" id="cmsEditing">
 
 
                     <div class="row">
@@ -161,7 +161,7 @@
                     </div>
 
                     </div>{% endif %}
-                    <div class="tab-pane{% if page is null %} active{% endif %}" id="tab2">
+                    <div class="tab-pane{% if page.id is null %} active{% endif %}" id="tab2">
                         {% form_theme form 'MajesCoreBundle:Form:fields.html.twig' %}
                         {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
                         <div class="col-md-3">
@@ -186,7 +186,7 @@
                         {{ form_end(form) }}
                     </div>
 
-                    {% if page is not null %}<div class="tab-pane" id="tab3">
+                    {% if page is not null  and page.id is not null %}<div class="tab-pane" id="tab3">
                         {% form_theme form_role 'MajesCoreBundle:Form:fields.html.twig' %}
                         {{ form_start(form_role, { 'attr': {'class': 'form-horizontal'} }) }}
                         <div class="col-md-3">
