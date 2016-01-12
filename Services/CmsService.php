@@ -98,6 +98,7 @@ class CmsService {
                     $this->_menu[$page_id]['target_url'] = $page->getTargetUrl();
                     $this->_menu[$page_id]['icon'] = $page->getIcon();
                     $this->_menu[$page_id]['is_inmenu'] = $page->getIsinmenu();
+                    $this->_menu[$page_id]['display_menu'] = $page->getDisplayMenu();
                     $this->_menu[$page_id]['is_active'] = $page->getIsActive();
                     $this->_menu[$page_id]['is_folder'] = $page->getIsFolder();
                     $this->_menu[$page_id]['has_option'] = $page->getHasOption();

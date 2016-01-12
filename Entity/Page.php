@@ -44,7 +44,7 @@ class Page{
     /**
      * @ORM\Column(name="display_menu", type="boolean", nullable=false)
      */
-    private $displayMenu=1;
+    private $displayMenu;
 
     /**
      * @ORM\Column(name="is_active", type="boolean", nullable=false)
@@ -381,7 +381,7 @@ class Page{
      */
     public function getDisplayMenu()
     {
-        return $this->isInmenu;
+        return $this->displayMenu;
     }
 
     /**
