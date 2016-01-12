@@ -146,6 +146,12 @@ class Page{
 
         $this->pageTemplateBlocks = new \Doctrine\Common\Collections\ArrayCollection();
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
+
+        $this->displayMenu = true;
+        $this->isFolder = false;
+        $this->isInmenu = true;
+        $this->hasOption = false;
+        $this->isActive = true;
     }
 
     /**

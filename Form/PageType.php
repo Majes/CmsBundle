@@ -100,10 +100,11 @@ class PageType extends AbstractType
         $builder->add('display_menu', 'checkbox', array(
             'required' => false));
 
-        $builder->add('hasOption', 'checkbox', array(
-            'required' => false));
+        // $builder->add('hasOption', 'checkbox', array(
+        //     'required' => false));
 
         $builder->add('is_active', 'checkbox', array(
+            'empty_data' => true,
             'required' => false));
 
         $builder->add('lang', new PageLangType());
