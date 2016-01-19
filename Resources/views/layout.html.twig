@@ -37,13 +37,15 @@
     <body>
 
         {% set host = getHost() %}
+        {% set menu_level = 2 %}
+        {% if cms_menu_level is defined %}{% set menu_level = cms_menu_level %}{% endif %}
         {% if lang is not defined %}{% set lang = app.request.locale %}{% endif %}
         {% if page is not defined %}
-            {% set menu = getMenu(host.id, lang, 'main', 2, null, 1, null, true) %}
-            {% set menu_footer = getMenu(host.id, lang, 'footer', 2, null, 1, null, true) %}
+            {% set menu = getMenu(host.id, lang, 'main', menu_level, null, 1, null, true) %}
+            {% set menu_footer = getMenu(host.id, lang, 'footer', menu_level, null, 1, null, true) %}
         {% else %}
-            {% set menu = getMenu(host.id, lang, 'main', 2, page.id, 1, null, true) %}
-            {% set menu_footer = getMenu(host.id, lang, 'footer', 2, page.id, 1, null, true) %}
+            {% set menu = getMenu(host.id, lang, 'main', menu_level, page.id, 1, null, true) %}
+            {% set menu_footer = getMenu(host.id, lang, 'footer', menu_level, page.id, 1, null, true) %}
         {% endif %}
 
         {% block teel_gatracking %}
