@@ -5,7 +5,7 @@
           <option></option>
           {% set routes = getRoutes() %}
           {% for route in routes %}
-            <option value="{{ route.id }}" {% if (attribute.value) and (attribute.value.value == route.id) %}selected{% endif %}>{{route.title}} - {{ route.url }}</option>
+            <option value="{{ route.id }}" {% if (attribute.value) and (attribute.value.value == route.id) %}selected{% endif %}>{{route.locale|upper}} / {{route.title}} - {{ route.url }}</option>
           {% endfor %}
         </select>
     </div>

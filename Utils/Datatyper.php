@@ -156,7 +156,11 @@ class Datatyper
 
         if(!is_null($route))
         {
-            $attribute['page_id'] = $route->getPage()->getId();
+            $page = $route->getPage();
+            if(!empty($route->getPage())){
+                $attribute['page_id'] = $page->getId();
+                $attribute['page_icon'] = $page->getIcon();
+            }
             $attribute['locale'] = $route->getLocale();
             $attribute['route_id'] = $route->getId();
         }
@@ -178,8 +182,13 @@ class Datatyper
 
         if(!is_null($route))
         {
-            $attribute['page_id'] = $route->getPage()->getId();
+            $page = $route->getPage();
+            if(!empty($page)){
+                $attribute['page_id'] = $page->getId();
+                $attribute['page_icon'] = $page->getIcon();
+            }
             $attribute['page_title'] = $routebis->getTitle();
+
         }
 
         return $attribute;

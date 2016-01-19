@@ -1,7 +1,7 @@
 {% set url = '' %}
 {% if attribute.value %}
   {% if attribute.value.route_id is defined %}
-    {% set url = path('majes_route_' ~ attribute.value.route_id) %}  
+    {% set url = path('majes_route_' ~ attribute.value.route_id) %}
   {% elseif attribute.value.page_id is defined and attribute.value.locale is defined %}
     {% set url = path('majes_cms_' ~ attribute.value.page_id ~  '_' ~ attribute.value.locale) %}
   {% else %}
@@ -22,7 +22,7 @@
           <option value="" </option>
           {% set routes = getRoutes() %}
           {% for route in routes %}
-            <option value="{{ route.id }}">{{route.title}} - {{ route.url }}</option>
+            <option value="{{ route.id }}">{{route.locale|upper}} / {{route.title}} - {{ route.url }}</option>
           {% endfor %}
         </select>
     </div>
