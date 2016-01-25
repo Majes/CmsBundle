@@ -56,6 +56,9 @@ class PageLangType extends AbstractType
         $builder->add('meta_keywords', 'text', array(
             'required' => false));
 
+        $builder->add('meta_canonical', 'text', array(
+            'required' => false));
+
         $builder->add('is_active', 'checkbox', array(
             'label' => 'Is active in this language',
             'required' => false));

@@ -71,6 +71,11 @@ class PageLang{
     private $metaTitle=null;
 
     /**
+     * @ORM\Column(name="meta_canonical", type="string", length=255, nullable=true)
+     */
+    private $metaCanonical=null;
+
+    /**
      * @ORM\Column(name="create_date", type="datetime", nullable=false)
      */
     private $createDate;
@@ -212,6 +217,15 @@ class PageLang{
     /**
      * @inheritDoc
      */
+    public function setMetaCanonical($metaCanonical)
+    {
+        $this->metaCanonical = $metaCanonical;
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function setMetaDescription($metaDescription)
     {
         $this->metaDescription = $metaDescription;
@@ -325,6 +339,14 @@ class PageLang{
     public function getMetaTitle()
     {
         return $this->metaTitle;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getMetaCanonical()
+    {
+        return $this->metaCanonical;
     }
 
     /**
