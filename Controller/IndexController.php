@@ -5,6 +5,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 use Majes\CoreBundle\Controller\SystemController;
 use Majes\MediaBundle\Entity\Media;
@@ -28,10 +29,9 @@ class IndexController extends Controller implements SystemController
     /**
      * Load cms front page
      */
-    public function loadAction(){
+    public function loadAction(Request $request){
 
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
 
         //Get router and collection
         $router = $this->container->get('router');
@@ -95,8 +95,7 @@ class IndexController extends Controller implements SystemController
     }
 
 
-    public function blockAction(){
-        $request = $this->getRequest();
+    public function blockAction(Request $request){
 
         $container = $request->get('container');
         $params = $request->get('params');
@@ -110,8 +109,8 @@ class IndexController extends Controller implements SystemController
             ));
     }
 
-    public function menuAction(){
-        $request = $this->getRequest();
+    public function menuAction(Request $request){
+
 
         return $this->render('MajesCmsBundle:Index:parts/menu.html.twig', array(
             'block' => $request->get('block'),

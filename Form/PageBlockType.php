@@ -1,4 +1,4 @@
-<?php 
+<?php
 // src/Majes/CoreBundle/Form/User/Myaccount.php
 namespace Majes\CmsBundle\Form;
 
@@ -15,7 +15,7 @@ class PageBlockType extends AbstractType
 
 	public function __construct(){}
 
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
+	public function configureOptions(OptionsResolverInterface $resolver)
 	{
     	$resolver->setDefaults(array(
     	    'csrf_protection' => false,
@@ -37,7 +37,7 @@ class PageBlockType extends AbstractType
             'constraints' => array(
                 new NotBlank()
             )));
-        
+
 
     }
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 // src/Majes/CoreBundle/Form/User/Myaccount.php
 namespace Majes\CmsBundle\Form;
 
@@ -15,7 +15,7 @@ class BlockType extends AbstractType
 
 	public function __construct(){}
 
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
+	public function configureOptions(OptionsResolverInterface $resolver)
 	{
     	$resolver->setDefaults(array(
     	    'data_class' => 'Majes\CmsBundle\Entity\Block',
@@ -38,7 +38,7 @@ class BlockType extends AbstractType
             'constraints' => array(
                 new NotBlank()
             )));
-        
+
         $builder->add('is_repeatable', 'checkbox', array('required' => false));
 
 

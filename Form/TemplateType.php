@@ -1,4 +1,4 @@
-<?php 
+<?php
 // src/Majes/CoreBundle/Form/User/Myaccount.php
 namespace Majes\CmsBundle\Form;
 
@@ -15,7 +15,7 @@ class TemplateType extends AbstractType
 
 	public function __construct(){}
 
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
+	public function configureOptions(OptionsResolverInterface $resolver)
 	{
     	$resolver->setDefaults(array(
     	    'data_class' => 'Majes\CmsBundle\Entity\Template',
@@ -38,7 +38,7 @@ class TemplateType extends AbstractType
             'constraints' => array(
                 new NotBlank()
             )));
-        
+
 
     }
 

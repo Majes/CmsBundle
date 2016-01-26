@@ -27,7 +27,7 @@ class PageType extends AbstractType
         $this->cms_icons = $cmsIcons;
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Majes\CmsBundle\Entity\Page',

@@ -1,111 +1,111 @@
 _cms_content:
-    pattern:  /cms/content/{id}/{page_parent_id}/{menu_id}/{lang}/{host_id}
+    path:  /cms/content/{id}/{page_parent_id}/{menu_id}/{lang}/{host_id}
     defaults: { _controller: MajesCmsBundle:Admin:content, id: null, menu_id: null, lang: null, page_parent_id: null, host_id: null }
 
 _cms_content_delete:
-    pattern:  /cms/page/delete/{id}/{lang}
+    path:  /cms/page/delete/{id}/{lang}
     defaults: { _controller: MajesCmsBundle:Admin:contentDelete, id: null, lang: null }
 
 _admin_page_undelete:
-    pattern:  /cms/page/undelete/{id}
+    path:  /cms/page/undelete/{id}
     defaults: { _controller: MajesCmsBundle:Admin:contentUndelete, id: null }
 
 _cms_content_role:
-    pattern:  /cms/page/role/{id}/{lang}
+    path:  /cms/page/role/{id}/{lang}
     defaults: { _controller: MajesCmsBundle:Admin:contentRole, id: null, lang: null }
 
 _cms_publish:
-    pattern:  /cms/publish/{id}/{lang}
+    path:  /cms/publish/{id}/{lang}
     defaults: { _controller: MajesCmsBundle:Admin:publish}
 
 _cms_discard_draft:
-    pattern:  /cms/discarddraft/{id}
+    path:  /cms/discarddraft/{id}
     defaults: { _controller: MajesCmsBundle:Admin:discardDraft}
 
 _cms_menu_order:
-    pattern:  /cms/menu/{host_id}
+    path:  /cms/menu/{host_id}
     defaults: { _controller: MajesCmsBundle:Admin:menuOrder }
 
 _cms_pageblock_order:
-    pattern:  /cms/page-block/order
+    path:  /cms/page-block/order
     defaults: { _controller: MajesCmsBundle:Admin:PageBlockOrder }
 
 _cms_pageblock_form:
-    pattern:  /cms/page-block/form/{lang}
+    path:  /cms/page-block/form/{lang}
     defaults: { _controller: MajesCmsBundle:Admin:PageBlockForm, lang: null}
 
 _cms_pageblock_edit:
-    pattern:  /cms/page-block/edit
+    path:  /cms/page-block/edit
     defaults: { _controller: MajesCmsBundle:Admin:PageBlockEdit }
 
 _cms_pageblock_delete:
-    pattern:  /cms/page-block/delete/{id}/{page}/{pagetemplateblock}/{templateblock}/{lang}/{title}/{wysiwyg}
+    path:  /cms/page-block/delete/{id}/{page}/{pagetemplateblock}/{templateblock}/{lang}/{title}/{wysiwyg}
     defaults: { _controller: MajesCmsBundle:Admin:PageBlockDelete, id: null, page: null, pagetemplateblock: null, templateblock: null, lang: null, title: null, wysiwyg: null}
 
 _cms_templates_list:
-    pattern:  /cms/templates
+    path:  /cms/templates
     defaults: { _controller: MajesCmsBundle:Admin:templates}
 
 _cms_template_edit:
-    pattern:  /cms/template/edit/{id}
+    path:  /cms/template/edit/{id}
     defaults: { _controller: MajesCmsBundle:Admin:templateEdit, id: null}
 
 _cms_template_block_edit:
-    pattern:  /cms/template/block/edit/{id}
+    path:  /cms/template/block/edit/{id}
     defaults: { _controller: MajesCmsBundle:Admin:templateBlockEdit, id: null}
 
 _cms_template_delete:
-    pattern:  /cms/template/delete/{id}
+    path:  /cms/template/delete/{id}
     defaults: { _controller: MajesCmsBundle:Admin:templateDelete}
 
 _admin_template_undelete:
-    pattern:  /cms/template/undelete/{id}
+    path:  /cms/template/undelete/{id}
     defaults: { _controller: MajesCmsBundle:Admin:templateUndelete}
 
 _cms_blocks_list:
-    pattern:  /cms/blocks
+    path:  /cms/blocks
     defaults: { _controller: MajesCmsBundle:Admin:blocks}
 
 _cms_block_edit:
-    pattern:  /cms/block/edit/{id}
+    path:  /cms/block/edit/{id}
     defaults: { _controller: MajesCmsBundle:Admin:blockEdit, id: null}
 
 _cms_block_delete:
-    pattern:  /cms/block/delete/{id}
+    path:  /cms/block/delete/{id}
     defaults: { _controller: MajesCmsBundle:Admin:blockDelete}
 
 _admin_block_undelete:
-    pattern:  /cms/block/undelete/{id}
+    path:  /cms/block/undelete/{id}
     defaults: { _controller: MajesCmsBundle:Admin:blockUndelete}
 
 _cms_attributes_list:
-    pattern:  /cms/attributes
+    path:  /cms/attributes
     defaults: { _controller: MajesCmsBundle:Admin:attributes}
 
 _cms_attribute_edit:
-    pattern:  /cms/attribute/edit/{id}
+    path:  /cms/attribute/edit/{id}
     defaults: { _controller: MajesCmsBundle:Admin:attributeEdit, id: null}
 
 _cms_roles:
-    pattern:  /cms/roles
+    path:  /cms/roles
     defaults: { _controller: MajesCmsBundle:Admin:roles}
 
 _cms_role_edit:
-    pattern:  /cms/role/edit/{id}
+    path:  /cms/role/edit/{id}
     defaults: { _controller: MajesCmsBundle:Admin:roleEdit, id: null }
 
 _cms_role_delete:
-    pattern:  /cms/role/delete/{id}
+    path:  /cms/role/delete/{id}
     defaults: { _controller: MajesCmsBundle:Admin:roleDelete }
 
 _admin_redirects:
-    pattern:  /redirects
+    path:  /redirects
     defaults: { _controller: MajesCmsBundle:Admin:redirects }
 
 _admin_redirect_edit:
-    pattern:  /redirect/edit/{id}
+    path:  /redirect/edit/{id}
     defaults: { _controller: MajesCmsBundle:Admin:redirectEdit, id: null }
 
 _admin_redirect_delete:
-    pattern:  /redirect/delete/{id}
+    path:  /redirect/delete/{id}
     defaults: { _controller: MajesCmsBundle:Admin:redirectDelete, id: null }

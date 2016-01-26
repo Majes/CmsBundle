@@ -5,6 +5,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Majes\CoreBundle\Controller\SystemController;
@@ -42,11 +43,11 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
      *
      */
-    public function contentAction($id, $lang, $menu_id, $page_parent_id, $host_id)
+    public function contentAction(Request $request, $id, $lang, $menu_id, $page_parent_id, $host_id)
     {
 
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+
 
         //If lang is null, get default language
         if(is_null($lang)) $lang = $this->_lang;
@@ -211,9 +212,8 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_PUBLISH, ROLE_SUPERADMIN")
      *
      */
-    public function contentRoleAction($id, $lang){
+    public function contentRoleAction(Request $request, $id, $lang){
 
-        $request = $this->getRequest();
 
         $em = $this->getDoctrine()->getManager();
         $page = $em->getRepository('MajesCmsBundle:Page')
@@ -267,11 +267,10 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_PUBLISH,ROLE_SUPERADMIN")
      *
      */
-    public function contentDeleteAction($id, $lang)
+    public function contentDeleteAction(Request $request, $id, $lang)
     {
 
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
 
         //If lang is null, get default language
         if(is_null($lang)) $lang = $this->_lang;
@@ -310,11 +309,10 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_PUBLISH,ROLE_SUPERADMIN")
      *
      */
-    public function contentUndeleteAction($id)
+    public function contentUndeleteAction(Request $request, $id)
     {
 
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
 
         $pageLang = $em->getRepository('MajesCmsBundle:PageLang')
             ->findOneById($id);
@@ -354,11 +352,10 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_PUBLISH,ROLE_SUPERADMIN")
      *
      */
-    public function publishAction($id, $lang)
+    public function publishAction(Request $request, $id, $lang)
     {
 
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
 
         //If lang is null, get default language
         if(is_null($lang)) $lang = $this->_lang;
@@ -413,11 +410,10 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_PUBLISH,ROLE_SUPERADMIN")
      *
      */
-    public function discardDraftAction($id)
+    public function discardDraftAction(Request $request, $id)
     {
 
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
 
 
         $pageTemplateBlock = $em->getRepository('MajesCmsBundle:PageTemplateBlock')
@@ -529,10 +525,9 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
      *
      */
-    public function attributeEditAction($id)
+    public function attributeEditAction(Request $request, $id)
     {
 
-        $request = $this->getRequest();
 
         $em = $this->getDoctrine()->getManager();
         $attribute = $em->getRepository('MajesCmsBundle:Attribute')
@@ -601,10 +596,9 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
      *
      */
-    public function blockEditAction($id)
+    public function blockEditAction(Request $request, $id)
     {
 
-        $request = $this->getRequest();
 
         $em = $this->getDoctrine()->getManager();
         $block = $em->getRepository('MajesCmsBundle:Block')
@@ -730,10 +724,9 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
      *
      */
-    public function blockDeleteAction($id) {
+    public function blockDeleteAction(Request $request, $id) {
 
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
 
         $block = $em->getRepository('MajesCmsBundle:Block')
                 ->findOneById($id);
@@ -759,10 +752,9 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
      *
      */
-    public function blockUndeleteAction($id) {
+    public function blockUndeleteAction(Request $request, $id) {
 
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
 
         $block = $em->getRepository('MajesCmsBundle:Block')
                 ->findOneById($id);
@@ -806,10 +798,9 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
      *
      */
-    public function templateEditAction($id)
+    public function templateEditAction(Request $request, $id)
     {
 
-        $request = $this->getRequest();
 
         $em = $this->getDoctrine()->getManager();
         $template = $em->getRepository('MajesCmsBundle:Template')
@@ -937,10 +928,9 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
      *
      */
-    public function templateBlockEditAction($id)
+    public function templateBlockEditAction(Request $request, $id)
     {
 
-        $request = $this->getRequest();
 
         $em = $this->getDoctrine()->getManager();
         $template_block = $em->getRepository('MajesCmsBundle:TemplateBlock')
@@ -987,11 +977,10 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
      *
      */
-    public function templateDeleteAction($id){
+    public function templateDeleteAction(Request $request, $id){
 
 
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
 
         $template = $em->getRepository('MajesCmsBundle:Template')
                 ->findOneById($id);
@@ -1015,11 +1004,10 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_DESIGNER,ROLE_SUPERADMIN")
      *
      */
-    public function templateUndeleteAction($id){
+    public function templateUndeleteAction(Request $request, $id){
 
 
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
 
         $template = $em->getRepository('MajesCmsBundle:Template')
                 ->findOneById($id);
@@ -1036,9 +1024,8 @@ class AdminController extends Controller implements SystemController
     /**
      * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
      */
-    public function menuOrderAction($host_id){
+    public function menuOrderAction(Request $request, $host_id){
 
-        $request = $this->getRequest();
         if($request->isXmlHttpRequest()){
 
             $page_id = $request->get('page_id');
@@ -1088,9 +1075,8 @@ class AdminController extends Controller implements SystemController
     /**
      * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
      */
-    public function pageBlockOrderAction(){
+    public function pageBlockOrderAction(Request $request){
 
-        $request = $this->getRequest();
         if($request->isXmlHttpRequest()){
 
             $page_template_block_id = $request->get('page_template_block_id');
@@ -1125,9 +1111,7 @@ class AdminController extends Controller implements SystemController
     /**
      * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
      */
-    public function pageBlockFormAction($lang){
-
-        $request = $this->getRequest();
+    public function pageBlockFormAction(Request $request, $lang){
 
         if($request->isXmlHttpRequest()){
 
@@ -1173,9 +1157,8 @@ class AdminController extends Controller implements SystemController
     /**
      * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
      */
-    public function pageBlockEditAction(){
+    public function pageBlockEditAction(Request $request){
 
-        $request = $this->getRequest();
         if($request->getMethod() == 'POST'){
 
             $page_template_block_id = $request->get('page_template_block_id');
@@ -1391,9 +1374,8 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_PUBLISH, ROLE_SUPERADMIN")
      *
      */
-    public function roleEditAction($id){
+    public function roleEditAction(Request $request, $id){
 
-        $request = $this->getRequest();
 
         $em = $this->getDoctrine()->getManager();
         $role = $em->getRepository('MajesCoreBundle:User\Role')
@@ -1435,8 +1417,7 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_PUBLISH, ROLE_SUPERADMIN")
      *
      */
-    public function roleDeleteAction($id){
-        $request = $this->getRequest();
+    public function roleDeleteAction(Request $request, $id){
 
         $em = $this->getDoctrine()->getManager();
         $role = $em->getRepository('MajesCoreBundle:User\Role')
@@ -1455,11 +1436,9 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_PUBLISH, ROLE_SUPERADMIN")
      *
      */
-    public function redirectsAction(){
+    public function redirectsAction(Request $request){
 
         $em = $this->getDoctrine()->getManager();
-
-        $request = $this->getRequest();
 
         if ($request->isXmlHttpRequest()){
 
@@ -1513,9 +1492,7 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_PUBLISH, ROLE_SUPERADMIN")
      *
      */
-    public function redirectEditAction($id){
-
-        $request = $this->getRequest();
+    public function redirectEditAction(Request $request, $id){
 
         $em = $this->getDoctrine()->getManager();
 
@@ -1555,9 +1532,8 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_PUBLISH, ROLE_SUPERADMIN")
      *
      */
-    public function redirectDeleteAction($id){
+    public function redirectDeleteAction(Request $request, $id){
 
-        $request = $this->getRequest();
 
         $em = $this->getDoctrine()->getManager();
 

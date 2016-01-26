@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Majes\CmsBundle\Form;
 
@@ -15,7 +15,7 @@ class RedirectType extends AbstractType
 
 	public function __construct(){}
 
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
+	public function configureOptions(OptionsResolverInterface $resolver)
 	{
     	$resolver->setDefaults(array(
     	    'data_class' => 'Majes\CmsBundle\Entity\Redirect',

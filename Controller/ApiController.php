@@ -5,6 +5,7 @@ use Majes\CoreBundle\Controller\SystemController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FOS\RestBundle\Controller\Annotations\View;
+use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Majes\CmsBundle\Entity\PageLang;
 use Majes\CmsBundle\Entity\Page;
@@ -16,9 +17,9 @@ class ApiController extends Controller implements SystemController
      * @return array
      * @View()
      */
-    public function getContentsAction()
+    public function getContentsAction(Request $request)
     {
-        $request = $this->getRequest();
+
         $em = $this->getDoctrine()->getManager();
 
         $_lang = $request->get('lang');
@@ -46,7 +47,7 @@ class ApiController extends Controller implements SystemController
                     'url' => $pageLang->getUrl(),
                     'order' => $page->getSort(),
                     'content' => $content);
-            
+
             unset($pageLang, $content);
 
         }
@@ -73,7 +74,7 @@ class ApiController extends Controller implements SystemController
                     ->getContent($page, $this->_lang);
 
         return array(
-            'lang' => $this->_lang, 
+            'lang' => $this->_lang,
             'pages' => array(
                 0 => array(
                     'url' => $url,
