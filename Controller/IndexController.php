@@ -75,7 +75,7 @@ class IndexController extends Controller implements SystemController
         //Check if user has right to edit pages
         $wysiwyg = false;
         $session = $this->container->get('session');
-        $securityContext = $this->container->get('security.context');
+        $securityContext = $this->container->get('security.authorization_checker');
 
         if($session->get('wysiwyg') && $securityContext->isGranted(array('ROLE_CMS_PUBLISH', 'ROLE_SUPERADMIN')) ){
             // authenticated REMEMBERED, FULLY will imply REMEMBERED (NON anonymous)

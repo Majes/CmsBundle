@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Majes\CmsBundle\Twig;
 
 use Majes\CmsBundle\Entity\Page;
@@ -6,7 +6,7 @@ use Majes\CmsBundle\Utils\Helper;
 
 class CmsExtension extends \Twig_Extension
 {
-   
+
     private $_em;
     private $_router;
     private $_container;
@@ -54,10 +54,10 @@ class CmsExtension extends \Twig_Extension
     }
 
     public function wysiwygTagBegin($block, $item, $lang){
-        
-        
+
+
         $session = $this->_container->get('session');
-        $securityContext = $this->_container->get('security.context');
+        $securityContext = $this->_container->get('security.authorization_checker');
         if( $session->get('wysiwyg') && $securityContext->isGranted(array('ROLE_CMS_PUBLISH', 'ROLE_SUPERADMIN')) ){
             // authenticated REMEMBERED, FULLY will imply REMEMBERED (NON anonymous)
             $url = $this->_router->generate('_cms_pageblock_form', array('lang' => $lang));
@@ -65,34 +65,34 @@ class CmsExtension extends \Twig_Extension
         }
 
         return '';
-        
+
 
     }
 
     public function wysiwygTagEnd(){
         $session = $this->_container->get('session');
-        $securityContext = $this->_container->get('security.context');
+        $securityContext = $this->_container->get('security.authorization_checker');
         if($session->get('wysiwyg') &&  $securityContext->isGranted(array('ROLE_CMS_PUBLISH', 'ROLE_SUPERADMIN')) ){
             // authenticated REMEMBERED, FULLY will imply REMEMBERED (NON anonymous)
             return '</div>';
         }
 
         return '';
-        
+
 
     }
 
     public function getMenu($host_id, $lang, $ref, $level, $page_id, $is_inmenu = 1, $page_parent_id = null, $is_active = null){
-        
+
         $menu = $this->_container->get('majescms.cms_service')
                     ->getMenu($host_id, $lang, $ref, $level, $page_id, $is_inmenu, '', $page_parent_id, $is_active);
 
         return $menu;
-    
+
     }
 
     public function getContent($page, $lang, $isDraft = false){
-        
+
         if(is_int($page))
             $page = $this->_em->getRepository('MajesCmsBundle:Page')
                 ->findOneById($page);
@@ -103,13 +103,13 @@ class CmsExtension extends \Twig_Extension
                     ->getContent($page, $lang, $isDraft);
 
         return $content;
-    
+
     }
 
     public function getBreadcrumb($menu){
-        
+
         return Helper::extractBreadcrumb($menu);
-    
+
     }
 
     public function getHost(){

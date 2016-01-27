@@ -60,7 +60,7 @@ class AdminController extends Controller implements SystemController
         if(is_null($host_id) && !is_null($page)) $host_id = !is_null($page->getHost()) ? $page->getHost()->getId() : null;
 
         //Check permissions
-        if(!Helper::hasAdminRole($page, $this->container->get('security.context')))
+        if(!Helper::hasAdminRole($page, $this->container->get('security.authorization_checker')))
             throw new \Exception('Unauthorized access.', 403);
 
 
@@ -220,7 +220,7 @@ class AdminController extends Controller implements SystemController
             ->findOneById($id);
 
         //Check permissions
-        if(!Helper::hasAdminRole($page, $this->container->get('security.context')))
+        if(!Helper::hasAdminRole($page, $this->container->get('security.authorization_checker')))
             throw new \Exception('Unauthorized access.', 403);
 
         $form_role = $this->createForm(
@@ -283,7 +283,7 @@ class AdminController extends Controller implements SystemController
             die();
 
         //Check permissions
-        if(!Helper::hasAdminRole($page, $this->container->get('security.context')))
+        if(!Helper::hasAdminRole($page, $this->container->get('security.authorization_checker')))
             throw new \Exception('Unauthorized access.', 403);
 
         $page->setDeleted(true);
@@ -325,7 +325,7 @@ class AdminController extends Controller implements SystemController
 
 
         //Check permissions
-        if(!Helper::hasAdminRole($page, $this->container->get('security.context')))
+        if(!Helper::hasAdminRole($page, $this->container->get('security.authorization_checker')))
             throw new \Exception('Unauthorized access.', 403);
 
         foreach ($page->getLangs() as $pageLangTemp) {
@@ -368,7 +368,7 @@ class AdminController extends Controller implements SystemController
             die();
 
         //Check permissions
-        if(!Helper::hasAdminRole($page, $this->container->get('security.context')))
+        if(!Helper::hasAdminRole($page, $this->container->get('security.authorization_checker')))
             throw new \Exception('Unauthorized access.', 403);
 
         $page_parent = $page->getParent();
@@ -429,7 +429,7 @@ class AdminController extends Controller implements SystemController
 
 
         //Check permissions
-        if(!Helper::hasAdminRole($page, $this->container->get('security.context')))
+        if(!Helper::hasAdminRole($page, $this->container->get('security.authorization_checker')))
             throw new \Exception('Unauthorized access.', 403);
 
         $page_parent = $page->getParent();
@@ -1131,7 +1131,7 @@ class AdminController extends Controller implements SystemController
                 ->findOneById($page_id);
 
             //Check permissions
-            if(!Helper::hasAdminRole($page, $this->container->get('security.context')))
+            if(!Helper::hasAdminRole($page, $this->container->get('security.authorization_checker')))
                 throw new \Exception('Unauthorized access.', 403);
 
             $templateBlock = $em->getRepository('MajesCmsBundle:TemplateBlock')
@@ -1183,7 +1183,7 @@ class AdminController extends Controller implements SystemController
 
 
             //Check permissions
-            if(!Helper::hasAdminRole($page, $this->container->get('security.context')))
+            if(!Helper::hasAdminRole($page, $this->container->get('security.authorization_checker')))
                 throw new \Exception('Unauthorized access.', 403);
 
             $templateBlock = $em->getRepository('MajesCmsBundle:TemplateBlock')
@@ -1300,7 +1300,7 @@ class AdminController extends Controller implements SystemController
 
 
             //Check permissions
-            if(!Helper::hasAdminRole($page, $this->container->get('security.context')))
+            if(!Helper::hasAdminRole($page, $this->container->get('security.authorization_checker')))
                 throw new \Exception('Unauthorized access.', 403);
 
             $templateBlock = $em->getRepository('MajesCmsBundle:TemplateBlock')

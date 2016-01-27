@@ -42,7 +42,7 @@ class RedirectType extends AbstractType
         $builder->add('host', 'entity', array(
             'required' => true,
             'class' => 'MajesCoreBundle:Host',
-            'property' => 'url',
+            'choice_label' => 'url',
             'constraints' => array(
                 new NotBlank()
             )));

@@ -48,7 +48,7 @@ class PageType extends AbstractType
         $builder->add('host', 'entity', array(
             'required' => true,
             'class' => 'MajesCoreBundle:Host',
-            'property' => 'url',
+            'choice_label' => 'url',
             'data' => $host));
 
         $builder->add('template', 'entity', array(
@@ -58,7 +58,7 @@ class PageType extends AbstractType
                 return $er->createQueryBuilder('u')
                             ->where('u.deleted = 0');
             },
-            'property' => 'title'));
+            'choice_label' => 'title'));
 
 
         $routes = $this->em->getRepository('MajesCmsBundle:Route')
