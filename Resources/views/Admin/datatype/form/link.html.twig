@@ -22,7 +22,7 @@
           <option value="" </option>
           {% set routes = getRoutes() %}
           {% for route in routes %}
-            <option value="{{ route.id }}">{{route.locale|upper}} / {{route.title}} - {{ route.url }}</option>
+            <option value="{{ route.id }}">{{route.title}} - {{ route.url }} ({{route.host}} / {{route.locale|upper}})</option>
           {% endfor %}
         </select>
     </div>
