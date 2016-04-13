@@ -193,10 +193,10 @@ class AdminController extends Controller implements SystemController
 
         $edit = !is_null($id) ? 1 : 0;
 
-        $pageSubTitle = is_null($page) ? $this->_translator->trans('Add a new page') : $this->_translator->trans('Edit page'). ' ' . (!is_null($page->getLang()) ? $page->getLang()->getTitle() : 'Language not yet available');
+        $pageSubTitle = is_null($page) ? $this->_translator->trans('Add a new page', array(), 'admin') : $this->_translator->trans('Edit page', array(), 'admin'). ' ' . (!is_null($page->getLang()) ? $page->getLang()->getTitle() : 'Language not yet available');
 
         return $this->render('MajesCmsBundle:Admin:content.html.twig', array(
-            'pageTitle' => $this->_translator->trans('Content management'),
+            'pageTitle' => $this->_translator->trans('Content management', array(), 'admin'),
             'pageSubTitle' => $pageSubTitle,
             'form' => $form->createView(),
             'page' => $page,
@@ -512,8 +512,8 @@ class AdminController extends Controller implements SystemController
             'object' => new Attribute(),
             'label' => 'attribute',
             'message' => 'Are you sure you want to delete this block ?',
-            'pageTitle' => $this->_translator->trans('Content management'),
-            'pageSubTitle' => $this->_translator->trans('List of all available attribute?'),
+            'pageTitle' => $this->_translator->trans('Content management', array(), 'admin'),
+            'pageSubTitle' => $this->_translator->trans('List of all available attribute?', array(), 'admin'),
             'urls' => array(
                 'add' => '_cms_attribute_edit',
                 'edit' => '_cms_attribute_edit'
@@ -555,11 +555,11 @@ class AdminController extends Controller implements SystemController
             }
         }
 
-        $pageSubTitle = empty($block) ? $this->_translator->trans('Add a new attribute') : $this->_translator->trans('Edit attribute'). ' ' . $attribute->getTitle();
+        $pageSubTitle = empty($block) ? $this->_translator->trans('Add a new attribute', array(), 'admin') : $this->_translator->trans('Edit attribute', array(), 'admin'). ' ' . $attribute->getTitle();
 
 
         return $this->render('MajesCmsBundle:Admin:attribute-edit.html.twig', array(
-            'pageTitle' => $this->_translator->trans('Content management'),
+            'pageTitle' => $this->_translator->trans('Content management', array(), 'admin'),
             'pageSubTitle' => $pageSubTitle,
             'attribute' => $attribute,
             'form' => $form->createView()
@@ -582,8 +582,8 @@ class AdminController extends Controller implements SystemController
             'object' => new Block(),
             'label' => 'blocks',
             'message' => 'Are you sure you want to delete this block ?',
-            'pageTitle' => $this->_translator->trans('Content management'),
-            'pageSubTitle' => $this->_translator->trans('List of all available blocks?'),
+            'pageTitle' => $this->_translator->trans('Content management', array(), 'admin'),
+            'pageSubTitle' => $this->_translator->trans('List of all available blocks?', array(), 'admin'),
             'urls' => array(
                 'add' => '_cms_block_edit',
                 'edit' => '_cms_block_edit',
@@ -708,11 +708,11 @@ class AdminController extends Controller implements SystemController
         $attributes = $em->getRepository('MajesCmsBundle:Attribute')
             ->findAll();
 
-        $pageSubTitle = empty($block) ? $this->_translator->trans('Add a new block') : $this->_translator->trans('Edit block'). ' ' . $block->getTitle();
+        $pageSubTitle = empty($block) ? $this->_translator->trans('Add a new block', array(), 'admin') : $this->_translator->trans('Edit block', array(), 'admin'). ' ' . $block->getTitle();
 
 
         return $this->render('MajesCmsBundle:Admin:block-edit.html.twig', array(
-            'pageTitle' => $this->_translator->trans('Content management'),
+            'pageTitle' => $this->_translator->trans('Content management', array(), 'admin'),
             'pageSubTitle' => $pageSubTitle,
             'block' => $block,
             'form' => $form->createView(),
@@ -781,8 +781,8 @@ class AdminController extends Controller implements SystemController
         return $this->render('MajesCoreBundle:common:datatable.html.twig', array(
             'datas' => $templates,
             'object' => new Template(),
-            'pageTitle' => $this->_translator->trans('Content management'),
-            'pageSubTitle' => $this->_translator->trans('List of all available templates?'),
+            'pageTitle' => $this->_translator->trans('Content management', array(), 'admin'),
+            'pageSubTitle' => $this->_translator->trans('List of all available templates?', array(), 'admin'),
             'label' => 'templates',
             'message' => 'Are you sure you want to delete this template ? (only possible if the template is not currently used by any page)',
             'urls' => array(
@@ -912,11 +912,11 @@ class AdminController extends Controller implements SystemController
         $blocks = $em->getRepository('MajesCmsBundle:Block')
             ->findBy(array("deleted" => false));
 
-        $pageSubTitle = empty($block) ? $this->_translator->trans('Add a new template') : $this->_translator->trans('Edit template'). ' ' . $block->getTitle();
+        $pageSubTitle = empty($block) ? $this->_translator->trans('Add a new template', array(), 'admin') : $this->_translator->trans('Edit template', array(), 'admin'). ' ' . $block->getTitle();
 
 
         return $this->render('MajesCmsBundle:Admin:template-edit.html.twig', array(
-            'pageTitle' => $this->_translator->trans('Content management'),
+            'pageTitle' => $this->_translator->trans('Content management', array(), 'admin'),
             'pageSubTitle' => $pageSubTitle,
             'template' => $template,
             'form' => $form->createView(),
@@ -964,9 +964,9 @@ class AdminController extends Controller implements SystemController
                 $em->persist($template_block);
                 $em->flush();
 
-                echo json_encode(array('error' => false, 'message' => $this->_translator->trans('The block has been updated successfully')));
+                echo json_encode(array('error' => false, 'message' => $this->_translator->trans('The block has been updated successfully', array(), 'admin')));
             }else{
-                echo json_encode(array('error' => true, 'message' => $this->_translator->trans('An error has occured during saving')));
+                echo json_encode(array('error' => true, 'message' => $this->_translator->trans('An error has occured during saving', array(), 'admin')));
             }
         }
 
@@ -1360,8 +1360,8 @@ class AdminController extends Controller implements SystemController
             'object' => new Role(),
             'label' => 'roles',
             'message' => 'Are you sure you want to delete this role ?',
-            'pageTitle' => $this->_translator->trans('Roles'),
-            'pageSubTitle' => $this->_translator->trans('List off all roles currently available'),
+            'pageTitle' => $this->_translator->trans('Roles', array(), 'admin'),
+            'pageSubTitle' => $this->_translator->trans('List off all roles currently available', array(), 'admin'),
             'urls' => array(
                 'add' => '_cms_role_edit',
                 'edit' => '_cms_role_edit',
@@ -1405,10 +1405,10 @@ class AdminController extends Controller implements SystemController
             }
         }
 
-        $pageSubTitle = empty($role) ? $this->_translator->trans('Add a new role') : $this->_translator->trans('Edit role'). ' ' . $role->getRole();
+        $pageSubTitle = empty($role) ? $this->_translator->trans('Add a new role', array(), 'admin') : $this->_translator->trans('Edit role', array(), 'admin'). ' ' . $role->getRole();
 
         return $this->render('MajesCoreBundle:Index:role-edit.html.twig', array(
-            'pageTitle' => $this->_translator->trans('Roles'),
+            'pageTitle' => $this->_translator->trans('Roles', array(), 'admin'),
             'pageSubTitle' => $pageSubTitle,
             'form' => $form->createView()));
     }
@@ -1459,7 +1459,7 @@ class AdminController extends Controller implements SystemController
             $dataTemp = array(
                 'object' => new Redirect(),
                 'datas' => !empty($redirects) ? $redirects : null,
-                'message' => $this->_translator->trans('Are you sure you want to delete this redirection ?'),
+                'message' => $this->_translator->trans('Are you sure you want to delete this redirection ?', array(), 'admin'),
                 'urls' => array(
                     'edit'   => '_admin_redirect_edit',
                     'delete' => '_admin_redirect_delete'
@@ -1476,7 +1476,7 @@ class AdminController extends Controller implements SystemController
             'datas' => null,
             'object' => new Redirect(),
             'pageTitle' => 'Redirections',
-            'pageSubTitle' => $this->_translator->trans('List off all redirections currently "created"'),
+            'pageSubTitle' => $this->_translator->trans('List off all redirections currently "created"', array(), 'admin'),
             'label' => 'redirection',
             'message' => 'Are you sure you want to delete this redirection ?',
             'urls' => array(
@@ -1520,10 +1520,10 @@ class AdminController extends Controller implements SystemController
             }
         }
 
-        $pageSubTitle = empty($redirect) ? $this->_translator->trans('Add a new redirection') : $this->_translator->trans('Edit redirection');
+        $pageSubTitle = empty($redirect) ? $this->_translator->trans('Add a new redirection', array(), 'admin') : $this->_translator->trans('Edit redirection', array(), 'admin');
 
         return $this->render('MajesCoreBundle:Index:role-edit.html.twig', array(
-            'pageTitle' => $this->_translator->trans('Redirections'),
+            'pageTitle' => $this->_translator->trans('Redirections', array(), 'admin'),
             'pageSubTitle' => $pageSubTitle,
             'form' => $form->createView()));
     }
