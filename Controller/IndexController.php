@@ -82,6 +82,14 @@ class IndexController extends Controller implements SystemController
             $wysiwyg = true;
         }
 
+        $url = $pageLang->getUrl();
+        $extension = substr(strrchr($url,'.'),1);
+        $response = new Response();
+        if($extension == 'txt'){
+            $response->headers->set('Content-Type', 'text/plain');
+        }
+
+
         return $this->render($template_twig, array(
             'page' => $page,
             'pageLang' => $pageLang,
@@ -90,7 +98,7 @@ class IndexController extends Controller implements SystemController
             'draft' => $draft,
             'wysiwyg' => $wysiwyg,
             'template' => ($template->getRef()) ? $template->getRef() : ''
-            ));
+        ), $response);
 
     }
 
