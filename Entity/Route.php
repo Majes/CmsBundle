@@ -12,7 +12,9 @@ use Majes\CoreBundle\Annotation\DataTable;
  * Majes\CmsBundle\Entity\Route
  *
  * @ORM\Entity
- * @ORM\Table(name="cms_route")
+ * @ORM\Table(name="cms_route", indexes={
+ *      @ORM\Index(name="locale", columns={"locale"})
+ * })
  * @ORM\HasLifecycleCallbacks()
  */
 class Route extends SymfonyRoute implements RouteObjectInterface{

@@ -9,7 +9,10 @@ use Majes\CoreBundle\Annotation\DataTable;
 /**
  * Majes\CmsBundle\Entity\PageLang
  *
- * @ORM\Table(name="cms_page_lang")
+ * @ORM\Table(name="cms_page_lang", indexes={
+ *      @ORM\Index(name="locale", columns={"locale"}),
+ *      @ORM\Index(name="is_active", columns={"is_active"})
+ * })
  * @ORM\Entity(repositoryClass="Majes\CmsBundle\Entity\PageLangRepository")
  * @ORM\HasLifecycleCallbacks
  */

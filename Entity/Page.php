@@ -10,7 +10,10 @@ use Majes\CoreBundle\Annotation\DataTable;
  * Majes\CmsBundle\Entity\Page
  *
  * @ORM\Entity(repositoryClass="Majes\CmsBundle\Entity\PageRepository")
- * @ORM\Table(name="cms_page")
+ * @ORM\Table(name="cms_page", indexes={
+ *      @ORM\Index(name="is_inmenu", columns={"is_inmenu"}),
+ *      @ORM\Index(name="is_active", columns={"is_active"})
+ * })
  * @ORM\HasLifecycleCallbacks
  */
 class Page{

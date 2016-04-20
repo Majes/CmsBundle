@@ -7,7 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Majes\CmsBundle\Entity\PageTemplateBlock
  *
- * @ORM\Table(name="cms_page_template_block")
+ * @ORM\Table(name="cms_page_template_block", indexes={
+ *      @ORM\Index(name="locale", columns={"locale"})
+ * })
  * @ORM\Entity(repositoryClass="Majes\CmsBundle\Entity\PageTemplateBlockRepository")
  * @ORM\HasLifecycleCallbacks
  */
@@ -51,7 +53,7 @@ class PageTemplateBlock{
      * @ORM\Column(name="content", type="text", nullable=false)
      */
     private $content;
-    
+
     /**
      * @ORM\Column(name="update_date", type="datetime", nullable=false)
      */
@@ -270,7 +272,7 @@ class PageTemplateBlock{
                 $version_num = $version->getVersion();
 
         }
-        
+
         return $version_num;
     }
     /**
