@@ -464,7 +464,7 @@ class AdminController extends Controller implements SystemController
 
         //Get hosts
         $hosts = $em->getRepository('MajesCoreBundle:Host')
-            ->findBy(array('deleted' => 0));
+            ->findBy(array('deleted' => 0, 'isActive' => 1));
 
         //Get menus
         $navs = $em->getRepository('MajesCmsBundle:Menu')
